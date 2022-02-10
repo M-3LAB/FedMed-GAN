@@ -27,7 +27,7 @@ python3 fid_stats.py --dataset 'ixi'  --source-domain 't2' --target-domain 'pd' 
 
 > Options. See [./configuration/config.py](configuration/config.py) for details.
 ```bash
---fed-aggregate-method fed-psnr/fed-avg --gpu-id 1 --num-epoch 20 --num-round 10 
+--fed-aggregate-method 'fed-avg'/'fed-psnr' --num-epoch 20 --num-round 10 --gpu-id 1
 ```
 ```bash
 --fid [default=true]
