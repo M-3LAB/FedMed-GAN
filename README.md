@@ -1,6 +1,6 @@
 # FedMed-GAN
 
-The implementation of the paper titled ['FedMed-ATL: Misaligned Unpaired Brain Image Synthesis via Affine Transform Loss'](https://arxiv.org/abs/2201.12589)
+The implementation of the paper titled ['FedMed-GAN: Federated Multi-Modal Unsupervised Brain Image Synthesis'](https://arxiv.org/abs/2201.08953)
 
 ## Preliminary
 > Dependency
