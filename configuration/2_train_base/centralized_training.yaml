@@ -1,0 +1,73 @@
+federated: false
+clients_data_weight:
+- 1.0
+# no differential privacy
+diff_privacy: false
+clip_bound: 1
+sensitivity: 2
+noise_multiplier: 1.07
+# training
+batch_size: 4 
+gpu_id: 0
+gpu_ids:
+- '01234567'
+lr: 0.0001
+num_epoch: 10 
+decay_epoch: 8 
+seed: 3 
+num_workers: 8
+# work file
+work_dir: ./work_dir
+save_log: true
+save_img: false
+debug: false 
+# save and load model
+save_model: false
+load_model: false
+load_model_dir: None
+# fid
+fid: false
+fid_dir: ./fid_stats
+batch_size_inceptionV3: 8 
+# optimizer
+beta1: 0.5
+beta2: 0.999
+# reg loss
+reg_gan: false 
+noise_level: 3
+lambda_corr: 20
+lambda_smooth: 10
+lambda_content: 1.0
+lambda_style: 1.0
+# identity loss
+identity: true
+lambda_identity: 10.0
+# noise
+noise_type: normal 
+a_mu: 0.0
+a_sigma: 1.0
+b_mu: 0.0
+b_sigma: 1.0
+# auxiliary rotation loss
+auxiliary_rotation: false
+auxiliary_translation: false
+auxiliary_scaling: false
+weight_rotation_loss_d: 1.0
+weight_rotation_loss_g: 0.5
+weight_translation_loss_d: 1.0
+weight_translation_loss_g: 0.5
+weight_scaling_loss_d: 1.0
+weight_scaling_loss_g: 0.5
+severe_rotation: 90
+severe_translation: 0.12
+severe_scaling: 0.1
+angle_list: [90., 180., 270.]
+translation_list: [30.] 
+scaling_list: [0.9, 1.1, 1.2]
+num_augmentation: 'one'
+# contrD loss
+contraD: false 
+temp: 0.1
+weight_simclr_loss: 1.0
+weight_supercon_loss: 1.0
+

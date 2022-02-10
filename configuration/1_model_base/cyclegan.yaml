@@ -1,0 +1,8 @@
+model: cyclegan
+cyg_dis_inc: 1
+cyg_dis_ndf: 64
+lambda_gan: 1.0
+lambda_cyc: 10.0
+
+
+

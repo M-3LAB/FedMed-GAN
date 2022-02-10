@@ -1,0 +1,25 @@
+dataset: brats2021
+source_domain: t1
+target_domain: t2
+data_path: /disk1/medical/brats2021/training
+valid_path: /disk1/medical/brats2021/validation
+data_paired: false 
+data_partition: manual
+data_seperated: true
+es_higher_limit: 80 
+es_lower_limit: 50
+unpaired_img_number: 6000 
+regenerate_data: true
+size: 256 
+num_img_save: 5
+single_img_infer: false
+assigned_images: [['BraTS2021_00001', 'BraTS2021_00001', 80], 
+                  ['BraTS2021_00013', 'BraTS2021_00013', 80],
+                  ['BraTS2021_00438', 'BraTS2021_00438', 80],
+                  ['BraTS2021_01668', 'BraTS2021_01668', 80],
+                  ['BraTS2021_01712', 'BraTS2021_01712', 80],
+                  ['BraTS2021_01756', 'BraTS2021_01756', 80],
+                  ['BraTS2021_00585', 'BraTS2021_00585', 80],
+                  ['BraTS2021_01679', 'BraTS2021_01679', 80],
+                  ['BraTS2021_01763', 'BraTS2021_01763', 80]]
+
