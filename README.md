@@ -1,4 +1,4 @@
-# FedMed-ATL
+# FedMed-GAN
 
 The implementation of the paper titled ['FedMed-ATL: Misaligned Unpaired Brain Image Synthesis via Affine Transform Loss'](https://arxiv.org/abs/2201.12589)
 
