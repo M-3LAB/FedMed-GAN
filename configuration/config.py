@@ -80,7 +80,7 @@ def parse_arguments_federated():
     
 def parse_arguments_centralized():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', '-d', type=str, default=None, choices=['ixi', 'brats2019', 'brats2021', 'reggandata'])
+    parser.add_argument('--dataset', '-d', type=str, default=None, choices=['ixi', 'brats2021'])
     parser.add_argument('--model', '-m', type=str, default=None, choices=['cyclegan', 'munit', 'unit'])
     parser.add_argument('--source-domain', '-s', default=None, choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--target-domain', '-t', default=None, choices=['t1', 't2', 'pd', 'flair'])
@@ -112,7 +112,7 @@ def parse_arguments_centralized():
     parser.add_argument('--angle-list', nargs='+', type=float, default=None)
     parser.add_argument('--translation-list', nargs='+', type=float, default=None)
     parser.add_argument('--scaling-list', nargs='+', type=float, default=None)
-    parser.add_argument('--num-augmentation', '-na', type=str, default='four', choices=['four', 'one', 'two'])
+    parser.add_argument('--num-augmentation', '-na', type=str, default=None, choices=['four', 'one', 'two'])
 
     parser.add_argument('--save-model', action='store_true', default=False)
     parser.add_argument('--load-model', action='store_true', default=False)
@@ -127,7 +127,7 @@ def parse_arguments_centralized():
     parser.add_argument('--contraD', '-cd', action='store_true', default=False)
     #parser.add_argument('--warmup', action='store_true', default=False)
     #parser.add_argument('--std-flag', action='store_true', default=False)
-    parser.add_argument('--temp', default=0.1, type=float, help='Temperature hyperparameter for contrastive losses')
+    parser.add_argument('--temp', default=None, type=float, help='Temperature hyperparameter for contrastive losses')
     parser.add_argument('--weight-simclr-loss', type=float)
     parser.add_argument('--weight-supercon-loss', type=float)
 

@@ -1,27 +1,17 @@
 import torch
 import numpy as np
-import torch.nn.functional as F
 
-from torch.autograd.variable import Variable
-from model.reg.reg import Reg
-from model.reg.transformer import Reg_Transformer
+from arch_base.base import Base
 from model.reg.loss import smooothing_loss
 from model.cyclegan.cyclegan import CycleGen, CycleDis
 from tools.utilize import *
-#from loss_function.simclr_loss import simclr_loss
-#from loss_function.supercon_loss import supercon_loss
 from model.contraD.contraD import ContraD
-
-from metrics.metrics import mae, psnr, ssim, fid
-from evaluation.common import concate_tensor_lists, average
 
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
 
-import kornia.geometry.transform as kt
 
-from arch_base.base import Base
 
 __all__ = ['CycleGAN']
 

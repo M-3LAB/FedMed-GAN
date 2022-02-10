@@ -136,8 +136,7 @@ def save_image(image, name, image_path):
     if not os.path.exists(image_path):
         os.makedirs(image_path)
 
-    torchvision.utils.save_image(
-        image, '{}/{}'.format(image_path, name), normalize=False)
+    torchvision.utils.save_image(image, '{}/{}'.format(image_path, name), normalize=False)
 
 
 def save_model(model, file_path, para_dict, psnr):
@@ -146,7 +145,8 @@ def save_model(model, file_path, para_dict, psnr):
     for file in glob.glob('{}/*.pth'.format(file_path)):
         os.remove(file)      
 
-    model_path = '{}/best_model_{}_{}_{:.4f}.pth'.format(file_path, para_dict['source_domain'], para_dict['target_domain'], psnr)
+    model_path = '{}/best_model_{}_{}_{:.4f}.pth'.format(
+        file_path, para_dict['source_domain'], para_dict['target_domain'], psnr)
     torch.save({'model_state_dict': model.state_dict()}, model_path)
 
 def load_model(model, file_path, description):

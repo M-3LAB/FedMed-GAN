@@ -315,12 +315,12 @@ class Base():
                     img_path = '{}/{}-slice-{}'.format(
                         save_img_path, batch['name_a'][0], batch['slice_num'].numpy()[0])
 
-                    mae_value = mae(real_b, fake_b) 
+                    mae_value = mae(real_b, fake_b).item() 
                     psnr_value = psnr(real_b, fake_b).item()
                     ssim_value = ssim(real_b, fake_b).item()
                     
-                    img_all = torch.cat((real_a, fake_a, real_b, fake_b, fake_fake_a, fake_fake_b), 1)
-                    save_image(img_all, 'm_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_value, psnr_value, ssim_value), img_path)
+                    img_all = torch.cat((real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b), 0)
+                    save_image(img_all, 'all_m_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_value, psnr_value, ssim_value), img_path)
 
                     save_image(real_a, 'real_a.png', img_path)
                     save_image(real_b, 'real_b.png', img_path)

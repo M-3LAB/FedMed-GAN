@@ -1,24 +1,15 @@
 from re import X
 import torch
-import torch.nn.functional as F
 
-from torch.autograd.variable import Variable
-from model.reg.reg import Reg
-from model.reg.transformer import Reg_Transformer
-from model.reg.loss import smooothing_loss
 from tools.utilize import *
 from model.unit.unit import *
-from metrics.metrics import mae, psnr, ssim, fid
-from evaluation.common import concate_tensor_lists, average
+from arch_base.base import Base
 
 import itertools
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
 
-import kornia.geometry.transform as kt
-
-from arch_base.base import Base
 
 __all__ = ['Unit']
 

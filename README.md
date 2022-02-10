@@ -1,2 +1,67 @@
-# FedMed-GAN
-Our code will be released very soon!
+# FedMed-ATL
+
+The implementation of the paper titled ['FedMed-ATL: Misaligned Unpaired Brain Image Synthesis via Affine Transform Loss'](https://arxiv.org/abs/2201.12589)
+
+## Preliminary
+> Dependency
+
+```bash
+conda install pytorch=1.8.1 torchvision torchaudio cudatoolkit=10.1 -c pytorch
+```
+```bash
+pip3 install -r requirements.txt
+```
+
+> Generate dataset
+```bash
+python3 data_preprecess/brats2021.py
+```
+> Test data loader
+```bash
+python3 legacy_code/example_dataset_loader.py
+```
+> Prepare Statistics for FID Calculate statistics. See [./fid_stats.py](fid_stats.py) for details.
+```bash
+python3 fid_stats.py --dataset 'ixi'  --source-domain 't2' --target-domain 'pd' --gpu-id 0
+```
+
+> Options. See [./configuration/config.py](configuration/config.py) for details.
+```bash
+--fed-aggregate-method fed-psnr/fed-avg --gpu-id 1 --num-epoch 20 --num-round 10 
+```
+```bash
+--fid [default=true]
+--noise-type 'slight'/'severe' [default='normal'] 
+--identity [default=true]
+--diff-privacy [default=true]
+--reg-gan 
+--auxiliary-rotation --auxiliary-translation --auxiliary-scaling
+```
+```bash
+--debug --save-img --single-img-infer 
+```
+```bash
+--save-model --load-model --load-model-dir './work_dir/centralized/ixi/Tue Jan 11 20:18:31 2022'
+ ```
+
+## Federated Training 
+> BraTS2021 ['t1', 't2', 'flair']
+```bash
+python3 federated_training.py --dataset 'brats2021' --model 'cyclegan' --source-domain 't1' --target-domain 'flair' --data-path '/disk1/medical/brats2021/training' --valid-path '/disk1/medical/brats2021/validation'  --noise-type 'severe' --auxiliary-rotation --auxiliary-translation --auxiliary-scaling
+```
+
+> IXI  ['t2', 'pd']
+```bash
+python3 federated_training.py --dataset 'ixi'  --model 'cyclegan' --source-domain 'pd' --target-domain 't2' --data-path '/disk1/medical/ixi' --valid-path '/disk1/medical/ixi' --noise-type 'severe' --auxiliary-rotation --auxiliary-translation --auxiliary-scaling
+```
+
+## Centralized Training
+> BraTS2021 ['t1', 't2', 'flair']
+```bash
+python3 centralized_training.py --dataset 'brats2021' --model 'cyclegan' --source-domain 't1' --target-domain 'flair' --data-path '/disk1/medical/brats2021/training' --valid-path '/disk1/medical/brats2021/validation'
+```
+
+> IXI  ['t2', 'pd']
+```bash
+python3 centralized_training.py --dataset 'ixi' --model 'cyclegan' --source-domain 'pd' --target-domain 't2' --data-path '/disk1/medical/ixi' --valid-path '/disk1/medical/ixi'  
+```
