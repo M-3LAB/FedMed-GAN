@@ -47,12 +47,12 @@ python3 fid_stats.py --dataset 'ixi'  --source-domain 't2' --target-domain 'pd' 
 ## Federated Training 
 > BraTS2021 ['t1', 't2', 'flair']
 ```bash
-python3 federated_training.py --dataset 'brats2021' --model 'cyclegan' --source-domain 't1' --target-domain 'flair' --data-path '/disk1/medical/brats2021/training' --valid-path '/disk1/medical/brats2021/validation'  --noise-type 'severe' --auxiliary-rotation --auxiliary-translation --auxiliary-scaling
+python3 federated_training.py --dataset 'brats2021' --model 'cyclegan' --source-domain 't1' --target-domain 'flair' --data-path '/disk1/medical/brats2021/training' --valid-path '/disk1/medical/brats2021/validation'
 ```
 
 > IXI  ['t2', 'pd']
 ```bash
-python3 federated_training.py --dataset 'ixi'  --model 'cyclegan' --source-domain 'pd' --target-domain 't2' --data-path '/disk1/medical/ixi' --valid-path '/disk1/medical/ixi' --noise-type 'severe' --auxiliary-rotation --auxiliary-translation --auxiliary-scaling
+python3 federated_training.py --dataset 'ixi'  --model 'cyclegan' --source-domain 'pd' --target-domain 't2' --data-path '/disk1/medical/ixi' --valid-path '/disk1/medical/ixi'
 ```
 
 ## Centralized Training
