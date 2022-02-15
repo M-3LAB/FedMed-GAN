@@ -9,7 +9,7 @@ from tools.utilize import *
 import os
 from model.FT.fourier_transform import * 
 from model.FT.power_spectrum import *
-from metrics.BISE.stats import *
+from metrics.bise.stats import *
 import numpy as np
 
 if __name__ == '__main__':
