@@ -25,7 +25,8 @@ class BASE_DATASET(torch.utils.data.Dataset):
         root: (str) Path of the folder with all the images.
         mode : {'train' or 'test'} Part of the dataset that is loaded.
         extract_slice: [start, end] Extract slice of one volume id
-        paired: If True, it means T1 and T2 is paired
+        mixed: If True, real-world data setting, which blends paired data and unpaired data
+        paired: If True, it means T1 and T2 is paired. Note that if paired works, mixed flag must be False
         clients: (list) Client weights when splitting the whole data
         seperated: If True, the data are seperated when the number of client is more than 1
         splited: If True, we want to split the data into two parts, i.e, training data(0.8) and testing data(0.2)
@@ -33,13 +34,14 @@ class BASE_DATASET(torch.utils.data.Dataset):
 
     """
     def __init__(self, root, modalities=["t1", "t2"], mode="train", extract_slice=[29, 100], noise_type='normal', transform_data=None,
-                 paired=True, clients=[1.0], seperated=True, splited=False, regenerate_data=True):
+                 mixed=False, paired=True, clients=[1.0], seperated=True, splited=False, regenerate_data=True):
         random.seed(3)
 
         self.dataset_path = root
         self.mode = mode
         self.extract_slice = extract_slice
         self.paired = paired
+        self.mixed = mixed
         self.clients = clients
         self.seperated = seperated
         self.splited = splited
@@ -175,6 +177,8 @@ class BASE_DATASET(torch.utils.data.Dataset):
             path = path.replace('paired', 'unpaired')
         if not self.seperated:
             path = path.replace('seperated', 'unseperated')
+        if self.mixed:
+            path = path.replace('paired', 'mixed')
 
         if self.regenerate_data and os.path.exists(path):
             os.remove(path)
@@ -188,31 +192,35 @@ class BASE_DATASET(torch.utils.data.Dataset):
                 clients_indice = self._allocate_client_data(data_len=len(self.files), clients=self.clients)
 
                 for client_idx in clients_indice:
-                    idx = []
-                    if self.paired:
+                    paired, unpaired = [], []
+
+                    if self.paired or self.mixed:
                         for i in client_idx:
                             for j in range(self.extract_slice[0], self.extract_slice[1]):
                                 index_para = [self.files[i], self.files[i], j]
-                                idx.append(index_para)
-                    else:
+                                paired.append(index_para)
+                    self._clients_indice.append(paired)
+
+                    if not self.paired or self.mixed:
                         indices = triu_indices(len(client_idx))
                         for m, n in zip(indices[0], indices[1]):
                             for i in range(self.extract_slice[0], self.extract_slice[1]):
                                 index_para = [self.files[m], self.files[n], i]
-                                idx.append(index_para)
-                    self._clients_indice.append(idx)
+                                unpaired.append(index_para)
+                    self._clients_indice.append(unpaired)
 
                 if self.splited:
                     tmp = []
                     if self.mode == "train":
-                        for client in self._clients_indice:
-                            data = client[:][:round(0.8 * len(client))]
-                            tmp.append(data)
+                            for client in self._clients_indice:
+                                data = client[:][:][:round(0.8 * len(client))]
+                                tmp.append(data)
+                            self._clients_indice = tmp
                     elif self.mode == "test":
-                        for client in self._clients_indice:
-                            data = client[:][round(0.8 * len(client)):]
-                            tmp.append(data)
-                    self._clients_indice = tmp
+                            for client in self._clients_indice:
+                                data = client[:][:][round(0.8 * len(client)):]
+                                tmp.append(data)
+                            self._clients_indice = tmp
 
                 with open(path, 'wb') as f:
                     pickle.dump(self._clients_indice, f)
@@ -247,12 +255,20 @@ class BASE_DATASET(torch.utils.data.Dataset):
 
     def _generate_client_indice(self):
         dataset_indices = [i for i in range(len(self.dataset))]
+        client_data_list = []
         start = 0
         for client in self._clients_indice:
             end = start + len(client)
             indice = dataset_indices[start:end]
-            self.client_data_indices.append(indice)
+            client_data_list.append(indice)
             start = end
+        for i in range(len(self.clients)):
+            if self.paired:
+                self.client_data_indices.append(client_data_list[i*2])
+            else:
+                self.client_data_indices.append(client_data_list[i*2+1])
+
+        pass
 
     @staticmethod
     def _allocate_client_data(data_len, clients=[1.0]):
