@@ -1,7 +1,7 @@
 from configuration.config import parse_arguments_federated
-from arch_federated.fed_cyclegan import Fed_CycleGAN
-from arch_federated.fed_munit import Fed_Munit
-from arch_federated.fed_unit import Fed_Unit
+from arch_federated.fed_cyclegan import FedCycleGAN
+from arch_federated.fed_munit import FedMunit
+from arch_federated.fed_unit import FedUnit
 
 
 
@@ -13,11 +13,11 @@ def federated_training():
             raise ValueError('Parameter {} must be refered!'.format(key_arg))
 
     if args.model == 'cyclegan':
-        work = Fed_CycleGAN(args=args)
+        work = FedCycleGAN(args=args)
     elif args.model == 'munit':
-        work = Fed_Munit(args=args)
+        work = FedMunit(args=args)
     elif args.model == 'unit':
-        work = Fed_Unit(args=args)
+        work = FedUnit(args=args)
     else:
         raise ValueError('Model is invalid!')   
 

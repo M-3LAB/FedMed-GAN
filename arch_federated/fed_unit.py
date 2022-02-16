@@ -5,9 +5,9 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from arch_federated.server import aggregate_from_client_to_server, update_server_from_best_psnr_client
 from arch_federated.client import send_from_server_to_client
 
-class Fed_Unit(FederatedTrain):
+class FedUnit(FederatedTrain):
     def __init__(self, args):
-        super(Fed_Unit, self).__init__(args=args)
+        super(FedUnit, self).__init__(args=args)
         self.args = args
 
 

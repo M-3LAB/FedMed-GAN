@@ -5,10 +5,10 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from arch_federated.server import aggregate_from_client_to_server, update_server_from_best_psnr_client
 from arch_federated.client import send_from_server_to_client
 
-__all__ = ['Fed_CycleGAN']
-class Fed_CycleGAN(FederatedTrain):
+__all__ = ['FedCycleGAN']
+class FedCycleGAN(FederatedTrain):
     def __init__(self, args):
-        super(Fed_CycleGAN, self).__init__(args=args)
+        super(FedCycleGAN, self).__init__(args=args)
         self.args = args
 
     def init_model(self, description='server and clients'):
