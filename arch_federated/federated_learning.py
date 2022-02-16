@@ -137,10 +137,8 @@ class FederatedTrain():
                                            noise_type=self.para_dict['noise_type'],
                                            mode='train',
                                            transform_data=self.noise_transform,
-                                           mixed=self.para_dict['data_mixed'],
-                                           paired=self.para_dict['data_paired'],
                                            clients=self.para_dict['clients_data_weight'],
-                                           seperated=self.para_dict['data_seperated'],
+                                           data_mode=self.para_dict['data_mode'],
                                            regenerate_data=self.para_dict['regenerate_data'])
             self.valid_dataset = BraTS2021(root=self.para_dict['valid_path'],
                                            modalities=[
@@ -150,9 +148,7 @@ class FederatedTrain():
                                            extract_slice=[
                                                self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
                                            transform_data=self.normal_transform,
-                                           mixed = False,
-                                           paired=True,
-                                           seperated=False,
+                                           data_mode='paired',
                                            regenerate_data=self.para_dict['regenerate_data'])
             self.assigned_dataset = BraTS2021(root=self.para_dict['valid_path'],
                                            modalities=[
@@ -162,9 +158,7 @@ class FederatedTrain():
                                            extract_slice=[
                                                self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
                                            transform_data=self.severe_transform,
-                                           mixed = False,
-                                           paired=True,
-                                           seperated=False,
+                                           data_mode='paired',
                                            regenerate_data=self.para_dict['regenerate_data'],
                                            assigned_data=self.para_dict['single_img_infer'],
                                            assigned_images=self.para_dict['assigned_images']) 
@@ -177,9 +171,8 @@ class FederatedTrain():
                                     noise_type=self.para_dict['noise_type'],
                                     mode='train',
                                     transform_data=self.noise_transform,
-                                    paired=self.para_dict['data_paired'],
+                                    data_mode=self.para_dict['data_mode'],
                                     clients=self.para_dict['clients_data_weight'],
-                                    seperated=self.para_dict['data_seperated'],
                                     splited=True,
                                     regenerate_data=self.para_dict['regenerate_data'])
             self.valid_dataset = IXI(root=self.para_dict['data_path'],
@@ -188,8 +181,7 @@ class FederatedTrain():
                                     noise_type='normal',
                                     mode='test',
                                     transform_data=self.normal_transform,
-                                    paired=True,
-                                    seperated=False,
+                                    data_mode='paired',
                                     splited=True,
                                     regenerate_data=self.para_dict['regenerate_data'])
             self.assigned_dataset = IXI(root=self.para_dict['data_path'],
@@ -200,8 +192,7 @@ class FederatedTrain():
                                     noise_type='severe',
                                      mode='test',
                                      transform_data=self.severe_transform,
-                                     paired=True,
-                                     seperated=False,
+                                     data_mode='paired',
                                      splited=False,
                                      regenerate_data=self.para_dict['regenerate_data'],
                                      assigned_data=self.para_dict['single_img_infer'],

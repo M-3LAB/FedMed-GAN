@@ -6,13 +6,13 @@ __all__ = ['IXI']
 class IXI(BASE_DATASET):
     def __init__(self, root, modalities=["t1", "t2"], mode="train", 
                  extract_slice=[29, 100], noise_type='normal', transform_data=None, 
-                 paired=True, clients=[1.0], seperated=True, 
+                 clients=[1.0], data_mode='paired', 
                  splited=True, regenerate_data=True, assigned_data=False, 
                  assigned_images=None):
 
         super(IXI, self).__init__(root, modalities=modalities, mode=mode, extract_slice=extract_slice,
-                                  noise_type=noise_type, transform_data=transform_data, 
-                                  paired=paired, clients=clients, seperated=seperated, splited=splited, regenerate_data=regenerate_data)
+                                  noise_type=noise_type, data_mode=data_mode, transform_data=transform_data, 
+                                  clients=clients, splited=splited, regenerate_data=regenerate_data)
 
         # infer assigned images
         self.assigned_data = assigned_data

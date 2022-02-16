@@ -3,8 +3,10 @@ source_domain: t1
 target_domain: t2
 data_path: /disk1/medical/brats2021/training
 valid_path: /disk1/medical/brats2021/validation
+data_mode: 'mixed'
 data_mixed: true
-data_paired: true 
+data_paired_weight: 0.2 
+data_paired: false 
 data_partition: manual
 data_seperated: true
 es_higher_limit: 80 
