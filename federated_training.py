@@ -10,7 +10,7 @@ def federated_training():
 
     for key_arg in ['dataset', 'model', 'source_domain', 'target_domain']:
         if not vars(args)[key_arg]:
-            raise ValueError('Parameter {} must be refered!'.format(key_arg))
+            raise ValueError('Parameter {} Must Be Refered!'.format(key_arg))
 
     if args.model == 'cyclegan':
         work = FedCycleGAN(args=args)
@@ -19,7 +19,7 @@ def federated_training():
     elif args.model == 'unit':
         work = FedUnit(args=args)
     else:
-        raise ValueError('Model is invalid!')   
+        raise ValueError('Model Is Invalid!')   
 
     work.run_work_flow()
 
