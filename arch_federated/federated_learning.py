@@ -130,36 +130,29 @@ class FederatedTrain():
             assert self.para_dict['source_domain'] in ['t1', 't2', 'flair']
             assert self.para_dict['target_domain'] in ['t1', 't2', 'flair']
             self.train_dataset = BraTS2021(root=self.para_dict['data_path'],
-                                           modalities=[
-                                               self.para_dict['source_domain'], self.para_dict['target_domain']],
-                                           extract_slice=[
-                                               self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
+                                           modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
+                                           extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
                                            noise_type=self.para_dict['noise_type'],
-                                           mode='train',
+                                           learn_mode='train',
                                            transform_data=self.noise_transform,
-                                           clients=self.para_dict['clients_data_weight'],
+                                           client_weights=self.para_dict['clients_data_weight'],
                                            data_mode=self.para_dict['data_mode'],
-                                           regenerate_data=self.para_dict['regenerate_data'])
+                                           data_num=self.para_dict['data_num'],
+                                           data_paired_weight=self.para_dict['data_paired_weight'])
             self.valid_dataset = BraTS2021(root=self.para_dict['valid_path'],
-                                           modalities=[
-                                               self.para_dict['source_domain'], self.para_dict['target_domain']],
+                                           modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                            noise_type='normal',
-                                           mode='test',
-                                           extract_slice=[
-                                               self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
+                                           learn_mode='test',
+                                           extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
                                            transform_data=self.normal_transform,
-                                           data_mode='paired',
-                                           regenerate_data=self.para_dict['regenerate_data'])
+                                           data_mode='paired')
             self.assigned_dataset = BraTS2021(root=self.para_dict['valid_path'],
-                                           modalities=[
-                                               self.para_dict['source_domain'], self.para_dict['target_domain']],
+                                           modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                            noise_type='severe',
-                                           mode='test',
-                                           extract_slice=[
-                                               self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
+                                           learn_mode='test',
+                                           extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
                                            transform_data=self.severe_transform,
                                            data_mode='paired',
-                                           regenerate_data=self.para_dict['regenerate_data'],
                                            assigned_data=self.para_dict['single_img_infer'],
                                            assigned_images=self.para_dict['assigned_images']) 
         elif self.para_dict['dataset'] == 'ixi':
@@ -169,32 +162,29 @@ class FederatedTrain():
                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                     extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
                                     noise_type=self.para_dict['noise_type'],
-                                    mode='train',
+                                    learn_mode='train',
                                     transform_data=self.noise_transform,
                                     data_mode=self.para_dict['data_mode'],
-                                    clients=self.para_dict['clients_data_weight'],
-                                    splited=True,
-                                    regenerate_data=self.para_dict['regenerate_data'])
+                                    data_num=self.para_dict['data_num'],
+                                    data_paired_weight=self.para_dict['data_paired_weight'],
+                                    client_weights=self.para_dict['clients_data_weight'],
+                                    dataset_splited=True)
             self.valid_dataset = IXI(root=self.para_dict['data_path'],
                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                     extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
                                     noise_type='normal',
-                                    mode='test',
+                                    learn_mode='test',
                                     transform_data=self.normal_transform,
                                     data_mode='paired',
-                                    splited=True,
-                                    regenerate_data=self.para_dict['regenerate_data'])
+                                    dataset_splited=True)
             self.assigned_dataset = IXI(root=self.para_dict['data_path'],
-                                     modalities=[
-                                         self.para_dict['source_domain'], self.para_dict['target_domain']],
-                                     extract_slice=[
-                                         self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                    noise_type='severe',
-                                     mode='test',
+                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
+                                     extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
+                                     noise_type='severe',
+                                     learn_mode='test',
                                      transform_data=self.severe_transform,
                                      data_mode='paired',
-                                     splited=False,
-                                     regenerate_data=self.para_dict['regenerate_data'],
+                                     dataset_splited=False,
                                      assigned_data=self.para_dict['single_img_infer'],
                                      assigned_images=self.para_dict['assigned_images']) 
 
