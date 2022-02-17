@@ -4,15 +4,11 @@ target_domain: t2
 data_path: /disk1/medical/brats2021/training
 valid_path: /disk1/medical/brats2021/validation
 data_mode: 'mixed'
-data_mixed: true
-data_paired_weight: 0.2 
-data_paired: false 
+data_num: 6000 
+data_paired_weight: 0.3 
 data_partition: manual
-data_seperated: true
 es_higher_limit: 80 
 es_lower_limit: 50
-unpaired_img_number: 6000 
-regenerate_data: true
 size: 256 
 num_img_save: 5
 single_img_infer: false

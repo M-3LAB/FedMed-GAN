@@ -24,12 +24,15 @@ def parse_arguments_federated():
     parser.add_argument('--num-round', type=int, default=None)
 
     # centralized setting
-    parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2019', 'brats2021'])
+    parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2021'])
     parser.add_argument('--model', '-m', type=str, default='cyclegan', choices=['cyclegan', 'munit', 'unit'])
     parser.add_argument('--source-domain', '-s', default='t1', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--target-domain', '-t', default='t2', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--data-path', '-dp', type=str, default=None)
     parser.add_argument('--valid-path', '-vp', type=str, default=None)
+
+    parser.add_argument('--data_mode', '-dm', type=str, default='mixed', choices=['mixed', 'paired', 'unpaired'])
+    parser.add_argument('--data-paired-weight', '-dpw', type=float, default=None, choices=[0.1, 0.3, 0.5])
 
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--num-epoch', type=int, default=None)
@@ -80,16 +83,19 @@ def parse_arguments_federated():
     
 def parse_arguments_centralized():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', '-d', type=str, default=None, choices=['ixi', 'brats2021'])
-    parser.add_argument('--model', '-m', type=str, default=None, choices=['cyclegan', 'munit', 'unit'])
-    parser.add_argument('--source-domain', '-s', default=None, choices=['t1', 't2', 'pd', 'flair'])
-    parser.add_argument('--target-domain', '-t', default=None, choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2021'])
+    parser.add_argument('--model', '-m', type=str, default='cyclegan', choices=['cyclegan', 'munit', 'unit'])
+    parser.add_argument('--source-domain', '-s', default='t1', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--target-domain', '-t', default='t2', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--data-path', '-dp', type=str, default=None)
     parser.add_argument('--valid-path', '-vp', type=str, default=None)
 
+    parser.add_argument('--data_mode', '-dm', type=str, default=None, choices=['mixed', 'paired', 'unpaired'])
+    parser.add_argument('--data-paired-weight', '-dpw', type=float, default=None, choices=[0.1, 0.3, 0.5])
+
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--num-epoch', type=int, default=None)
-    parser.add_argument('--debug', action='store_true', default=False)
+    parser.add_argument('--debug', action='store_true', default=True)
 
     parser.add_argument('--reg-gan', action='store_true', default=False)
     parser.add_argument('--identity', action='store_true', default=False)
@@ -139,7 +145,7 @@ def parse_arguments_fid_stats():
     parser = argparse.ArgumentParser("Pre-Calculate Statistics of Images")
     parser.add_argument('--fid-dir', default='./fid_stats', type=str, help='the output path for statistics storage')
     parser.add_argument('--batch-size', type=int, default=50, help='the batchsize for InceptionNetV3')
-    parser.add_argument('--dataset', '-d', type=str, default='reggandata', choices=['ixi', 'brats2019', 'brats2021', 'reggandata'])
+    parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2021'])
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--source-domain', '-s', default='t1', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--target-domain', '-t', default='t2', choices=['t1', 't2', 'pd', 'flair'])

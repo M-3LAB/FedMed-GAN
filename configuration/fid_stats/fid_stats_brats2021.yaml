@@ -5,7 +5,7 @@ fid_dir: ./fid_stats
 valid_path: /disk1/medical/brats2021/validation
 batch_size: 8 
 size: 256
-gpu_id: 3
+gpu_id: 0
 gpu_ids:
 - '01234567'
 es_higher_limit: 80 
