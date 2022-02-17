@@ -3,8 +3,7 @@ import os
 import yaml
 
 from metrics.fid_is.fid import get_stats
-from data_io.brats import BraTS2019, BraTS2021 
-from data_io.reggandata import RegganData 
+from data_io.brats import BraTS2021 
 from data_io.ixi import IXI
 from tools.utilize import *
 from torch.utils.data import DataLoader
@@ -43,55 +42,26 @@ def fid_stats(args):
                            modalities=[para_dict['source_domain'], para_dict['target_domain']],
                            extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                            noise_type='normal',
-                           mode='test',
+                           learn_mode='test',
                            transform_data=test_transform_data,
-                           paired=True,
-                           seperated=False,
-                           splited=True,
+                           data_mode='paired',
+                           dataset_splited=True,
                            regenerate_data=para_dict['regenerate_data'])
-    elif para_dict['dataset'] == 'brats2019':
-        assert para_dict['source_domain'] in ['t1', 't2', 'flair']
-        assert para_dict['target_domain'] in ['t1', 't2', 'flair']
 
-        test_dataset = BraTS2019(root=para_dict['valid_path'],
-                                 modalities=[para_dict['source_domain'], para_dict['target_domain']],
-                                 mode='test',
-                                 extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
-                                 noise_type='normal',
-                                 transform_data=test_transform_data,
-                                 paired=True,
-                                 seperated=False,
-                                 regenerate_data=para_dict['regenerate_data'])
-                                 
     elif para_dict['dataset'] == 'brats2021':
         assert para_dict['source_domain'] in ['t1', 't2', 'flair']
         assert para_dict['target_domain'] in ['t1', 't2', 'flair']
 
         test_dataset = BraTS2021(root=para_dict['valid_path'],
                                  modalities=[para_dict['source_domain'], para_dict['target_domain']],
-                                 mode='test',
+                                 learn_mode='test',
                                  extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                                  noise_type='normal',
                                  transform_data=test_transform_data,
-                                 paired=True,
-                                 seperated=False,
-                                 regenerate_data=para_dict['regenerate_data'])
-
-    elif para_dict['dataset'] == 'reggandata':
-        assert para_dict['source_domain'] in ['t1', 't2']
-        assert para_dict['target_domain'] in ['t1', 't2']
-
-        test_dataset = RegganData(root=para_dict['valid_path'],
-                                 modalities=[para_dict['source_domain'], para_dict['target_domain']],
-                                 mode='test',
-                                 extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
-                                 noise_type='normal',
-                                 transform_data=test_transform_data,
-                                 paired=True,
-                                 seperated=False,
+                                 data_mode='paired',
                                  regenerate_data=para_dict['regenerate_data'])
     else:
-        raise ValueError('dataset is invalid!')
+        raise NotImplementedError('dataset is invalid!')
 
     test_loader = DataLoader(test_dataset, num_workers=0, batch_size=para_dict['batch_size'], shuffle=False)
 

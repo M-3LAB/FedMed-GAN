@@ -32,7 +32,7 @@ save_model: false
 load_model: false
 load_model_dir: None
 # fid
-fid: false
+fid: true
 fid_dir: ./fid_stats
 batch_size_inceptionV3: 8 
 # optimizer

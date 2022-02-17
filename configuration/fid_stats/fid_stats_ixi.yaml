@@ -7,7 +7,7 @@ source_domain: t2
 target_domain: pd
 es_higher_limit: 80 
 es_lower_limit: 50
-gpu_id: 3
+gpu_id: 0
 gpu_ids:
 - '01234567'
 regenerate_data: true

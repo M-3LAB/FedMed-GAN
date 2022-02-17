@@ -107,7 +107,7 @@ class Base():
         if self.config['auxiliary_scaling']:
             self.scale_labels = self.create_scaling_labels(num_augmentation=self.config['num_augmentation'])
 
-        self.batch_limit = int(self.config['unpaired_img_number'] * self.batch_limit_weight / self.config['batch_size'])
+        self.batch_limit = int(self.config['data_num'] * self.batch_limit_weight / self.config['batch_size'])
         if self.config['debug']:
             self.batch_limit = 2
 
