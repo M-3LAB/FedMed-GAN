@@ -20,7 +20,7 @@ num_workers: 8
 work_dir: ./work_dir
 save_log: true
 save_img: false
-debug: true 
+debug: false 
 # save and load model
 save_model: false
 load_model: false
