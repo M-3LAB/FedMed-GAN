@@ -1,4 +1,5 @@
 from matplotlib import cm
+from scipy import rand
 import torch
 import numpy as np
 import os
@@ -196,24 +197,34 @@ class BASE_DATASET(torch.utils.data.Dataset):
         # seperated volume ids into clients
         file_indices = self._allocate_client_data(data_len=len(file_container), clients=self.client_weights)
 
-        for client_idx in file_indices:
+        for client_indices in file_indices:
             paired, unpaired = [], []
             # grab volumes into each client
-            files = [file_container[i] for i in client_idx]
+            client_files = [file_container[i] for i in client_indices]
 
             # get paired data indices
-            for i in range(len(files)):
+            for i in range(len(client_files)):
                 for j in range(self.extract_slice[0], self.extract_slice[1]):
-                    index_para = [files[i], files[i], j]
+                    index_para = [client_files[i], client_files[i], j]
                     paired.append(index_para)
             self.client_indice_container.append(paired)
 
             # get unpaired data indices 
-            indices = triu_indices(len(client_idx))
-            for m, n in zip(indices[0], indices[1]):
-                for i in range(self.extract_slice[0], self.extract_slice[1]):
-                    index_para = [files[m], files[n], i]
-                    unpaired.append(index_para)
+            moda_b_indices = random.sample(client_indices, int(len(client_indices)/3))
+            moda_a_indices = list(set(client_indices) - set(moda_b_indices))
+            moda_a_files = [file_container[i] for i in moda_a_indices]
+            moda_b_files = [file_container[i] for i in moda_b_indices]
+
+            # case 1, moda_a in moda_a_files, moda_b in moda_b_files
+            pass
+            # case 2, moda_a in moda_a_files, moda_b in client_flies(all)
+            # moda_b_files = client_files
+
+            for i in range(len(moda_a_files)):
+                for j in range(len(moda_b_files)):
+                    for k in range(self.extract_slice[0], self.extract_slice[1]):
+                        index_para = [moda_a_files[i], moda_b_files[j], k]
+                        unpaired.append(index_para)
             self.client_indice_container.append(unpaired)
 
         # generate one list, [[moda A name, moda B name, i-th slice], ...]
@@ -234,7 +245,7 @@ class BASE_DATASET(torch.utils.data.Dataset):
             client_data_list.append(indice)
             start = end
 
-        # sort each client data indices
+        # shuffle each client data indices
         for i in range(len(self.client_weights)):
             paired_data = client_data_list[i*2]
             unpaired_data = client_data_list[i*2+1]
