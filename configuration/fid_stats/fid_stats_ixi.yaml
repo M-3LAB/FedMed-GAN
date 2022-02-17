@@ -10,5 +10,4 @@ es_lower_limit: 50
 gpu_id: 0
 gpu_ids:
 - '01234567'
-regenerate_data: true
 seed: 3

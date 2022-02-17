@@ -45,8 +45,7 @@ def fid_stats(args):
                            learn_mode='test',
                            transform_data=test_transform_data,
                            data_mode='paired',
-                           dataset_splited=True,
-                           regenerate_data=para_dict['regenerate_data'])
+                           dataset_splited=True)
 
     elif para_dict['dataset'] == 'brats2021':
         assert para_dict['source_domain'] in ['t1', 't2', 'flair']
@@ -58,10 +57,9 @@ def fid_stats(args):
                                  extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                                  noise_type='normal',
                                  transform_data=test_transform_data,
-                                 data_mode='paired',
-                                 regenerate_data=para_dict['regenerate_data'])
+                                 data_mode='paired')
     else:
-        raise NotImplementedError('dataset is invalid!')
+        raise NotImplementedError('Dataset is Invalid!')
 
     test_loader = DataLoader(test_dataset, num_workers=0, batch_size=para_dict['batch_size'], shuffle=False)
 
