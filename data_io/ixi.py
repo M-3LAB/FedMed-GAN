@@ -10,7 +10,7 @@ class IXI(BASE_DATASET):
                  dataset_splited=True, assigned_data=False, assigned_images=None):
 
         super(IXI, self).__init__(root, modalities=modalities, learn_mode=learn_mode, extract_slice=extract_slice,
-                                  noise_type=noise_type, data_mode=data_mode, data_paired_weight=data_paired_weight, transform_data=transform_data, 
+                                  noise_type=noise_type, data_mode=data_mode, data_num=data_num, data_paired_weight=data_paired_weight, transform_data=transform_data, 
                                   client_weights=client_weights, dataset_splited=dataset_splited)
 
         # infer assigned images
