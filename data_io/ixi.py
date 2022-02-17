@@ -4,15 +4,14 @@ from data_io.base_class import BASE_DATASET
 __all__ = ['IXI']
 
 class IXI(BASE_DATASET):
-    def __init__(self, root, modalities=["t1", "t2"], mode="train", 
+    def __init__(self, root, modalities=["t1", "t2"], learn_mode="train", 
                  extract_slice=[29, 100], noise_type='normal', transform_data=None, 
-                 clients=[1.0], data_mode='paired', 
-                 splited=True, regenerate_data=True, assigned_data=False, 
-                 assigned_images=None):
+                 client_weights=[1.0], data_mode='paired', data_num=6000, data_paired_weight=0.2, 
+                 dataset_splited=True, assigned_data=False, assigned_images=None):
 
-        super(IXI, self).__init__(root, modalities=modalities, mode=mode, extract_slice=extract_slice,
-                                  noise_type=noise_type, data_mode=data_mode, transform_data=transform_data, 
-                                  clients=clients, splited=splited, regenerate_data=regenerate_data)
+        super(IXI, self).__init__(root, modalities=modalities, learn_mode=learn_mode, extract_slice=extract_slice,
+                                  noise_type=noise_type, data_mode=data_mode, data_paired_weight=data_paired_weight, transform_data=transform_data, 
+                                  client_weights=client_weights, dataset_splited=dataset_splited)
 
         # infer assigned images
         self.assigned_data = assigned_data

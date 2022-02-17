@@ -33,20 +33,19 @@ class BASE_DATASET(torch.utils.data.Dataset):
         regenerate_data: If True, we want to clean the old data, and generate data again
 
     """
-    def __init__(self, root, modalities=["t1", "t2"], mode="train", extract_slice=[29, 100], noise_type='normal', transform_data=None,
-                 clients=[1.0], splited=False, data_mode='mixed', regenerate_data=True, data_num = 6000, data_paired_weight=0.2):
+    def __init__(self, root, modalities=["t1", "t2"], learn_mode="train", extract_slice=[29, 100], noise_type='normal', transform_data=None,
+                 client_weights=[1.0], dataset_splited=False, data_mode='mixed', regenerate_data=True, data_num=6000, data_paired_weight=0.2):
         random.seed(3)
 
         self.dataset_path = root
-        self.mode = mode
+        self.learn_mode = learn_mode
         self.extract_slice = extract_slice
-        self.client_weights = clients
+        self.client_weights = client_weights
         self.data_mode = data_mode
         self.data_num = data_num
         self.data_paired_weight = data_paired_weight
-        self.splited = splited
+        self.dataset_splited = dataset_splited
         self.regenerate_data = regenerate_data
-
         self.noise_type = noise_type
         self.t= transform_data
         self.modality_a = modalities[0]
@@ -54,13 +53,17 @@ class BASE_DATASET(torch.utils.data.Dataset):
         self.transform_a = None
         self.transform_b = None
 
-        self.files = []  # volume id
-        self.dataset = []  # pair id        
-        self._clients_indice = [] # save indices in each client after data is seperated
+        self.files = []  # volume name of whole dataset
+        self.train_files = []  # volume id in trainset
+        self.valid_files = []  # volume id in validset
+        self.all_data = []  # slice id of all cases, including paired, unpaired, mixed
         self.client_data = [] # all client indices
-        self.client_data_indcies = [] # all client indices
-        self.data_total_num_list = [] # [paired data num, unpaired data num]
+        self.client_indice_container = [] # all cases with file name
+        self.data_total_num_list = [] # record num by [paired, unpaired]
 
+        # dataloader used
+        self.dataset = []  # slice id of cases for training
+        self.client_data_indices = [] # all client indices for training
 
     def __getitem__(self, index):
         path_a, path_b, i = self.dataset[index]
@@ -150,14 +153,12 @@ class BASE_DATASET(torch.utils.data.Dataset):
                                                    transforms.Resize(size=self.t[0]['size']),
                                                    ToTensor(),
                                                    GaussianNoise(mean=self.t[0]['mu'],
-                                                                 std=self.t[0]['sigma'])
-                                                 ])
+                                                                 std=self.t[0]['sigma'])])
             self.transform_b = transforms.Compose([transforms.ToPILImage(), 
                                                    transforms.Resize(size=self.t[1]['size']), 
                                                    ToTensor(),
                                                    GaussianNoise(mean=self.t[1]['mu'],
-                                                                 std=self.t[1]['sigma'])
-                                                  ])
+                                                                 std=self.t[1]['sigma'])])
         elif self.noise_type == 'severe':
             self.transform_a = transforms.Compose([transforms.ToPILImage(), 
                                                    transforms.RandomAffine(degrees=self.t[0]['degrees'], translate=self.t[0]['translate'], 
@@ -173,93 +174,67 @@ class BASE_DATASET(torch.utils.data.Dataset):
             raise ValueError('Noise Type Setting Incorrect')
                                                    
     def _generate_dataset(self):
-        path = '{}/{}data_indices.npy'.format(self.dataset_path, self.mode)
 
-        if self.regenerate_data and os.path.exists(path):
-            os.remove(path)
-
-        if os.path.exists(path):
-            with open(path, 'rb') as f:
-                self._clients_indice = pickle.load(f)
+        file_container = None
+        if self.dataset_splited:
+            # grab volumes, which are devided into trainset and validset
+            dataset_indice = self._allocate_client_data(data_len=len(self.files), clients=[0.8, 0.2])
+            self.train_files = [self.files[i] for i in dataset_indice[0]]
+            self.valid_files = [self.files[i] for i in dataset_indice[1]]
         else:
-            # seperated volume id into clients
-            clients_indice = self._allocate_client_data(data_len=len(self.files), clients=self.client_weights)
+            self.train_files = self.files
+            self.valid_files = self.files
 
-            for client_idx in clients_indice:
-                paired, unpaired = [], []
-                # grab volumes
-                files = [self.files[i] for i in client_idx]
-                # get paired data indices
-                for i in range(len(files)):
-                    for j in range(self.extract_slice[0], self.extract_slice[1]):
-                        index_para = [files[i], files[i], j]
-                        paired.append(index_para)
-                self._clients_indice.append(paired)
+        if self.learn_mode == 'train':
+            file_container = self.train_files
+        elif self.learn_mode == 'test':
+            file_container = self.valid_files
+            self.client_weights = [1.0]
+        else:
+            raise NotImplementedError('Train Mode is Wrong')
 
-                # get unpaired data indices 
-                indices = triu_indices(len(client_idx))
-                for m, n in zip(indices[0], indices[1]):
-                    for i in range(self.extract_slice[0], self.extract_slice[1]):
-                        index_para = [files[m], files[n], i]
-                        unpaired.append(index_para)
-                self._clients_indice.append(unpaired)
+        # seperated volume ids into clients
+        file_indices = self._allocate_client_data(data_len=len(file_container), clients=self.client_weights)
 
-            if self.splited:
-                tmp = []
-                if self.mode == "train":
-                        for client in self._clients_indice:
-                            data = client[:][:][:round(0.8 * len(client))]
-                            tmp.append(data)
-                        self._clients_indice = tmp
-                elif self.mode == "test":
-                        for client in self._clients_indice:
-                            data = client[:][:][round(0.8 * len(client)):]
-                            tmp.append(data)
-                        self._clients_indice = tmp
+        for client_idx in file_indices:
+            paired, unpaired = [], []
+            # grab volumes into each client
+            files = [file_container[i] for i in client_idx]
 
-            with open(path, 'wb') as f:
-                pickle.dump(self._clients_indice, f)
+            # get paired data indices
+            for i in range(len(files)):
+                for j in range(self.extract_slice[0], self.extract_slice[1]):
+                    index_para = [files[i], files[i], j]
+                    paired.append(index_para)
+            self.client_indice_container.append(paired)
 
-        self.dataset = [x for inner_list in self._clients_indice for x in inner_list]
-        # else:
-        #     if os.path.exists(path):
-        #         with open(path, 'rb') as f:
-        #             self.dataset = pickle.load(f)
-        #     else:
-        #         if self.paired:
-        #             for file in self.files:
-        #                 for i in range(self.extract_slice[0], self.extract_slice[1]):
-        #                     index_para = [file, file, i]
-        #                     self.dataset.append(index_para)
-        #         else:
-        #             indices = triu_indices(len(self.files))
-        #             for m, n in zip(indices[0], indices[1]):
-        #                 for i in range(self.extract_slice[0], self.extract_slice[1]):
-        #                     index_para = [self.files[m], self.files[n], i]
-        #                     self.dataset.append(index_para)
-        #         if self.splited:
-        #             if self.mode == "train":
-        #                 self.dataset = self.dataset[:round(0.8 * len(self.dataset))]
-        #             elif self.mode == "test":
-        #                 self.dataset = self.dataset[round(0.8 * len(self.dataset)):]
+            # get unpaired data indices 
+            indices = triu_indices(len(client_idx))
+            for m, n in zip(indices[0], indices[1]):
+                for i in range(self.extract_slice[0], self.extract_slice[1]):
+                    index_para = [files[m], files[n], i]
+                    unpaired.append(index_para)
+            self.client_indice_container.append(unpaired)
 
-        #         with open(path, 'wb') as f:
-        #             pickle.dump(self.dataset, f)
-            
-        #     self._clients_indice = self._allocate_client_data(data_len=len(self.dataset), clients=self.clients)
+        # generate one list, [[moda A name, moda B name, i-th slice], ...]
+        self.all_data = [x for inner_list in self.client_indice_container for x in inner_list]
+
 
     def _generate_client_indice(self):
-        dataset_indices = [i for i in range(len(self.dataset))]
+        dataset_indices = [i for i in range(len(self.all_data))]
         client_data_list = []
         mixed_data_num_list = []
         start = 0
-        for client in self._clients_indice:
+
+        # get the indices of each client data in all_data
+        for client in self.client_indice_container:
             mixed_data_num_list.append(len(client))
             end = start + len(client)
             indice = dataset_indices[start:end]
             client_data_list.append(indice)
             start = end
 
+        # sort each client data indices
         for i in range(len(self.client_weights)):
             paired_data = client_data_list[i*2]
             unpaired_data = client_data_list[i*2+1]
@@ -269,25 +244,39 @@ class BASE_DATASET(torch.utils.data.Dataset):
             self.client_data.append([paired_data, unpaired_data])
             self.data_total_num_list.append([mixed_data_num_list[i*2], mixed_data_num_list[i*2+1]])
 
+        # get the desired number of indices
         for i in range(len(self.client_weights)):
-            data_num = int(self.data_num* self.client_weights[i])
+            data_num = int(self.data_num * self.client_weights[i])
+
             if self.data_mode == 'mixed':
-                paired_num = int(data_num*self.data_paired_weight)
-                unpaired_num = int(data_num*(1-self.data_paired_weight))
+                paired_num = int(data_num * self.data_paired_weight)
+                unpaired_num = int(data_num * (1 - self.data_paired_weight))
 
                 if paired_num > self.data_total_num_list[i][0] or unpaired_num > self.data_total_num_list[i][1]:
                     raise ValueError('Not Enough Desired Data')
 
                 paired_data = self.client_data[i][0][:paired_num]
                 unpaired_data = self.client_data[i][1][:unpaired_num]
-                self.client_data_indcies.append(paired_data + unpaired_data)
+                self.client_data_indices.append(paired_data + unpaired_data)
+                self.dataset = self.all_data
+
             elif self.data_mode == 'paired':
-                self.client_data_indcies.append(self.client_data[i][0][:])
+                self.client_data_indices.append(self.client_data[i][0][:])
+                dataset_paired = []
+                for idx in self.client_data_indices[i]:
+                    dataset_paired.append(self.all_data[idx])
+                self.dataset = dataset_paired
+
             elif self.data_mode == 'unpaired':
-                self.client_data_indcies.append(self.client_data[i][1][:data_num])
+                self.client_data_indices.append(self.client_data[i][1][:data_num])
+                dataset_unpaired = []
+                for idx in self.client_data_indices[i]:
+                    dataset_unpaired.append(self.all_data[idx])
+                self.dataset = dataset_unpaired
+               
             else:
-                raise NotImplemented('Data Mode is Not Implemented')
-        pass
+                raise NotImplementedError('Data Mode is Wrong')
+            
     @staticmethod
     def _allocate_client_data(data_len, clients=[1.0]):
         dataset_indices = [i for i in range(data_len)]

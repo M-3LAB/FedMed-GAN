@@ -4,13 +4,13 @@ from data_io.base_class import BASE_DATASET
 __all__ = ['BraTS2019', 'BraTS2021']
 
 class BraTS2019(BASE_DATASET):
-    def __init__(self, root, modalities=["t1", "t2"], mode="train", extract_slice=[29, 100], noise_type='normal',
-                 transform_data=None, clients=[1.0], data_mode='mixed', regenerate_data=True, 
+    def __init__(self, root, modalities=["t1", "t2"], learn_mode='train', extract_slice=[29, 100], noise_type='normal',
+                 transform_data=None, client_weights=[1.0], data_mode='mixed', data_num=6000, data_paired_weight=0.2,
                  assigned_data=False, assigned_images=None):
 
-        super(BraTS2019, self).__init__(root, modalities=modalities, mode=mode, extract_slice=extract_slice, 
-                                        noise_type=noise_type, transform_data=transform_data, 
-                                        clients=clients, data_mode=data_mode, regenerate_data=regenerate_data)
+        super(BraTS2019, self).__init__(root, modalities=modalities, learn_mode=learn_mode, extract_slice=extract_slice, 
+                                        noise_type=noise_type, transform_data=transform_data, client_weights=client_weights,
+                                        data_mode=data_mode, data_num=data_num, data_paired_weight=data_paired_weight)
         # infer assigned images
         self.assigned_data = assigned_data
         self.assigned_images = assigned_images
@@ -54,13 +54,13 @@ class BraTS2019(BASE_DATASET):
 
 
 class BraTS2021(BraTS2019):
-    def __init__(self, root, modalities=["t1", "t2"], mode="train", extract_slice=[29, 100], noise_type='gaussian',
-                 transform_data=None, clients=[1.0], data_mode='mixed', regenerate_data=True, 
+    def __init__(self, root, modalities=["t1", "t2"], learn_mode='train', extract_slice=[29, 100], noise_type='normal',
+                 transform_data=None, client_weights=[1.0], data_mode='mixed', data_num=6000, data_paired_weight=0.2,
                  assigned_data=False, assigned_images=None):
 
-        super(BraTS2021, self).__init__(root, modalities=modalities, mode=mode, extract_slice=extract_slice, 
-                                        noise_type=noise_type, transform_data=transform_data, 
-                                        clients=clients, data_mode=data_mode, regenerate_data=regenerate_data, 
+        super(BraTS2021, self).__init__(root, modalities=modalities, learn_mode=learn_mode, extract_slice=extract_slice, 
+                                        noise_type=noise_type, transform_data=transform_data, client_weights=client_weights,
+                                        data_mode=data_mode, data_num=data_num, data_paired_weight=data_paired_weight,
                                         assigned_data=assigned_data, assigned_images=assigned_images)
 
 
