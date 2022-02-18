@@ -143,7 +143,7 @@ class CentralizedTrain():
                                            data_mode=self.para_dict['data_mode'],
                                            data_num=self.para_dict['data_num'],
                                            data_paired_weight=self.para_dict['data_paired_weight'],
-                                           data_moda_ratio=self.para_dict['data_moda_ration'],
+                                           data_moda_ratio=self.para_dict['data_moda_ratio'],
                                            data_moda_case=self.para_dict['data_moda_case'])
             self.valid_dataset = BraTS2021(root=self.para_dict['valid_path'],
                                            modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
@@ -175,7 +175,7 @@ class CentralizedTrain():
                                     data_paired_weight=self.para_dict['data_paired_weight'],
                                     client_weights=self.para_dict['clients_data_weight'],
                                     dataset_splited=True,
-                                    data_moda_ratio=self.para_dict['data_moda_ration'],
+                                    data_moda_ratio=self.para_dict['data_moda_ratio'],
                                     data_moda_case=self.para_dict['data_moda_case'])
             self.valid_dataset = IXI(root=self.para_dict['data_path'],
                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],

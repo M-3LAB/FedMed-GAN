@@ -5,8 +5,8 @@ data_path: /disk1/medical/brats2021/training
 valid_path: /disk1/medical/brats2021/validation
 data_mode: 'mixed'
 data_num: 6000 
-data_paired_weight: 0.3 
-data_moda_ration: 0.5
+data_paired_weight: 0.5 
+data_moda_ratio: 0.5
 data_moda_case: 'case1'
 data_partition: manual
 es_higher_limit: 80 

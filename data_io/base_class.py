@@ -40,8 +40,8 @@ class BASE_DATASET(torch.utils.data.Dataset):
         self.data_mode = data_mode
         self.data_num = data_num
         self.data_paired_weight = data_paired_weight
-        self.moda_ratio = data_moda_ratio
-        self.moda_case = data_moda_case
+        self.data_moda_ratio = data_moda_ratio
+        self.data_moda_case = data_moda_case
         # data augumentaion
         self.noise_type = noise_type
         self.t= transform_data
@@ -205,16 +205,16 @@ class BASE_DATASET(torch.utils.data.Dataset):
             self.client_indice_container.append(paired)
 
             # get unpaired data indices 
-            moda_b_indices = random.sample(client_indices, int(len(client_indices) * self.moda_ratio))
+            moda_b_indices = random.sample(client_indices, int(len(client_indices) *(1. - self.data_moda_ratio)))
             moda_a_indices = list(set(client_indices) - set(moda_b_indices))
             moda_a_files = [file_container[i] for i in moda_a_indices]
             moda_b_files = [file_container[i] for i in moda_b_indices]
 
             # case 1, moda_a in moda_a_files, moda_b in moda_b_files
-            if self.moda_case == 'case1':
+            if self.data_moda_case == 'case1':
                 pass
             # case 2, moda_a in moda_a_files, moda_b in client_flies(all)
-            if self.moda_case == 'case2':
+            if self.data_moda_case == 'case2':
                 moda_b_files = client_files
 
             for i in range(len(moda_a_files)):
