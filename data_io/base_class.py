@@ -26,25 +26,30 @@ class BASE_DATASET(torch.utils.data.Dataset):
         splited: If True, we want to split the data into two parts, i.e, training data(0.8) and testing data(0.2)
 
     """
-    def __init__(self, root, modalities=["t1", "t2"], learn_mode="train", extract_slice=[29, 100], noise_type='normal', transform_data=None,
-                 client_weights=[1.0], dataset_splited=False, data_mode='mixed', data_num=6000, data_paired_weight=0.2):
+    def __init__(self, root, modalities=["t1", "t2"], learn_mode="train", extract_slice=[29, 100],
+                noise_type='normal', transform_data=None, client_weights=[1.0], dataset_splited=False,
+                data_mode='mixed', data_num=6000, data_paired_weight=0.2, data_moda_ratio=0.5, data_moda_case='case1'):
         random.seed(3)
-
+        
         self.dataset_path = root
-        self.learn_mode = learn_mode
         self.extract_slice = extract_slice
         self.client_weights = client_weights
+        # data setting
+        self.learn_mode = learn_mode
+        self.dataset_splited = dataset_splited
         self.data_mode = data_mode
         self.data_num = data_num
         self.data_paired_weight = data_paired_weight
-        self.dataset_splited = dataset_splited
+        self.moda_ratio = data_moda_ratio
+        self.moda_case = data_moda_case
+        # data augumentaion
         self.noise_type = noise_type
         self.t= transform_data
         self.modality_a = modalities[0]
         self.modality_b = modalities[1]
         self.transform_a = None
         self.transform_b = None
-
+        # data generation
         self.files = []  # volume name of whole dataset
         self.train_files = []  # volume id in trainset
         self.valid_files = []  # volume id in validset
@@ -52,7 +57,6 @@ class BASE_DATASET(torch.utils.data.Dataset):
         self.client_data = [] # all client indices
         self.client_indice_container = [] # all cases with file name
         self.data_total_num_list = [] # record num by [paired, unpaired]
-
         # dataloader used
         self.dataset = []  # slice id of cases for training
         self.client_data_indices = [] # all client indices for training
@@ -201,15 +205,17 @@ class BASE_DATASET(torch.utils.data.Dataset):
             self.client_indice_container.append(paired)
 
             # get unpaired data indices 
-            moda_b_indices = random.sample(client_indices, int(len(client_indices)/3))
+            moda_b_indices = random.sample(client_indices, int(len(client_indices) * self.moda_ratio))
             moda_a_indices = list(set(client_indices) - set(moda_b_indices))
             moda_a_files = [file_container[i] for i in moda_a_indices]
             moda_b_files = [file_container[i] for i in moda_b_indices]
 
             # case 1, moda_a in moda_a_files, moda_b in moda_b_files
-            pass
+            if self.moda_case == 'case1':
+                pass
             # case 2, moda_a in moda_a_files, moda_b in client_flies(all)
-            # moda_b_files = client_files
+            if self.moda_case == 'case2':
+                moda_b_files = client_files
 
             for i in range(len(moda_a_files)):
                 for j in range(len(moda_b_files)):
