@@ -1,17 +1,12 @@
-from matplotlib import cm
-from scipy import rand
 import torch
 import numpy as np
-import os
 import random
-import pickle
+import torchvision.transforms as transforms
+from data_io.noise import GaussianNoise
 
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
-import torchvision.transforms as transforms
-from numpy.lib.twodim_base import triu_indices
-from data_io.noise import GaussianNoise
 
 class ToTensor():
     def __call__(self, tensor):
@@ -26,16 +21,13 @@ class BASE_DATASET(torch.utils.data.Dataset):
         root: (str) Path of the folder with all the images.
         mode : {'train' or 'test'} Part of the dataset that is loaded.
         extract_slice: [start, end] Extract slice of one volume id
-        mixed: If True, real-world data setting, which blends paired data and unpaired data
-        paired: If True, it means T1 and T2 is paired. Note that if paired works, mixed flag must be False
+        data_mode: mixed, which if True, real-world data setting, which blends paired data and unpaired data
         clients: (list) Client weights when splitting the whole data
-        seperated: If True, the data are seperated when the number of client is more than 1
         splited: If True, we want to split the data into two parts, i.e, training data(0.8) and testing data(0.2)
-        regenerate_data: If True, we want to clean the old data, and generate data again
 
     """
     def __init__(self, root, modalities=["t1", "t2"], learn_mode="train", extract_slice=[29, 100], noise_type='normal', transform_data=None,
-                 client_weights=[1.0], dataset_splited=False, data_mode='mixed', regenerate_data=True, data_num=6000, data_paired_weight=0.2):
+                 client_weights=[1.0], dataset_splited=False, data_mode='mixed', data_num=6000, data_paired_weight=0.2):
         random.seed(3)
 
         self.dataset_path = root
@@ -46,7 +38,6 @@ class BASE_DATASET(torch.utils.data.Dataset):
         self.data_num = data_num
         self.data_paired_weight = data_paired_weight
         self.dataset_splited = dataset_splited
-        self.regenerate_data = regenerate_data
         self.noise_type = noise_type
         self.t= transform_data
         self.modality_a = modalities[0]
