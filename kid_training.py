@@ -11,6 +11,7 @@ from metrics.kid.stats import *
 import numpy as np
 from model.ae.kid_ae import *
 
+
 if __name__ == '__main__':
     args = parse_arguments_bise()
     with open('./configuration/kid/kid_{}.yaml'.format(args.dataset), 'r') as f:
@@ -54,6 +55,16 @@ if __name__ == '__main__':
                             'translate': [para_dict['b_trans_lower_limit'], para_dict['b_trans_upper_limit']],
                             'scale': [para_dict['b_scale_lower_limit'], para_dict['b_scale_uppper_limit']],
                             'size': (para_dict['size'], para_dict['size']),'fillcolor': 0}]
+
+    elif para_dict['noise_type'] == 'slight':
+        noise_transform = [{'degrees':para_dict['severe_rotation'], 
+                            'translate':[para_dict['severe_translation'], para_dict['severe_translation']],
+                            'scale':[1-para_dict['severe_scaling'], 1+para_dict['severe_scaling']], 
+                            'size':(para_dict['size'], para_dict['size'])},
+                            {'degrees':para_dict['severe_rotation'], 
+                             'translate':[para_dict['severe_translation'], para_dict['severe_translation']],
+                             'scale':[1-para_dict['severe_scaling'], 1+para_dict['severe_scaling']], 
+                             'size':(para_dict['size'], para_dict['size'])}]
     else:
         raise NotImplementedError('New Noise Has not been Implemented')
     
