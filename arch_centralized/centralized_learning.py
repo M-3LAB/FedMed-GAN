@@ -191,6 +191,8 @@ class CentralizedTrain():
                                      dataset_splited=False,
                                      assigned_data=self.para_dict['single_img_infer'],
                                      assigned_images=self.para_dict['assigned_images']) 
+        else:
+            raise NotImplementedError('This Dataset Has Not Been Implemented Yet')
 
         self.train_loader = DataLoader(self.train_dataset, num_workers=self.para_dict['num_workers'],
                                  batch_size=self.para_dict['batch_size'], shuffle=True)
@@ -198,8 +200,7 @@ class CentralizedTrain():
                                  batch_size=self.para_dict['batch_size'], shuffle=False)
         self.assigned_loader = DataLoader(self.assigned_dataset, num_workers=self.para_dict['num_workers'],
                                  batch_size=1, shuffle=False)
-        pass
-
+    
     def init_model(self):
         if self.para_dict['model'] == 'cyclegan':
             self.trainer = CycleGAN(self.para_dict, self.train_loader, self.valid_loader,
