@@ -154,6 +154,12 @@ if __name__ == '__main__':
     else:
         beta_a = np.load(para_dict['src_beta_init_path'])
         beta_b = np.load(para_dict['tag_beta_init_path'])
+    
+    # Model
+    kid_ae = KIDAE().to(device)
+    # Loss
+    # Optimizer
+    # Scheduler
         
     # Fourier Transform 
     for i, batch in enumerate(ixi_normal_loader): 
