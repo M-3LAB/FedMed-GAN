@@ -11,6 +11,7 @@ from metrics.kid.stats import *
 import numpy as np
 from model.ae.kid_ae import *
 from loss_function.simclr_loss import *
+from loss_function.common import cosine_similiarity
 
 
 if __name__ == '__main__':
