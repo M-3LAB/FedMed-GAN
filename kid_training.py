@@ -13,7 +13,7 @@ from model.ae.kid_ae import *
 
 if __name__ == '__main__':
     args = parse_arguments_bise()
-    with open('./configuration/bise/bise_{}.yaml'.format(args.dataset), 'r') as f:
+    with open('./configuration/kid/kid_{}.yaml'.format(args.dataset), 'r') as f:
         para_dict = yaml.load(f, Loader=yaml.SafeLoader)
     para_dict = merge_config(para_dict, args)
     print(para_dict)
