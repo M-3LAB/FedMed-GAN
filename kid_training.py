@@ -77,13 +77,12 @@ if __name__ == '__main__':
                                  modalities=[para_dict['source_domain'], para_dict['target_domain']],
                                  extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                                  noise_type='normal',
-                                 mode='test', #train or test is meaningless
+                                 learn_mode='test', #train or test is meaningless
                                  transform_data=normal_transform,
-                                 paired=True,
-                                 clients=[1.0],
-                                 seperated=False,
-                                 splited=False,
-                                 regenerate_data=True)
+                                 data_mode='paired',
+                                 data_paired_weight=1.0,
+                                 client_weights=1.0,
+                                 data_splited=False)
         
         ixi_noise_dataset = IXI(root=para_dict['data_path'],
                                  modalities=[para_dict['source_domain'], para_dict['target_domain']],
