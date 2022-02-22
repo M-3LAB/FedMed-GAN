@@ -10,6 +10,7 @@ from model.FT.power_spectrum import *
 from metrics.kid.stats import *
 import numpy as np
 from model.ae.kid_ae import *
+from loss_function.simclr_loss import *
 
 
 if __name__ == '__main__':
@@ -158,7 +159,10 @@ if __name__ == '__main__':
     # Model
     kid_ae = KIDAE().to(device)
     # Loss
+    criterion_recon = torch.nn.L1Loss().to(device)
+
     # Optimizer
+
     # Scheduler
         
     # Fourier Transform 
