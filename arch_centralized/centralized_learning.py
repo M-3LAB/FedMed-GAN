@@ -95,9 +95,10 @@ class CentralizedTrain():
         self.normal_transform = [{'degrees':0, 'translate':[0.00, 0.00],
                                      'scale':[1.00, 1.00], 
                                      'size':(self.para_dict['size'], self.para_dict['size'])},
-                                    {'degrees':0, 'translate':[0.00, 0.00],
-                                     'scale':[1.00, 1.00], 
-                                     'size':(self.para_dict['size'], self.para_dict['size'])}]
+                                 {'degrees':0, 'translate':[0.00, 0.00],
+                                  'scale':[1.00, 1.00], 
+                                  'size':(self.para_dict['size'], self.para_dict['size'])}]
+
         self.gaussian_transform = [{'mu':self.para_dict['a_mu'], 'sigma':self.para_dict['a_sigma'],
                                      'size':(self.para_dict['size'], self.para_dict['size'])},
                                     {'mu':self.para_dict['b_mu'], 'sigma':self.para_dict['b_sigma'],

@@ -45,7 +45,7 @@ if __name__ == '__main__':
                            {'mu':para_dict['b_mu'], 'sigma':para_dict['b_sigma'],
                             'size':(para_dict['size'], para_dict['size'])}]
 
-    elif para_dict['noise_type'] == 'reg':
+    elif para_dict['noise_type'] == 'slight':
         noise_transform = [{'degrees': para_dict["a_rotation_degrees"],
                             'translate': [para_dict['a_trans_lower_limit'], para_dict['a_trans_upper_limit']],
                             'scale': [para_dict['a_scale_lower_limit'], para_dict['a_scale_upper_limit']],
