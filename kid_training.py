@@ -12,6 +12,7 @@ import numpy as np
 from model.ae.kid_ae import *
 from loss_function.simclr_loss import *
 from loss_function.common import cosine_similiarity
+from loss_function.triplet_loss import triplet_loss
 
 
 if __name__ == '__main__':
@@ -161,8 +162,10 @@ if __name__ == '__main__':
     kid_ae = KIDAE().to(device)
     # Loss
     criterion_recon = torch.nn.L1Loss().to(device)
+    #TODO: Triplet Loss Function added
 
     # Optimizer
+    optimizer = torch.optim.Adam()
 
     # Scheduler
         
