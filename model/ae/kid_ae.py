@@ -18,6 +18,7 @@ class KIDAE(nn.Module):
         self.up2 = UNetUp(1024, 256)
         self.up3 = UNetUp(512, 128)
         self.up4 = UNetUp(256, 64) 
+        self.up5 = UNetUp(64, 1)
     
     def encode(self, x):
         self.d1 = self.down1(x)
@@ -32,7 +33,8 @@ class KIDAE(nn.Module):
         self.u1 = self.up1(z_in)
         self.u2 = self.up2(self.u1, self.d4)
         self.u3 = self.up3(self.u2, self.d3)
-        self.x_hat = self.up4(self.u3, self.d2)
+        self.u4 = self.up4(self.u3, self.d2)
+        self.x_hat = self.up5(self.u4, self.d1)
         return self.x_hat 
 
     def forward(self, x, phase='encoding'):
