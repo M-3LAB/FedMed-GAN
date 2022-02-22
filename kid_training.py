@@ -90,7 +90,6 @@ if __name__ == '__main__':
                                 learn_mode='test', #train or test is meaningless
                                 transform_data=noise_transform,
                                 data_paired=True,
-                                client_weights=1.0,
                                 data_paired_weight=1.0,
                                 data_splited=False)
     
@@ -106,22 +105,21 @@ if __name__ == '__main__':
                                          modalities=[para_dict['source_domain'], para_dict['target_domain']],
                                          extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                                          noise_type='normal',
-                                         mode='train', # train or test is meaningless
+                                         learn_mode='train', # train or test is meaningless
                                          transform_data=normal_transform,
-                                         paired=True,
-                                         clients=1.0,
-                                         seperated=False,
-                                         regenerate_data=True)
+                                         data_paired=True,
+                                         data_paired_weight=1.0,
+                                         data_splited=False)
 
-        brats_noise_dataset = BraTS2021(root=para_dict['valid_path'],
+        brats_noise_dataset = BraTS2021(root=para_dict['data_path'],
                                         modalities=[para_dict['source_domain'], para_dict['target_domain']],
                                         noise_type=para_dict['noise_type'],
-                                        mode='train',
+                                        learn_mode='train',
                                         extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                                         transform_data=noise_transform,
-                                        paired=True,
-                                        seperated=False,
-                                        regenerate_data=True)
+                                        data_paired=True,
+                                        data_paired_weight=1.0,
+                                        data_spilited=False)
 
     else:
         raise NotImplementedError("New Data has not been Implemented")
@@ -129,14 +127,14 @@ if __name__ == '__main__':
     #TODO: make sure normal and nosie loader release the same order of dataset
     if para_dict['dataset'] == 'ixi':
         ixi_normal_loader = DataLoader(ixi_normal_dataset, num_workers=para_dict['num_workers'],
-                                       batch_size=para_dict['batch_size'], shuffle=False)
+                                       batch_size=para_dict['batch_size'], shuffle=True)
         ixi_noise_loader = DataLoader(ixi_noise_dataset, num_workers=para_dict['num_workers'],
-                                      batch_size=para_dict['batch_size'], shuffle=False)
+                                      batch_size=para_dict['batch_size'], shuffle=True)
     if para_dict['dataset'] == 'brats':
         brats_normal_loader = DataLoader(brats_normal_dataset, num_workers=para_dict['num_workers'],
-                                         batch_size=para_dict['batch_size'], shuffle=False)
+                                         batch_size=para_dict['batch_size'], shuffle=True)
         brats_noise_loader = DataLoader(brats_noise_dataset, num_workers=para_dict['num_workers'],
-                                        batch_size=para_dict['batch_size'], shuffle=False)
+                                        batch_size=para_dict['batch_size'], shuffle=True)
     
     if para_dict['debug']:
         batch_limit = 2
