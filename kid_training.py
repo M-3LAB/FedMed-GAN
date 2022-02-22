@@ -1,12 +1,10 @@
 import torch
-import torch.nn as nn
 import yaml
 from configuration.config import parse_arguments_bise
 from data_io.ixi import IXI
 from data_io.brats import BraTS2021
 from torch.utils.data import DataLoader
 from tools.utilize import *
-import os
 from model.FT.fourier_transform import * 
 from model.FT.power_spectrum import *
 from metrics.kid.stats import *
