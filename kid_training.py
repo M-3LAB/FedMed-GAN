@@ -11,6 +11,7 @@ from model.FT.fourier_transform import *
 from model.FT.power_spectrum import *
 from metrics.kid.stats import *
 import numpy as np
+from model.ae.kid_ae import *
 
 if __name__ == '__main__':
     args = parse_arguments_bise()
