@@ -165,7 +165,8 @@ if __name__ == '__main__':
     #TODO: Triplet Loss Function added
 
     # Optimizer
-    optimizer = torch.optim.Adam()
+    optimizer = torch.optim.Adam(kid_ae.parameters(), lr=para_dict['lr'],
+                                 betas=[para_dict['beta1'], para_dict['beta2']])
 
     # Scheduler
         
