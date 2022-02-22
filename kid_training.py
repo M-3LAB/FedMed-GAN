@@ -131,12 +131,12 @@ if __name__ == '__main__':
     if para_dict['dataset'] == 'ixi':
         ixi_normal_loader = DataLoader(ixi_normal_dataset, num_workers=para_dict['num_workers'],
                                        batch_size=para_dict['batch_size'], shuffle=True)
-        ixi_noise_loader = DataLoader(ixi_noise_dataset, num_workers=para_dict['num_workers'],
+        ixi_noisy_loader = DataLoader(ixi_noise_dataset, num_workers=para_dict['num_workers'],
                                       batch_size=para_dict['batch_size'], shuffle=True)
     if para_dict['dataset'] == 'brats':
         brats_normal_loader = DataLoader(brats_normal_dataset, num_workers=para_dict['num_workers'],
                                          batch_size=para_dict['batch_size'], shuffle=True)
-        brats_noise_loader = DataLoader(brats_noise_dataset, num_workers=para_dict['num_workers'],
+        brats_noisy_loader = DataLoader(brats_noise_dataset, num_workers=para_dict['num_workers'],
                                         batch_size=para_dict['batch_size'], shuffle=True)
     
     if para_dict['debug']:
@@ -171,29 +171,36 @@ if __name__ == '__main__':
     # Scheduler
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=para_dict['step_size'],
                                                    gamma=para_dict['gamma']) 
+    
+    if para_dict['dataset'] == 'ixi':
+        normal_loader = ixi_normal_loader 
+        noisy_loader = ixi_noisy_loader
+        assert para_dict['source_domain'] in ['pd', 't2']
+        assert para_dict['target_domain'] in ['pd', 't2']
         
     # Fourier Transform 
-    for i, batch in enumerate(ixi_normal_loader): 
-        if i > batch_limit:
-            break
-        """
-        IXI: PD and T2
-        BraTS: T1, T2 and FLAIR
-        """
-        real_a = batch[para_dict['source_domain']]
-        real_b = batch[para_dict['target_domain']]
+    for epoch in range(para_dict['num_epochs']):
+        for i, batch in enumerate(ixi_normal_loader): 
+            if i > batch_limit:
+                break
+            """
+            IXI: PD and T2
+            BraTS: T1, T2 and FLAIR
+            """
+            real_a = batch[para_dict['source_domain']]
+            real_b = batch[para_dict['target_domain']]
 
-        real_a_kspace = torch_fft(real_a)
-        real_b_kspace = torch_fft(real_b)
-        
-        real_a_kspace_hf = torch_high_pass_filter(real_a_kspace, beta_a)
-        real_b_kspace_hf = torch_high_pass_filter(real_b_kspace, beta_b)
+            real_a_kspace = torch_fft(real_a)
+            real_b_kspace = torch_fft(real_b)
 
-        real_a_kspace_lf = torch_low_pass_filter(real_a_kspace, beta_a)
-        real_b_kspace_lf = torch_low_pass_filter(real_b_kspace, beta_b)
+            real_a_kspace_hf = torch_high_pass_filter(real_a_kspace, beta_a)
+            real_b_kspace_hf = torch_high_pass_filter(real_b_kspace, beta_b)
 
-        real_a_kspace_hf_abs = torch.abs(real_a_kspace_hf)
-        real_a_kspace_lf_abs = torch.abs(real_a_kspace_lf)
+            real_a_kspace_lf = torch_low_pass_filter(real_a_kspace, beta_a)
+            real_b_kspace_lf = torch_low_pass_filter(real_b_kspace, beta_b)
 
-        real_b_kspace_hf_abs = torch.abs(real_b_kspace_hf)
-        real_b_kspace_lf_abs = torch.abs(real_b_kspace_lf)
+            real_a_kspace_hf_abs = torch.abs(real_a_kspace_hf)
+            real_a_kspace_lf_abs = torch.abs(real_a_kspace_lf)
+
+            real_b_kspace_hf_abs = torch.abs(real_b_kspace_hf)
+            real_b_kspace_lf_abs = torch.abs(real_b_kspace_lf)

@@ -7,7 +7,7 @@ __all__ = ['parse_argument_bise', 'parse_arguments_federated',
 
 def parse_arguments_kid():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2019', 'brats2021', 'reggandata'])
+    parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2021'])
     parser.add_argument('--noise-type', type=str, default='gaussian', choices=['normal', 'gaussian', 'slight', 'severe'])
     parser.add_argument('--model', '-m', type=str, default='cyclegan', choices=['cyclegan', 'muint', 'unit'])
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
