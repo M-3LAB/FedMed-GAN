@@ -32,8 +32,8 @@ class KIDAE(nn.Module):
         self.u1 = self.up1(z_in)
         self.u2 = self.up2(self.u1, self.d4)
         self.u3 = self.up3(self.u2, self.d3)
-        self.u4 = self.up4(self.u3, self.d2)
-        return self.u4
+        self.x_hat = self.up4(self.u3, self.d2)
+        return self.x_hat 
 
     def forward(self, x, phase='encoding'):
         assert phase in ['encoding', 'decoding'], 'phase should be in decoding and encoding'
