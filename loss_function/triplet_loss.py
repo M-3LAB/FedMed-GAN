@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
+from loss_function.common import cosine_similiarity
 
-__all__ = [kid_triplet]
+__all__ = ['triplet']
 
-def kid_triplet():
+def triplet_loss():
     pass
