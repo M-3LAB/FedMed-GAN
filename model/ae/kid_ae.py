@@ -20,16 +20,20 @@ class KIDAE(nn.Module):
         self.up4 = UNetUp(256, 64) 
     
     def encode(self, x):
-        d1 = self.down1(x)
-        d2 = self.down2(d1)
-        d3 = self.down3(d2)
-        d4 = self.down4(d3)
-        self.z = self.down5(d4)
+        self.d1 = self.down1(x)
+        self.d2 = self.down2(self.d1)
+        self.d3 = self.down3(self.d2)
+        self.d4 = self.down4(self.d3)
+        self.z = self.down5(self.d4)
         return self.z 
 
     def decode(self, z=None):
         z_in = self.z if z is None else z 
-        pass
+        self.u1 = self.up1(z_in)
+        self.u2 = self.up2(self.u1, self.d4)
+        self.u3 = self.up3(self.u2, self.d3)
+        self.u4 = self.up4(self.u3, self.d2)
+        return self.u4
 
     def forward(self, x, phase='encoding'):
         assert phase in ['encoding', 'decoding'], 'phase should be in decoding and encoding'
