@@ -3,7 +3,7 @@ import torch
 
 from tools.utilize import *
 from model.unit.unit import *
-from arch_base.base import Base
+from arch_centralized.base import Base
 
 import itertools
 import matplotlib.pyplot as plt

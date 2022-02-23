@@ -2,7 +2,7 @@ import torch
 import itertools
 
 from model.munit.munit import *
-from arch_base.base import Base
+from arch_centralized.base import Base
 from tools.utilize import *
 
 __all__ = ['Munit']

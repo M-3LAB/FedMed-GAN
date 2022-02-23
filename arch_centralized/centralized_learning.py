@@ -7,9 +7,9 @@ from tools.utilize import *
 from data_io.brats import BraTS2021
 from data_io.ixi import IXI
 from torch.utils.data import DataLoader
-from arch_base.cyclegan import CycleGAN
-from arch_base.munit import Munit
-from arch_base.unit import Unit
+from arch_centralized.cyclegan import CycleGAN
+from arch_centralized.munit import Munit
+from arch_centralized.unit import Unit
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -257,14 +257,21 @@ class CentralizedTrain():
 
     def work_flow(self):
         self.trainer.train_epoch()
-        mae, psnr, ssim, fid = self.trainer.evaluation()
+        # mae, psnr, ssim, fid = self.trainer.evaluation()
 
-        infor = '[Epoch {}/{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-            self.epoch+1, self.para_dict['num_epoch'], mae, psnr, ssim)
+        # infor = '[Epoch {}/{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+        #     self.epoch+1, self.para_dict['num_epoch'], mae, psnr, ssim)
 
-        if self.para_dict['fid']:
-            infor = '{} fid: {:.4f}'.format(infor, fid)
-        print(infor)
+        # if self.para_dict['fid']:
+        #     infor = '{} fid: {:.4f}'.format(infor, fid)
+        # print(infor)
+        
+        if self.para_dict['plot_distribution']:
+            save_img_path = '{}/sample_distribution'.format(self.file_path)
+            if not os.path.exists(save_img_path):
+                os.makedirs(save_img_path)
+            save_img_path = '{}/epoch_{}.png'.format(save_img_path, self.epoch+1)
+            self.trainer.visualize_feature(self.epoch+1, save_img_path, self.train_loader)
 
         if self.para_dict['save_log']:
             save_log(infor, self.file_path, description='_clients')

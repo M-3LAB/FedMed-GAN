@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-from arch_base.base import Base
+from arch_centralized.base import Base
 from model.reg.loss import smooothing_loss
 from model.cyclegan.cyclegan import CycleGen, CycleDis
 from tools.utilize import *
@@ -277,3 +277,17 @@ class CycleGAN(Base):
         self.generator_from_b_to_a = gener_from_b_to_a
         self.discriminator_from_a_to_b = discr_from_a_to_b
         self.discriminator_from_b_to_a = discr_from_b_to_a
+
+    def collect_feature(self, batch):
+        real_a = batch[self.config['source_domain']].to(self.device)
+        real_b = batch[self.config['target_domain']].to(self.device)
+
+        fake_a = self.generator_from_b_to_a(real_b)
+        fake_b = self.generator_from_a_to_b(real_a)
+
+        real_a_feature = self.generator_from_a_to_b.extract_feature(real_a)
+        fake_a_feature = self.generator_from_a_to_b.extract_feature(fake_a)
+        real_b_feature = self.generator_from_b_to_a.extract_feature(real_b)
+        fake_b_feature = self.generator_from_b_to_a.extract_feature(fake_b)
+
+        return real_a_feature, fake_a_feature, real_b_feature, fake_b_feature

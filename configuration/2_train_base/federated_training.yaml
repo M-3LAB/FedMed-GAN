@@ -27,6 +27,8 @@ work_dir: ./work_dir
 save_log: true
 save_img: false
 debug: false 
+# plot sample
+plot_distribution: false
 # save and load model
 save_model: false
 load_model: false
