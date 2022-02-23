@@ -69,7 +69,7 @@ if __name__ == '__main__':
                              'scale':[1-para_dict['severe_scaling'], 1+para_dict['severe_scaling']], 
                              'size':(para_dict['size'], para_dict['size'])}]
     else:
-        raise NotImplementedError('New Noise Has not been Implemented')
+        raise NotImplementedError('New Noise Has Not Been Implemented')
     
     #Dataset IO
     if para_dict['dataset'] == 'ixi':
@@ -125,7 +125,7 @@ if __name__ == '__main__':
                                         data_spilited=False)
 
     else:
-        raise NotImplementedError("New Data has not been Implemented")
+        raise NotImplementedError("New Data Has Not Been Implemented")
 
     #TODO: make sure normal and nosie loader release the same order of dataset
     if para_dict['dataset'] == 'ixi':
@@ -133,7 +133,7 @@ if __name__ == '__main__':
                                        batch_size=para_dict['batch_size'], shuffle=True)
         ixi_noisy_loader = DataLoader(ixi_noise_dataset, num_workers=para_dict['num_workers'],
                                       batch_size=para_dict['batch_size'], shuffle=True)
-    if para_dict['dataset'] == 'brats':
+    if para_dict['dataset'] == 'brats2021':
         brats_normal_loader = DataLoader(brats_normal_dataset, num_workers=para_dict['num_workers'],
                                          batch_size=para_dict['batch_size'], shuffle=True)
         brats_noisy_loader = DataLoader(brats_noise_dataset, num_workers=para_dict['num_workers'],
@@ -177,6 +177,14 @@ if __name__ == '__main__':
         noisy_loader = ixi_noisy_loader
         assert para_dict['source_domain'] in ['pd', 't2']
         assert para_dict['target_domain'] in ['pd', 't2']
+    elif para_dict['dataset'] == 'brats2021':
+        normal_loader = brats_normal_loader 
+        noisy_loader = brats_noisy_loader
+        assert para_dict['source_domain'] in ['t1', 't2', 'flair']
+        assert para_dict['target_domain'] in ['t1', 't2', 'flair']
+    else:
+        raise NotImplementedError('New Dataset Has Not Been Implemented Yet')
+        
         
     # Fourier Transform 
     for epoch in range(para_dict['num_epochs']):
