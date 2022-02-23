@@ -143,7 +143,9 @@ class CentralizedTrain():
                                            client_weights=self.para_dict['clients_data_weight'],
                                            data_mode=self.para_dict['data_mode'],
                                            data_num=self.para_dict['data_num'],
-                                           data_paired_weight=self.para_dict['data_paired_weight'])
+                                           data_paired_weight=self.para_dict['data_paired_weight'],
+                                           data_moda_ratio=self.para_dict['data_moda_ratio'],
+                                           data_moda_case=self.para_dict['data_moda_case'])
             self.valid_dataset = BraTS2021(root=self.para_dict['valid_path'],
                                            modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                            noise_type='normal',
@@ -173,7 +175,9 @@ class CentralizedTrain():
                                     data_num=self.para_dict['data_num'],
                                     data_paired_weight=self.para_dict['data_paired_weight'],
                                     client_weights=self.para_dict['clients_data_weight'],
-                                    dataset_splited=True)
+                                    dataset_splited=True,
+                                    data_moda_ratio=self.para_dict['data_moda_ratio'],
+                                    data_moda_case=self.para_dict['data_moda_case'])
             self.valid_dataset = IXI(root=self.para_dict['data_path'],
                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                     extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
@@ -185,7 +189,7 @@ class CentralizedTrain():
             self.assigned_dataset = IXI(root=self.para_dict['data_path'],
                                      modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                      extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                    noise_type='severe',
+                                     noise_type='severe',
                                      learn_mode='test',
                                      transform_data=self.severe_transform,
                                      data_mode='paired',
@@ -196,12 +200,13 @@ class CentralizedTrain():
             raise NotImplementedError('This Dataset Has Not Been Implemented Yet')
 
         self.train_loader = DataLoader(self.train_dataset, num_workers=self.para_dict['num_workers'],
-                                 batch_size=self.para_dict['batch_size'], shuffle=True)
+                                 batch_size=self.para_dict['batch_size'], shuffle=False)
         self.valid_loader = DataLoader(self.valid_dataset, num_workers=self.para_dict['num_workers'],
                                  batch_size=self.para_dict['batch_size'], shuffle=False)
         self.assigned_loader = DataLoader(self.assigned_dataset, num_workers=self.para_dict['num_workers'],
                                  batch_size=1, shuffle=False)
-    
+
+
     def init_model(self):
         if self.para_dict['model'] == 'cyclegan':
             self.trainer = CycleGAN(self.para_dict, self.train_loader, self.valid_loader,

@@ -5,7 +5,9 @@ data_path: /disk1/medical/ixi
 valid_path: /disk1/medical/ixi
 data_mode: 'mixed'
 data_num: 6000 
-data_paired_weight: 0.2 
+data_paired_weight: 0.5 
+data_moda_ratio: 0.5
+data_moda_case: 'case1'
 data_partition: manual
 es_higher_limit: 80 
 es_lower_limit: 50
