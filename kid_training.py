@@ -173,6 +173,10 @@ if __name__ == '__main__':
                                                    gamma=para_dict['gamma']) 
     
     if para_dict['dataset'] == 'ixi':
+        """
+        IXI: PD and T2
+        BraTS: T1, T2 and FLAIR
+        """
         normal_loader = ixi_normal_loader 
         noisy_loader = ixi_noisy_loader
         assert para_dict['source_domain'] in ['pd', 't2']
@@ -191,24 +195,25 @@ if __name__ == '__main__':
         for i, batch in enumerate(ixi_normal_loader): 
             if i > batch_limit:
                 break
-            """
-            IXI: PD and T2
-            BraTS: T1, T2 and FLAIR
-            """
             real_a = batch[para_dict['source_domain']]
             real_b = batch[para_dict['target_domain']]
 
             real_a_kspace = torch_fft(real_a)
             real_b_kspace = torch_fft(real_b)
 
-            real_a_kspace_hf = torch_high_pass_filter(real_a_kspace, beta_a)
-            real_b_kspace_hf = torch_high_pass_filter(real_b_kspace, beta_b)
+            real_a_hf = torch_high_pass_filter(real_a_kspace, beta_a)
+            real_b_hf = torch_high_pass_filter(real_b_kspace, beta_b)
 
-            real_a_kspace_lf = torch_low_pass_filter(real_a_kspace, beta_a)
-            real_b_kspace_lf = torch_low_pass_filter(real_b_kspace, beta_b)
+            real_a_lf = torch_low_pass_filter(real_a_kspace, beta_a)
+            real_b_lf = torch_low_pass_filter(real_b_kspace, beta_b)
 
-            real_a_kspace_hf_abs = torch.abs(real_a_kspace_hf)
-            real_a_kspace_lf_abs = torch.abs(real_a_kspace_lf)
+            """
+            Magnitude: sqrt(re^2 + im^2) tells you the amplitude of the component at the corresponding frequency
+            Phase: atan2(im, re) tells you the relative phase of that component
+            """
 
-            real_b_kspace_hf_abs = torch.abs(real_b_kspace_hf)
-            real_b_kspace_lf_abs = torch.abs(real_b_kspace_lf)
+            real_a_hf_mag = torch.abs(real_a_hf)
+            real_a_lf_mag = torch.abs(real_a_lf)
+
+            real_b_hf_mag = torch.abs(real_b_hf)
+            real_b_lf_mag = torch.abs(real_b_lf)
