@@ -240,6 +240,7 @@ if __name__ == '__main__':
             """
             Triplet Loss
             """
+            kid_triplet_loss = triplet_loss()
 
             loss_total.backward()
             optimizer.step()
