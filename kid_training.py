@@ -235,5 +235,11 @@ if __name__ == '__main__':
             loss_recon_real_a_lf = criterion_recon(real_a_lf_mag, real_a_lf_hat) 
             loss_recon_real_b_lf = criterion_recon(real_b_lf_mag, real_b_lf_hat)
 
+            loss_total = loss_recon_real_a_hf + loss_recon_real_b_hf + loss_recon_real_a_lf + loss_recon_real_b_lf
+
+            """
+            Triplet Loss
+            """
+
             optimizer.step()
             lr_scheduler.step()
