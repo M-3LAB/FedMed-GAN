@@ -16,6 +16,7 @@ def parse_arguments_kid():
     parser.add_argument('--delta-diff', type=float, default=None)
     parser.add_argument('--step-size', type=int, default=30, help='learning rate will be adjust for epoch numbers')
     parser.add_argument('--gamma', type=float, default=0.1, help='Multiplicative factor of learning rate decay')
+    parser.add_argument('--num-epochs', type=int)
     args = parser.parse_args()
     return args
 
