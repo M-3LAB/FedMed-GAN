@@ -212,11 +212,11 @@ if __name__ == '__main__':
             Phase: atan2(im, re) tells you the relative phase of that component
             """
 
-            real_a_hf_mag = torch.abs(real_a_hf)
-            real_a_lf_mag = torch.abs(real_a_lf)
+            real_a_hf_mag = torch.abs(real_a_hf).to(device)
+            real_a_lf_mag = torch.abs(real_a_lf).to(device)
 
-            real_b_hf_mag = torch.abs(real_b_hf)
-            real_b_lf_mag = torch.abs(real_b_lf)
+            real_b_hf_mag = torch.abs(real_b_hf).to(device)
+            real_b_lf_mag = torch.abs(real_b_lf).to(device)
 
             optimizer.zero_grad()
 
@@ -229,6 +229,11 @@ if __name__ == '__main__':
             """
             Reconstruction
             """
+            loss_recon_real_a_hf = criterion_recon(real_a_hf_mag, real_a_hf_hat) 
+            loss_recon_real_b_hf = criterion_recon(real_b_hf_mag, real_b_hf_hat)
+
+            loss_recon_real_a_lf = criterion_recon(real_a_lf_mag, real_a_lf_hat) 
+            loss_recon_real_b_lf = criterion_recon(real_b_lf_mag, real_b_lf_hat)
 
             optimizer.step()
             lr_scheduler.step()
