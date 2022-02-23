@@ -1,5 +1,5 @@
 from arch_federated.federated_learning import FederatedTrain
-from arch_base.cyclegan import CycleGAN
+from arch_centralized.cyclegan import CycleGAN
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import SubsetRandomSampler
 from arch_federated.server import aggregate_from_client_to_server, update_server_from_best_psnr_client
@@ -62,6 +62,21 @@ class FedCycleGAN(FederatedTrain):
             self.server_gener['from_a_to_b'], self.client_gener_list['from_a_to_b'])
         send_from_server_to_client(
             self.server_gener['from_b_to_a'], self.client_gener_list['from_b_to_a'])
+
+    def collect_feature(self, batch):
+        real_a = batch[self.para_dict['source_domain']].to(self.device)
+        real_b = batch[self.para_dict['target_domain']].to(self.device)
+
+        fake_a = self.server.generator_from_b_to_a(real_b)
+        fake_b = self.server.generator_from_a_to_b(real_a)
+
+        real_a_feature = self.server.generator_from_a_to_b.extract_feature(real_a)
+        fake_a_feature = self.server.generator_from_a_to_b.extract_feature(fake_a)
+        real_b_feature = self.server.generator_from_b_to_a.extract_feature(real_b)
+        fake_b_feature = self.server.generator_from_b_to_a.extract_feature(fake_b)
+
+        return real_a_feature, fake_a_feature, real_b_feature, fake_b_feature
+
 
 
     def run_work_flow(self):

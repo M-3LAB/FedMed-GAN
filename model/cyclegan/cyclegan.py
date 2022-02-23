@@ -85,7 +85,7 @@ class CycleGen(nn.Module):
         self.up4 = UNetUp(256, 64)
 
         self.final = UnetFinalLayer(128, 1)
-
+        
     def forward(self, x):
         d1 = self.down1(x)
         d2 = self.down2(d1)
@@ -99,6 +99,16 @@ class CycleGen(nn.Module):
         u4 = self.up4(u3, d2)
 
         return self.final(u4, d1)
+    
+    # extract feature from this layer
+    def extract_feature(self, x):
+        d1 = self.down1(x)
+        d2 = self.down2(d1)
+        d3 = self.down3(d2)
+        d4 = self.down4(d3)
+        d5 = self.down5(d4)
+
+        return d5
 
 def discriminator_block(in_filters, out_filters):
     """Return downsampling layers of each discriminator block"""

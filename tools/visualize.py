@@ -89,6 +89,21 @@ def normalise(f: np.ndarray):
         coeff = fmax - fmin
         f[:] = np.floor((f[:] - fmin) / coeff * 255.)
 
+def plot_sample(real_a, fake_a, real_b, fake_b, step, img_path, descript='Epoch'):
+    plt.figure(figsize=(5, 4))
+    plt.scatter(real_a[:400, 0], real_a[:400, 1], color='b', label='Real A Samples', s=1, alpha=0.5)
+    plt.scatter(fake_a[:400, 0], fake_a[:400, 1], color='r', label='Fake A Samples', s=1, alpha=0.5)
+    plt.scatter(real_b[:400, 0], real_b[:400, 1], color='k', label='Real B Samples', s=1, alpha=0.5)
+    plt.scatter(fake_b[:400, 0], fake_b[:400, 1], color='g', label='Fake B Samples', s=1, alpha=0.5)
+
+    plt.xlim((0.1, 0.4))
+    plt.ylim((0.1, 0.4))
+    plt.grid()
+    plt.legend(loc=1)
+    plt.title('{}: {}'.format(descript, step))
+    plt.savefig(img_path)
+    plt.close()
+
 if __name__ == '__main__': 
 
     t2 = '/disk/medical/BraTS2021/validation/BraTS2021_01679/BraTS2021_01679_t2.nii.gz'
