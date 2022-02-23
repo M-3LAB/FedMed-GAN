@@ -257,14 +257,14 @@ class CentralizedTrain():
 
     def work_flow(self):
         self.trainer.train_epoch()
-        # mae, psnr, ssim, fid = self.trainer.evaluation()
+        mae, psnr, ssim, fid = self.trainer.evaluation()
 
-        # infor = '[Epoch {}/{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-        #     self.epoch+1, self.para_dict['num_epoch'], mae, psnr, ssim)
+        infor = '[Epoch {}/{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+            self.epoch+1, self.para_dict['num_epoch'], mae, psnr, ssim)
 
-        # if self.para_dict['fid']:
-        #     infor = '{} fid: {:.4f}'.format(infor, fid)
-        # print(infor)
+        if self.para_dict['fid']:
+            infor = '{} fid: {:.4f}'.format(infor, fid)
+        print(infor)
         
         if self.para_dict['plot_distribution']:
             save_img_path = '{}/sample_distribution'.format(self.file_path)
