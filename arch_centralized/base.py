@@ -342,10 +342,14 @@ class Base():
                 break
             real_a_feature, fake_a_feature, real_b_feature, fake_b_feature = self.collect_feature(batch=batch)
 
-            real_a_feature = np.mean(real_a_feature.cpu().detach().numpy().reshape(len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
-            fake_a_feature = np.mean(fake_a_feature.cpu().detach().numpy().reshape(len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3)) 
-            real_b_feature = np.mean(real_b_feature.cpu().detach().numpy().reshape(len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
-            fake_b_feature = np.mean(fake_b_feature.cpu().detach().numpy().reshape(len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            real_a_feature = np.mean(real_a_feature.cpu().detach().numpy().reshape(
+                len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            fake_a_feature = np.mean(fake_a_feature.cpu().detach().numpy().reshape(
+                len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            real_b_feature = np.mean(real_b_feature.cpu().detach().numpy().reshape(
+                len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            fake_b_feature = np.mean(fake_b_feature.cpu().detach().numpy().reshape(
+                len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
 
             if i == 0:
                 real_a = real_a_feature
