@@ -98,9 +98,9 @@ def parse_arguments_centralized():
     parser.add_argument('--num-epoch', type=int, default=None)
     parser.add_argument('--debug', action='store_true', default=False)
 
-    parser.add_argument('--reg-gan', action='store_true', default=False)
+    parser.add_argument('--diff-privacy', action='store_true', default=None) 
     parser.add_argument('--identity', action='store_true', default=False)
-    parser.add_argument('--data-paired', action='store_true', default=False)
+    parser.add_argument('--reg-gan', action='store_true', default=False)
     parser.add_argument('--fid', action='store_true', default=True)
 
     parser.add_argument('--auxiliary-rotation', '-ar', action='store_true', default=False)
