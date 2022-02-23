@@ -217,3 +217,14 @@ if __name__ == '__main__':
 
             real_b_hf_mag = torch.abs(real_b_hf)
             real_b_lf_mag = torch.abs(real_b_lf)
+
+            optimizer.zero_grad()
+
+            real_a_hf_z = kid_ae(real_a_hf_mag)
+            real_a_lf_z = kid_ae(real_a_lf_mag)
+
+            real_b_hf_z = kid_ae(real_b_hf_mag)
+            real_b_lf_z = kid_ae(real_b_lf_mag)
+
+            optimizer.step()
+            lr_scheduler.step()

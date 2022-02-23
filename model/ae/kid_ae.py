@@ -37,8 +37,7 @@ class KIDAE(nn.Module):
         self.x_hat = self.up5(self.u4, self.d1)
         return self.x_hat 
 
-    def forward(self, x, phase='encoding'):
-        assert phase in ['encoding', 'decoding'], 'phase should be in decoding and encoding'
+    def forward(self, x):
         z = self.encode(x)
         x_hat = self.decode(z)
         return z, x_hat
