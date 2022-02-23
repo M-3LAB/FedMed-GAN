@@ -1,5 +1,5 @@
 from arch_federated.federated_learning import FederatedTrain
-from arch_base.munit import Munit
+from arch_centralized.munit import Munit
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import SubsetRandomSampler
 from arch_federated.server import aggregate_from_client_to_server, update_server_from_best_psnr_client

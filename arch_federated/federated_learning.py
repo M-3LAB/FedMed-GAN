@@ -2,13 +2,14 @@ from pyclbr import Class
 import torch
 import yaml
 import os
+import numpy as np
 
 from tools.utilize import * 
 from data_io.brats import BraTS2021
 from data_io.ixi import IXI
 from torch.utils.data import DataLoader
-
 from tools.utilize import *
+from tools.visualize import plot_sample
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -252,10 +253,17 @@ class FederatedTrain():
     def server_inference(self):
         mae, psnr, ssim, fid = self.server.evaluation()
         infor = '[Round {}/{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-                        self.round + 1, self.para_dict['num_round'], mae, psnr, ssim)
+                        self.round+1, self.para_dict['num_round'], mae, psnr, ssim)
         if self.para_dict['fid']:
             infor = '{} fid: {:.4f}'.format(infor, fid)
         print(infor)
+
+        if self.para_dict['plot_distribution']:
+            save_img_path = '{}/sample_distribution'.format(self.file_path)
+            if not os.path.exists(save_img_path):
+                os.makedirs(save_img_path)
+            save_img_path = '{}/round_{}.png'.format(save_img_path, self.round+1)
+            self.server.visualize_feature(self.round+1, save_img_path, self.train_loader)
 
         if self.para_dict['save_log']:
             save_log(infor, self.file_path, description='_server')
@@ -276,6 +284,42 @@ class FederatedTrain():
             if psnr > self.best_psnr:
                 self.save_models(psnr)
                 self.best_psnr = psnr
+
+    def collect_feature(self, batch):
+        pass
+
+    @torch.no_grad()
+    def visualize_feature(self, round, save_img_path, data_loader):
+        real_a, fake_a, real_b, fake_b = [], [], [], []
+        for i, batch in enumerate(data_loader):
+            if i == self.para_dict['plot_num_sample']:
+                break
+            real_a_feature, fake_a_feature, real_b_feature, fake_b_feature = self.collect_feature(batch=batch)
+
+            real_a_feature = np.mean(real_a_feature.cpu().detach().numpy().reshape(
+                len(batch[self.para_dict['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            fake_a_feature = np.mean(fake_a_feature.cpu().detach().numpy().reshape(
+                len(batch[self.para_dict['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            real_b_feature = np.mean(real_b_feature.cpu().detach().numpy().reshape(
+                len(batch[self.para_dict['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            fake_b_feature = np.mean(fake_b_feature.cpu().detach().numpy().reshape(
+                len(batch[self.para_dict['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+
+            if i == 0:
+                real_a = real_a_feature
+                fake_a = fake_a_feature
+                real_b = real_b_feature
+                fake_b = fake_b_feature
+            else:
+                real_a = np.concatenate([real_a, real_a_feature], axis=0)
+                fake_a = np.concatenate([fake_a, fake_a_feature], axis=0)
+                real_b = np.concatenate([real_b, real_b_feature], axis=0)
+                fake_b = np.concatenate([fake_b, fake_b_feature], axis=0)
+
+        plot_sample(real_a, fake_a, real_b, fake_b, step=round, img_path=save_img_path, descript='Round')
+
+        with open(save_img_path.replace('.png', '.npy'), 'wb') as f:
+            np.save(f, np.array([real_a, fake_a, real_b, fake_b]))
 
     def run_work_flow(self):
         self.load_config()

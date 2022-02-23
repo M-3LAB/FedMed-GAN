@@ -363,7 +363,7 @@ class Base():
                 real_b = np.concatenate([real_b, real_b_feature], axis=0)
                 fake_b = np.concatenate([fake_b, fake_b_feature], axis=0)
 
-        plot_sample(real_a, fake_a, real_b, fake_b, epoch=epoch, img_path=save_img_path)
+        plot_sample(real_a, fake_a, real_b, fake_b, step=epoch, img_path=save_img_path, descript='Epoch')
 
         with open(save_img_path.replace('.png', '.npy'), 'wb') as f:
             np.save(f, np.array([real_a, fake_a, real_b, fake_b]))
