@@ -241,5 +241,6 @@ if __name__ == '__main__':
             Triplet Loss
             """
 
+            loss_total.backward()
             optimizer.step()
             lr_scheduler.step()

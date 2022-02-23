@@ -17,6 +17,8 @@ def parse_arguments_kid():
     parser.add_argument('--step-size', type=int, default=30, help='learning rate will be adjust for epoch numbers')
     parser.add_argument('--gamma', type=float, default=0.1, help='Multiplicative factor of learning rate decay')
     parser.add_argument('--num-epochs', type=int)
+    parser.add_argument('--lambda-recon', type=float, default=1.0, help='weight for reconstruction loss')
+    parser.add_argument('--lambda-triplet', type=float, default=1.0, help='weight for triplet loss')
     args = parser.parse_args()
     return args
 
