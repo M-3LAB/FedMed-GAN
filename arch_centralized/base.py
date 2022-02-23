@@ -2,6 +2,8 @@ from fnmatch import translate
 from re import I
 import torch
 import torch.nn.functional as F
+import random
+import numpy as np
 
 from torch.autograd.variable import Variable
 from model.reg.reg import Reg
@@ -11,10 +13,9 @@ from tools.utilize import *
 from model.unit.unit import *
 from metrics.metrics import mae, psnr, ssim, fid
 from evaluation.common import concate_tensor_lists, average
-import random
-import numpy as np
 from loss_function.simclr_loss import simclr_loss
 from loss_function.supercon_loss import supercon_loss
+from tools.visualize import plot_sample
 
 import matplotlib.pyplot as plt
 import matplotlib
@@ -336,9 +337,9 @@ class Base():
 
     @torch.no_grad()
     def visualize_feature(self, epoch, save_img_path, data_loader):
-        real_a, fake_a = [], []
+        real_a, fake_a, real_b, fake_b = [], [], [], []
         for i, batch in enumerate(data_loader):
-            if i == 25:
+            if i == self.config['plot_num_sample']:
                 break
             real_a_feature, fake_a_feature, real_b_feature, fake_b_feature = self.collect_feature(batch=batch)
 
@@ -354,19 +355,19 @@ class Base():
             if i == 0:
                 real_a = real_a_feature
                 fake_a = fake_a_feature
+                real_b = real_b_feature
+                fake_b = fake_b_feature
             else:
                 real_a = np.concatenate([real_a, real_a_feature], axis=0)
                 fake_a = np.concatenate([fake_a, fake_a_feature], axis=0)
+                real_b = np.concatenate([real_b, real_b_feature], axis=0)
+                fake_b = np.concatenate([fake_b, fake_b_feature], axis=0)
 
-        plt.scatter(real_a[:, 0], real_a[:, 1], color='blue', label='Real Samples', s=2, alpha=0.5)
-        plt.scatter(fake_a[:, 0], fake_a[:, 1], color='red', label='Fake Samples', s=2, alpha=0.5)
-        plt.legend(loc=1)
-        plt.title('Epoch: {}'.format(epoch))
-        plt.xlim((-1.5, 1.5))
-        plt.ylim((-1.5, 1.75))
-        plt.grid()
-        plt.savefig(save_img_path)
-        plt.close()
+        plot_sample(real_a, fake_a, real_b, fake_b, epoch=epoch, img_path=save_img_path)
+
+        with open(save_img_path.replace('.png', '.npy'), 'wb') as f:
+            np.save(f, np.array([real_a, fake_a, real_b, fake_b]))
+
 
     def master_hook_adder(self, module, grad_input, grad_output):
         # global dynamic_hook_function
