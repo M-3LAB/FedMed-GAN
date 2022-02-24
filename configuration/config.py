@@ -67,6 +67,7 @@ def parse_arguments_federated():
     parser.add_argument('--load-model', action='store_true', default=False)
     parser.add_argument('--load-model-dir', type=str, default=None)
 
+    parser.add_argument('--plot-distribution', action='store_true', default=True)
     parser.add_argument('--save-img', action='store_true', default=False)
     parser.add_argument('--num-img-save', type=int, default=None)
     parser.add_argument('--single-img-infer', action="store_true", default=False)
@@ -89,10 +90,10 @@ def parse_arguments_federated():
     
 def parse_arguments_centralized():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2021'])
+    parser.add_argument('--dataset', '-d', type=str, default='ixi', choices=['ixi', 'brats2021'])
     parser.add_argument('--model', '-m', type=str, default='cyclegan', choices=['cyclegan', 'munit', 'unit'])
-    parser.add_argument('--source-domain', '-s', default='t1', choices=['t1', 't2', 'pd', 'flair'])
-    parser.add_argument('--target-domain', '-t', default='flair', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--source-domain', '-s', default='pd', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--target-domain', '-t', default='t2', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--data-path', '-dp', type=str, default=None)
     parser.add_argument('--valid-path', '-vp', type=str, default=None)
 
@@ -103,9 +104,9 @@ def parse_arguments_centralized():
     parser.add_argument('--num-epoch', type=int, default=None)
     parser.add_argument('--debug', action='store_true', default=False)
 
-    parser.add_argument('--reg-gan', action='store_true', default=False)
+    parser.add_argument('--diff-privacy', action='store_true', default=None) 
     parser.add_argument('--identity', action='store_true', default=False)
-    parser.add_argument('--data-paired', action='store_true', default=False)
+    parser.add_argument('--reg-gan', action='store_true', default=False)
     parser.add_argument('--fid', action='store_true', default=True)
 
     parser.add_argument('--auxiliary-rotation', '-ar', action='store_true', default=False)
@@ -126,6 +127,7 @@ def parse_arguments_centralized():
     parser.add_argument('--scaling-list', nargs='+', type=float, default=None)
     parser.add_argument('--num-augmentation', '-na', type=str, default=None, choices=['four', 'one', 'two'])
 
+    parser.add_argument('--plot-distribution', action='store_true', default=True)
     parser.add_argument('--save-model', action='store_true', default=False)
     parser.add_argument('--load-model', action='store_true', default=False)
     parser.add_argument('--load-model-dir', type=str, default=None)

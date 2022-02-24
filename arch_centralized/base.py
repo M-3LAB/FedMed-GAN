@@ -1,6 +1,9 @@
 from fnmatch import translate
+from re import I
 import torch
 import torch.nn.functional as F
+import random
+import numpy as np
 
 from torch.autograd.variable import Variable
 from model.reg.reg import Reg
@@ -10,14 +13,13 @@ from tools.utilize import *
 from model.unit.unit import *
 from metrics.metrics import mae, psnr, ssim, fid
 from evaluation.common import concate_tensor_lists, average
-import random
-import numpy as np
 from loss_function.simclr_loss import simclr_loss
 from loss_function.supercon_loss import supercon_loss
+from tools.visualize import plot_sample
 
-#import matplotlib.pyplot as plt
-#import matplotlib
-#matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 
 import kornia.geometry.transform as kt
 
@@ -110,9 +112,6 @@ class Base():
         self.batch_limit = int(self.config['data_num'] * self.batch_limit_weight / self.config['batch_size'])
         if self.config['debug']:
             self.batch_limit = 2
-
-    def collect_generated_images(self, batch):
-        pass
 
     def calculate_basic_gan_loss(self, images):
         pass
@@ -261,6 +260,7 @@ class Base():
         self.lr_scheduler_discriminator_from_a_to_b.step()
         self.lr_scheduler_discriminator_from_b_to_a.step()
 
+    @torch.no_grad()
     def evaluation(self):
         # initialize fake_b_list
         fake_b_list = torch.randn(self.config['batch_size'], 1, self.config['size'], self.config['size'])
@@ -269,27 +269,26 @@ class Base():
         psnr_list = []
         ssim_list = []
 
-        with torch.no_grad():
-            for i, batch in enumerate(self.valid_loader):
-                imgs, tmps = self.collect_generated_images(batch=batch)
-                real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
-
-                if self.config['fid']:
-                    fake_b_list = concate_tensor_lists(fake_b_list, fake_b, i)
-
-                mae_value = mae(real_b, fake_b) 
-                psnr_value = psnr(real_b, fake_b)
-                ssim_value = ssim(real_b, fake_b)
-
-                mae_list.append(mae_value)
-                psnr_list.append(psnr_value)
-                ssim_list.append(ssim_value)
+        for i, batch in enumerate(self.valid_loader):
+            imgs, tmps = self.collect_generated_images(batch=batch)
+            real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
 
             if self.config['fid']:
-                fid_value = fid(fake_b_list, self.config['batch_size_inceptionV3'],
-                                self.config['target_domain'], self.fid_stats, self.device)
-            else:
-                fid_value = 0
+                fake_b_list = concate_tensor_lists(fake_b_list, fake_b, i)
+
+            mae_value = mae(real_b, fake_b) 
+            psnr_value = psnr(real_b, fake_b)
+            ssim_value = ssim(real_b, fake_b)
+
+            mae_list.append(mae_value)
+            psnr_list.append(psnr_value)
+            ssim_list.append(ssim_value)
+
+        if self.config['fid']:
+            fid_value = fid(fake_b_list, self.config['batch_size_inceptionV3'],
+                            self.config['target_domain'], self.fid_stats, self.device)
+        else:
+            fid_value = 0
 
         return average(mae_list), average(psnr_list), average(ssim_list), fid_value     
 
@@ -306,28 +305,69 @@ class Base():
         self.discriminator_from_a_to_b = discr_from_a_to_b
         self.discriminator_from_b_to_a = discr_from_b_to_a
 
+    def collect_generated_images(self, batch):
+        pass
+
+
+    def collect_feature(self, batch):
+        pass
+
+    @torch.no_grad()
     def infer_images(self, save_img_path, data_loader):
-        with torch.no_grad():
-            for i, batch in enumerate(data_loader):
-                imgs, tmps = self.collect_generated_images(batch=batch)
-                real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
-                if i <= self.config['num_img_save']:
-                    img_path = '{}/{}-slice-{}'.format(
-                        save_img_path, batch['name_a'][0], batch['slice_num'].numpy()[0])
+        for i, batch in enumerate(data_loader):
+            imgs, tmps = self.collect_generated_images(batch=batch)
+            real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
+            if i <= self.config['num_img_save']:
+                img_path = '{}/{}-slice-{}'.format(
+                    save_img_path, batch['name_a'][0], batch['slice_num'].numpy()[0])
 
-                    mae_value = mae(real_b, fake_b).item() 
-                    psnr_value = psnr(real_b, fake_b).item()
-                    ssim_value = ssim(real_b, fake_b).item()
+                mae_value = mae(real_b, fake_b).item() 
+                psnr_value = psnr(real_b, fake_b).item()
+                ssim_value = ssim(real_b, fake_b).item()
                     
-                    img_all = torch.cat((real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b), 0)
-                    save_image(img_all, 'all_m_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_value, psnr_value, ssim_value), img_path)
+                img_all = torch.cat((real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b), 0)
+                save_image(img_all, 'all_m_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_value, psnr_value, ssim_value), img_path)
 
-                    save_image(real_a, 'real_a.png', img_path)
-                    save_image(real_b, 'real_b.png', img_path)
-                    save_image(fake_a, 'fake_a.png', img_path)
-                    save_image(fake_b, 'fake_b.png', img_path)
-                    save_image(fake_fake_a, 'fake_fake_a.png', img_path)
-                    save_image(fake_fake_b, 'fake_fake_b.png', img_path)
+                save_image(real_a, 'real_a.png', img_path)
+                save_image(real_b, 'real_b.png', img_path)
+                save_image(fake_a, 'fake_a.png', img_path)
+                save_image(fake_b, 'fake_b.png', img_path)
+                save_image(fake_fake_a, 'fake_fake_a.png', img_path)
+                save_image(fake_fake_b, 'fake_fake_b.png', img_path)
+
+    @torch.no_grad()
+    def visualize_feature(self, epoch, save_img_path, data_loader):
+        real_a, fake_a, real_b, fake_b = [], [], [], []
+        for i, batch in enumerate(data_loader):
+            if i == self.config['plot_num_sample']:
+                break
+            real_a_feature, fake_a_feature, real_b_feature, fake_b_feature = self.collect_feature(batch=batch)
+
+            real_a_feature = np.mean(real_a_feature.cpu().detach().numpy().reshape(
+                len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            fake_a_feature = np.mean(fake_a_feature.cpu().detach().numpy().reshape(
+                len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            real_b_feature = np.mean(real_b_feature.cpu().detach().numpy().reshape(
+                len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+            fake_b_feature = np.mean(fake_b_feature.cpu().detach().numpy().reshape(
+                len(batch[self.config['source_domain']]), 512, 8, 4, 2), axis=(1, 2, 3))
+
+            if i == 0:
+                real_a = real_a_feature
+                fake_a = fake_a_feature
+                real_b = real_b_feature
+                fake_b = fake_b_feature
+            else:
+                real_a = np.concatenate([real_a, real_a_feature], axis=0)
+                fake_a = np.concatenate([fake_a, fake_a_feature], axis=0)
+                real_b = np.concatenate([real_b, real_b_feature], axis=0)
+                fake_b = np.concatenate([fake_b, fake_b_feature], axis=0)
+
+        plot_sample(real_a, fake_a, real_b, fake_b, step=epoch, img_path=save_img_path, descript='Epoch')
+
+        with open(save_img_path.replace('.png', '.npy'), 'wb') as f:
+            np.save(f, np.array([real_a, fake_a, real_b, fake_b]))
+
 
     def master_hook_adder(self, module, grad_input, grad_output):
         # global dynamic_hook_function
