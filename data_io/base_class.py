@@ -1,3 +1,4 @@
+from scipy import rand
 import torch
 import numpy as np
 import random
@@ -265,22 +266,26 @@ class BASE_DATASET(torch.utils.data.Dataset):
 
                 paired_data = self.client_data[i][0][:paired_num]
                 unpaired_data = self.client_data[i][1][:unpaired_num]
-                self.client_data_indices.append(paired_data + unpaired_data)
+                mixed_data = paired_data + unpaired_data
+                random.shuffle(mixed_data)
+                self.client_data_indices.append(mixed_data)
                 self.dataset = self.all_data
 
             elif self.data_mode == 'paired':
                 self.client_data_indices.append(self.client_data[i][0][:])
-                dataset_paired = []
+                paired_data = []
                 for idx in self.client_data_indices[i]:
-                    dataset_paired.append(self.all_data[idx])
-                self.dataset = dataset_paired
+                    paired_data.append(self.all_data[idx])
+                random.shuffle(paired_data)
+                self.dataset = paired_data
 
             elif self.data_mode == 'unpaired':
                 self.client_data_indices.append(self.client_data[i][1][:data_num])
-                dataset_unpaired = []
+                unpaired_data = []
                 for idx in self.client_data_indices[i]:
-                    dataset_unpaired.append(self.all_data[idx])
-                self.dataset = dataset_unpaired
+                    unpaired_data.append(self.all_data[idx])
+                random.shuffle(unpaired_data)
+                self.dataset = unpaired_data
                
             else:
                 raise NotImplementedError('Data Mode is Wrong')
