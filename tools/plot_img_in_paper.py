@@ -42,7 +42,7 @@ def plot_multi_imgs_ixi_centralized():
         plt.legend(loc=1, fontsize=8)
         plt.title('{}: {}'.format(descript, step))
 
-    img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/centralized.png'
+    img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/centralized.pdf'
     plt.savefig(img_path, bbox_inches='tight', pad_inches=0.2)
     plt.close()
 
@@ -68,7 +68,7 @@ def plot_multi_imgs_ixi_federated():
         plt.legend(loc=1, fontsize=8)
         plt.title('{}: {}'.format(descript, step))
 
-    img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/federated.png'
+    img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/federated.pdf'
     plt.savefig(img_path, bbox_inches='tight', pad_inches=0.2)
     plt.close()
         
