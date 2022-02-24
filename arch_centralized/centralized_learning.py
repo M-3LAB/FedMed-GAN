@@ -7,6 +7,7 @@ from tools.utilize import *
 from data_io.brats import BraTS2021
 from data_io.ixi import IXI
 from torch.utils.data import DataLoader
+from torch.utils.data.sampler import SubsetRandomSampler
 from arch_centralized.cyclegan import CycleGAN
 from arch_centralized.munit import Munit
 from arch_centralized.unit import Unit
@@ -199,8 +200,12 @@ class CentralizedTrain():
         else:
             raise NotImplementedError('This Dataset Has Not Been Implemented Yet')
 
-        self.train_loader = DataLoader(self.train_dataset, num_workers=self.para_dict['num_workers'],
-                                 batch_size=self.para_dict['batch_size'], shuffle=False)
+        self.client_data_list = self.train_dataset.client_data_indices
+        self.train_loader = DataLoader(self.train_dataset,
+                                       batch_size=self.para_dict['batch_size'],
+                                       drop_last=True,
+                                       num_workers=self.para_dict['num_workers'],
+                                       sampler=SubsetRandomSampler(self.client_data_list[0]))
         self.valid_loader = DataLoader(self.valid_dataset, num_workers=self.para_dict['num_workers'],
                                  batch_size=self.para_dict['batch_size'], shuffle=False)
         self.assigned_loader = DataLoader(self.assigned_dataset, num_workers=self.para_dict['num_workers'],
