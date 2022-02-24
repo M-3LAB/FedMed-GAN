@@ -339,7 +339,7 @@ class Base():
     def visualize_feature(self, epoch, save_img_path, data_loader):
         real_a, fake_a, real_b, fake_b = [], [], [], []
         for i, batch in enumerate(data_loader):
-            if i == self.config['plot_num_sample']:
+            if i == int(self.config['plot_num_sample']):
                 break
             real_a_feature, fake_a_feature, real_b_feature, fake_b_feature = self.collect_feature(batch=batch)
 
