@@ -59,11 +59,11 @@ class BASE_DATASET(torch.utils.data.Dataset):
         self.client_indice_container = [] # all cases with file name
         self.data_total_num_list = [] # record num by [paired, unpaired]
         # dataloader used
-        self.dataset = []  # slice id of cases for training
+        self.fedmed_dataset = []  # slice id of cases for training
         self.client_data_indices = [] # all client indices for training
 
     def __getitem__(self, index):
-        path_a, path_b, i = self.dataset[index]
+        path_a, path_b, i = self.fedmed_dataset[index]
         moda_a = np.load('{}/{}/{}.npy'.format(self.dataset_path, self.modality_a.upper(), path_a))
         moda_b = np.load('{}/{}/{}.npy'.format(self.dataset_path, self.modality_b.upper(), path_b))
         
@@ -92,7 +92,7 @@ class BASE_DATASET(torch.utils.data.Dataset):
                 'name_a': path_a, 'name_b': path_b, 'slice_num': i}
 
     def __len__(self):
-        return len(self.dataset)
+        return len(self.fedmed_dataset)
 
     def _check_sanity(self):
         """
@@ -259,7 +259,7 @@ class BASE_DATASET(torch.utils.data.Dataset):
 
             if self.data_mode == 'mixed':
                 paired_num = int(data_num * self.data_paired_weight)
-                unpaired_num = int(data_num * (1 - self.data_paired_weight))
+                unpaired_num = data_num - paired_num
 
                 if paired_num > self.data_total_num_list[i][0] or unpaired_num > self.data_total_num_list[i][1]:
                     raise ValueError('Not Enough Desired Data')
@@ -269,23 +269,29 @@ class BASE_DATASET(torch.utils.data.Dataset):
                 mixed_data = paired_data + unpaired_data
                 random.shuffle(mixed_data)
                 self.client_data_indices.append(mixed_data)
-                self.dataset = self.all_data
+                self.fedmed_dataset = self.all_data
 
             elif self.data_mode == 'paired':
-                self.client_data_indices.append(self.client_data[i][0][:])
+                if self.learn_mode == 'train':
+                    self.client_data_indices.append(self.client_data[i][0][:data_num])
+                else:
+                    self.client_data_indices.append(self.client_data[i][0][:]) # all cases
                 paired_data = []
                 for idx in self.client_data_indices[i]:
                     paired_data.append(self.all_data[idx])
                 random.shuffle(paired_data)
-                self.dataset = paired_data
+                self.fedmed_dataset = paired_data
 
             elif self.data_mode == 'unpaired':
-                self.client_data_indices.append(self.client_data[i][1][:data_num])
+                if self.learn_mode == 'train':
+                    self.client_data_indices.append(self.client_data[i][1][:data_num])
+                else:
+                    self.client_data_indices.append(self.client_data[i][1][:data_num])
                 unpaired_data = []
                 for idx in self.client_data_indices[i]:
                     unpaired_data.append(self.all_data[idx])
                 random.shuffle(unpaired_data)
-                self.dataset = unpaired_data
+                self.fedmed_dataset = unpaired_data
                
             else:
                 raise NotImplementedError('Data Mode is Wrong')
