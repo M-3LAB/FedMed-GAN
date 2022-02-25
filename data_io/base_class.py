@@ -269,33 +269,30 @@ class BASE_DATASET(torch.utils.data.Dataset):
                 mixed_data = paired_data + unpaired_data
                 random.shuffle(mixed_data)
                 self.client_data_indices.append(mixed_data)
-                self.fedmed_dataset = self.all_data
 
             elif self.data_mode == 'paired':
-                if self.learn_mode == 'train':
-                    self.client_data_indices.append(self.client_data[i][0][:data_num])
-                else:
-                    self.client_data_indices.append(self.client_data[i][0][:]) # all cases
                 paired_data = []
-                for idx in self.client_data_indices[i]:
-                    paired_data.append(self.all_data[idx])
+                if self.learn_mode == 'train':
+                    paired_data = self.client_data[i][0][:data_num]
+                else:
+                    paired_data = self.client_data[i][0][:] # all cases
                 random.shuffle(paired_data)
-                self.fedmed_dataset = paired_data
+                self.client_data_indices.append(paired_data)
 
             elif self.data_mode == 'unpaired':
-                if self.learn_mode == 'train':
-                    self.client_data_indices.append(self.client_data[i][1][:data_num])
-                else:
-                    self.client_data_indices.append(self.client_data[i][1][:data_num])
                 unpaired_data = []
-                for idx in self.client_data_indices[i]:
-                    unpaired_data.append(self.all_data[idx])
+                if self.learn_mode == 'train':
+                    unpaired_data = self.client_data[i][1][:data_num]
+                else:
+                    unpaired_data = self.client_data[i][1][:6000] # manually set
                 random.shuffle(unpaired_data)
-                self.fedmed_dataset = unpaired_data
+                self.client_data_indices.append(unpaired_data)
                
             else:
                 raise NotImplementedError('Data Mode is Wrong')
             
+            self.fedmed_dataset = self.all_data
+
     @staticmethod
     def _allocate_client_data(data_len, clients=[1.0]):
         dataset_indices = [i for i in range(data_len)]
