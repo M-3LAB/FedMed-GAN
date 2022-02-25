@@ -94,14 +94,14 @@ def parse_arguments_centralized():
     parser.add_argument('--data-path', '-dp', type=str, default=None)
     parser.add_argument('--valid-path', '-vp', type=str, default=None)
 
-    parser.add_argument('--data_mode', '-dm', type=str, default='unpaired', choices=['mixed', 'paired', 'unpaired'])
+    parser.add_argument('--data_mode', '-dm', type=str, default='mixed', choices=['mixed', 'paired', 'unpaired'])
     parser.add_argument('--data-paired-weight', '-dpw', type=float, default=None, choices=[0., 0.1, 0.3, 0.5, 1.])
 
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--num-epoch', type=int, default=None)
     parser.add_argument('--debug', action='store_true', default=False)
 
-    parser.add_argument('--diff-privacy', action='store_true', default=None) 
+    parser.add_argument('--diff-privacy', action='store_true', default=False) 
     parser.add_argument('--identity', action='store_true', default=False)
     parser.add_argument('--reg-gan', action='store_true', default=False)
     parser.add_argument('--fid', action='store_true', default=True)
