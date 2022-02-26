@@ -72,17 +72,27 @@ class FederatedTrain():
             save_arg(self.para_dict, self.file_path)
             save_script(__file__, self.file_path)
 
-        self.fid_stats = '{}/{}/{}_{}_fid_stats.npz'.format(
+        self.fid_stats_from_a_to_b = '{}/{}/{}_{}_fid_stats.npz'.format(
             self.para_dict['fid_dir'], self.para_dict['dataset'], self.para_dict['source_domain'], self.para_dict['target_domain'])
+        self.fid_stats_from_b_to_a = '{}/{}/{}_{}_fid_stats.npz'.format(
+            self.para_dict['fid_dir'], self.para_dict['dataset'], self.para_dict['target_domain'], self.para_dict['source_domain'])
 
-        if not os.path.exists(self.fid_stats):
-            os.system(r'python3 fid_stats.py --dataset {} --source-domain {} --target-domain {} --gpu-id {} --valid-path {}'.format(
-                self.para_dict['dataset'], self.para_dict['source_domain'], self.para_dict['target_domain'], self.para_dict['gpu_id'], self.para_dict['valid_path']))
-            
-        if not os.path.exists(self.fid_stats):
-            raise NotImplementedError('FID Still Not be Implemented Yet')
-        else:
-            print('fid stats: {}'.format(self.fid_stats))
+        if self.para_dict['fid']:
+            if not os.path.exists(self.fid_stats_from_a_to_b):
+                os.system(r'python3 fid_stats.py --dataset {} --source-domain {} --target-domain {} --gpu-id {} --valid-path {}'.format(
+                    self.para_dict['dataset'], self.para_dict['source_domain'], self.para_dict['target_domain'], self.para_dict['gpu_id'], self.para_dict['valid_path']))
+            if not os.path.exists(self.fid_stats_from_a_to_b):
+                raise NotImplementedError('FID Still Not be Implemented Yet')
+            else:
+                print('fid stats from a to b: {}'.format(self.fid_stats_from_a_to_b))
+
+            if not os.path.exists(self.fid_stats_from_b_to_a):
+                os.system(r'python3 fid_stats.py --dataset {} --source-domain {} --target-domain {} --gpu-id {} --valid-path {}'.format(
+                    self.para_dict['dataset'], self.para_dict['target_domain'], self.para_dict['source_domain'], self.para_dict['gpu_id'], self.para_dict['valid_path']))
+            if not os.path.exists(self.fid_stats_from_b_to_a):
+                raise NotImplementedError('FID Still Not be Implemented Yet')
+            else:
+                print('fid stats from b to a: {}'.format(self.fid_stats_from_b_to_a))
 
         print('work dir: {}'.format(self.file_path))
         print('---------------------')
@@ -213,15 +223,27 @@ class FederatedTrain():
 
                 self.clients[i].train_epoch(inf=infor)
 
-            # test each client
-            mae, psnr, ssim, fid = self.clients[i].evaluation()
-            infor = '{} mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(infor, mae, psnr, ssim)
+            # evaluation from a to b
+            mae, psnr, ssim, fid = self.clients[i].evaluation(direction='from_a_to_b')
+            infor_1 = '{} [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+                infor, self.para_dict['source_domain'], self.para_dict['target_domain'], mae, psnr, ssim)
             if self.para_dict['fid']:
-                infor = '{} fid: {:.4f}'.format(infor, fid)
-            print(infor)
+                infor_1 = '{} fid: {:.4f}'.format(infor_1, fid)
+            print(infor_1)
 
             if self.para_dict['save_log']:
-                save_log(infor, self.file_path, description='_clients')
+                save_log(infor_1, self.file_path, description='_clients_from_a_to_b')
+
+            # evaluation from b to a
+            mae, psnr_2, ssim, fid = self.clients[i].evaluation(direction='from_b_to_a')
+            infor_2 = '{} [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+                infor, self.para_dict['target_domain'], self.para_dict['source_domain'], mae, psnr_2, ssim)
+            if self.para_dict['fid']:
+                infor_2 = '{} fid: {:.4f}'.format(infor_2, fid)
+            print(infor_2)
+
+            if self.para_dict['save_log']:
+                save_log(infor_2, self.file_path, description='_clients_from_b_to_a')
 
             # save resuts of psnr for aggregating models 
             self.client_psnr_list.append(psnr)
@@ -251,12 +273,28 @@ class FederatedTrain():
             save_model(self.client_discr_list['from_b_to_a'], '{}/checkpoint/d_from_a_to_b'.format(self.file_path), self.para_dict, psnr)
 
     def server_inference(self):
-        mae, psnr, ssim, fid = self.server.evaluation()
-        infor = '[Round {}/{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-                        self.round+1, self.para_dict['num_round'], mae, psnr, ssim)
+        # evaluation from a to b
+        mae, psnr, ssim, fid = self.server.evaluation(direction='from_a_to_b')
+        infor = '[Round {}/{}] [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+                        self.round+1, self.para_dict['num_round'], self.para_dict['source_domain'], self.para_dict['target_domain'], mae, psnr, ssim)
         if self.para_dict['fid']:
             infor = '{} fid: {:.4f}'.format(infor, fid)
         print(infor)
+
+        if self.para_dict['save_log']:
+            save_log(infor, self.file_path, description='_server_from_a_to_b')
+
+        # evaluation from b to a
+        mae, psnr, ssim, fid = self.server.evaluation(direction='from_b_to_a')
+        infor = '[Round {}/{}] [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+                        self.round+1, self.para_dict['num_round'], self.para_dict['target_domain'], self.para_dict['source_domain'], mae, psnr, ssim)
+        if self.para_dict['fid']:
+            infor = '{} fid: {:.4f}'.format(infor, fid)
+        print(infor)
+
+        if self.para_dict['save_log']:
+            save_log(infor, self.file_path, description='_server_from_a_to_b')
+
 
         if self.para_dict['plot_distribution']:
             save_img_path = '{}/sample_distribution'.format(self.file_path)
@@ -264,9 +302,6 @@ class FederatedTrain():
                 os.makedirs(save_img_path)
             save_img_path = '{}/round_{}.png'.format(save_img_path, self.round+1)
             self.server.visualize_feature(self.round+1, save_img_path, self.train_loader)
-
-        if self.para_dict['save_log']:
-            save_log(infor, self.file_path, description='_server')
         
         if self.para_dict['save_img']:
             save_img_path = '{}/images/round_{}'.format(self.file_path, self.round+1)

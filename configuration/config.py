@@ -27,21 +27,21 @@ def parse_arguments_federated():
     parser = argparse.ArgumentParser()
     # federated setting
     parser.add_argument('--fed-aggregate-method', '-fam', type=str, default=None)
-    parser.add_argument('--num-round', type=int, default=None)
+    parser.add_argument('--num-round', type=int, default=10)
 
     # centralized setting
-    parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2021'])
+    parser.add_argument('--dataset', '-d', type=str, default='ixi', choices=['ixi', 'brats2021'])
     parser.add_argument('--model', '-m', type=str, default='cyclegan', choices=['cyclegan', 'munit', 'unit'])
-    parser.add_argument('--source-domain', '-s', default='t1', choices=['t1', 't2', 'pd', 'flair'])
-    parser.add_argument('--target-domain', '-t', default='flair', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--source-domain', '-s', default='pd', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--target-domain', '-t', default='t2', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--data-path', '-dp', type=str, default=None)
     parser.add_argument('--valid-path', '-vp', type=str, default=None)
 
     parser.add_argument('--data_mode', '-dm', type=str, default='mixed', choices=['mixed', 'paired', 'unpaired'])
-    parser.add_argument('--data-paired-weight', '-dpw', type=float, default=None, choices=[0., 0.1, 0.3, 0.5, 1.])
+    parser.add_argument('--data-paired-weight', '-dpw', type=float, default=0.5, choices=[0., 0.1, 0.3, 0.5, 1.])
 
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
-    parser.add_argument('--num-epoch', type=int, default=None)
+    parser.add_argument('--num-epoch', type=int, default=3)
     parser.add_argument('--debug', action='store_true', default=None)
     parser.add_argument('--batch-size', type=int, default=None)
 
@@ -68,7 +68,7 @@ def parse_arguments_federated():
     parser.add_argument('--load-model-dir', type=str, default=None)
 
     parser.add_argument('--plot-distribution', action='store_true', default=True)
-    parser.add_argument('--save-img', action='store_true', default=False)
+    parser.add_argument('--save-img', action='store_true', default=True)
     parser.add_argument('--num-img-save', type=int, default=None)
     parser.add_argument('--single-img-infer', action="store_true", default=False)
 
@@ -90,18 +90,18 @@ def parse_arguments_federated():
     
 def parse_arguments_centralized():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2021'])
+    parser.add_argument('--dataset', '-d', type=str, default='ixi', choices=['ixi', 'brats2021'])
     parser.add_argument('--model', '-m', type=str, default='cyclegan', choices=['cyclegan', 'munit', 'unit'])
-    parser.add_argument('--source-domain', '-s', default='t1', choices=['t1', 't2', 'pd', 'flair'])
-    parser.add_argument('--target-domain', '-t', default='flair', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--source-domain', '-s', default='pd', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--target-domain', '-t', default='t2', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--data-path', '-dp', type=str, default=None)
     parser.add_argument('--valid-path', '-vp', type=str, default=None)
 
     parser.add_argument('--data_mode', '-dm', type=str, default='mixed', choices=['mixed', 'paired', 'unpaired'])
-    parser.add_argument('--data-paired-weight', '-dpw', type=float, default=None, choices=[0., 0.1, 0.3, 0.5, 1.])
+    parser.add_argument('--data-paired-weight', '-dpw', type=float, default=0.5, choices=[0., 0.1, 0.3, 0.5, 1.])
 
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
-    parser.add_argument('--num-epoch', type=int, default=None)
+    parser.add_argument('--num-epoch', type=int, default=30)
     parser.add_argument('--debug', action='store_true', default=False)
 
     parser.add_argument('--diff-privacy', action='store_true', default=False) 
@@ -132,7 +132,7 @@ def parse_arguments_centralized():
     parser.add_argument('--load-model', action='store_true', default=False)
     parser.add_argument('--load-model-dir', type=str, default=None)
 
-    parser.add_argument('--save-img', action='store_true', default=False)
+    parser.add_argument('--save-img', action='store_true', default=True)
     parser.add_argument('--num-img-save', type=int, default=None)
     parser.add_argument('--single-img-infer', action='store_true', default=False)
 

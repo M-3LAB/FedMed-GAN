@@ -44,8 +44,10 @@ class Base():
         self.fake = 0
 
         # fid stats
-        self.fid_stats = '{}/{}/{}_{}_fid_stats.npz'.format(
+        self.fid_stats_from_a_to_b = '{}/{}/{}_{}_fid_stats.npz'.format(
             self.config['fid_dir'], self.config['dataset'], self.config['source_domain'], self.config['target_domain'])
+        self.fid_stats_from_b_to_a = '{}/{}/{}_{}_fid_stats.npz'.format(
+            self.config['fid_dir'], self.config['dataset'], self.config['target_domain'], self.config['source_domain'])
 
         if self.config['reg_gan']:
             self.reg = Reg(self.config['size'], self.device).to(self.device)
@@ -260,22 +262,20 @@ class Base():
         self.lr_scheduler_discriminator_from_a_to_b.step()
         self.lr_scheduler_discriminator_from_b_to_a.step()
 
-    @torch.no_grad()
-    def evaluation(self):
+
+    def collect_compute_result_for_evaluation(self):
         # initialize fake_b_list
         fake_b_list = torch.randn(self.config['batch_size'], 1, self.config['size'], self.config['size'])
-        # fake_a_list = torch.randn(self.config['batch_size'], 1, self.config['size'], self.config['size'])
+        fake_a_list = torch.randn(self.config['batch_size'], 1, self.config['size'], self.config['size'])
         # to reduce gpu memory for evaluation
         mae_list, psnr_list, ssim_list = [], [], []
-        # mae_list_2, psnr_list_2, ssim_list_2 = [], [], []
-
         for i, batch in enumerate(self.valid_loader):
             imgs, tmps = self.collect_generated_images(batch=batch)
             real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
 
             if self.config['fid']:
                 fake_b_list = concate_tensor_lists(fake_b_list, fake_b, i)
-                # fake_a_list = concate_tensor_lists(fake_a_list, fake_a, i)
+                fake_a_list = concate_tensor_lists(fake_a_list, fake_a, i)
 
             mae_value = mae(real_b, fake_b) 
             psnr_value = psnr(real_b, fake_b)
@@ -284,19 +284,52 @@ class Base():
             psnr_list.append(psnr_value)
             ssim_list.append(ssim_value)
 
-            # save score of modal a
-            # mae_value = mae(real_a, fake_a) 
-            # psnr_value = psnr(real_a, fake_a)
-            # ssim_value = ssim(real_a, fake_a)
-            # mae_list_2.append(mae_value)
-            # psnr_list_2.append(psnr_value)
-            # ssim_list_2.append(ssim_value)
-             
-        if self.config['fid']:
-            fid_value = fid(fake_b_list, self.config['batch_size_inceptionV3'],
-                            self.config['target_domain'], self.fid_stats, self.device)
-        else:
-            fid_value = 0
+        
+        return fake_b_list, mae_list, psnr_list,  ssim_list
+
+    @torch.no_grad()
+    def evaluation(self, direction='from_a_to_b'):
+    
+        fake_list = torch.randn(self.config['batch_size'], 1, self.config['size'], self.config['size'])
+        mae_list, psnr_list, ssim_list = [], [], []
+        fid_value = 0
+
+        if direction != 'from_a_to_b':
+            for i, batch in enumerate(self.valid_loader):
+                imgs, tmps = self.collect_generated_images(batch=batch)
+                real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
+
+                if self.config['fid']:
+                    fake_list = concate_tensor_lists(fake_list, fake_a, i)
+
+                mae_value = mae(real_a, fake_a) 
+                psnr_value = psnr(real_a, fake_a)
+                ssim_value = ssim(real_a, fake_a)
+                mae_list.append(mae_value)
+                psnr_list.append(psnr_value)
+                ssim_list.append(ssim_value)
+
+            if self.config['fid']:
+                fid_value = fid(fake_list, self.config['batch_size_inceptionV3'],
+                                self.config['source_domain'], self.fid_stats_from_b_to_a, self.device)
+        else: # from a to b
+            for i, batch in enumerate(self.valid_loader):
+                imgs, tmps = self.collect_generated_images(batch=batch)
+                real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
+
+                if self.config['fid']:
+                    fake_list = concate_tensor_lists(fake_list, fake_b, i)
+
+                mae_value = mae(real_b, fake_b) 
+                psnr_value = psnr(real_b, fake_b)
+                ssim_value = ssim(real_b, fake_b)
+                mae_list.append(mae_value)
+                psnr_list.append(psnr_value)
+                ssim_list.append(ssim_value)
+
+            if self.config['fid']:
+                fid_value = fid(fake_list, self.config['batch_size_inceptionV3'],
+                                self.config['target_domain'], self.fid_stats_from_a_to_b, self.device)
 
         return average(mae_list), average(psnr_list), average(ssim_list), fid_value     
 
