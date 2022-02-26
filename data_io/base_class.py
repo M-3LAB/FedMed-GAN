@@ -213,7 +213,7 @@ class BASE_DATASET(torch.utils.data.Dataset):
 
             # case 1, moda_a in moda_a_files, moda_b in moda_b_files
             if self.data_moda_case == 'case1':
-                pass
+                moda_b_files = moda_b_files
             # case 2, moda_a in moda_a_files, moda_b in client_flies(all)
             if self.data_moda_case == 'case2':
                 moda_b_files = client_files
@@ -269,6 +269,7 @@ class BASE_DATASET(torch.utils.data.Dataset):
                 mixed_data = paired_data + unpaired_data
                 random.shuffle(mixed_data)
                 self.client_data_indices.append(mixed_data)
+                self.fedmed_dataset = self.all_data
 
             elif self.data_mode == 'paired':
                 paired_data = []
@@ -277,7 +278,11 @@ class BASE_DATASET(torch.utils.data.Dataset):
                 else:
                     paired_data = self.client_data[i][0][:] # all cases
                 random.shuffle(paired_data)
-                self.client_data_indices.append(paired_data)
+                # self.client_data_indices.append(paired_data)
+                data = []
+                for idx in paired_data:
+                    data.append(self.all_data[idx])
+                self.fedmed_dataset = data
 
             elif self.data_mode == 'unpaired':
                 unpaired_data = []
@@ -286,12 +291,15 @@ class BASE_DATASET(torch.utils.data.Dataset):
                 else:
                     unpaired_data = self.client_data[i][1][:6000] # manually set
                 random.shuffle(unpaired_data)
-                self.client_data_indices.append(unpaired_data)
+                # self.client_data_indices.append(unpaired_data)
+                data = []
+                for idx in unpaired_data:
+                    data.append(self.all_data[idx])
+                self.fedmed_dataset = data
                
             else:
                 raise NotImplementedError('Data Mode is Wrong')
-            
-            self.fedmed_dataset = self.all_data
+
 
     @staticmethod
     def _allocate_client_data(data_len, clients=[1.0]):

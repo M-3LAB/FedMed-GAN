@@ -61,12 +61,10 @@ class CentralizedTrain():
         self.fid_stats_from_b_to_a = '{}/{}/{}_{}_fid_stats.npz'.format(
             self.para_dict['fid_dir'], self.para_dict['dataset'], self.para_dict['target_domain'], self.para_dict['source_domain'])
 
-
         if self.para_dict['fid']:
             if not os.path.exists(self.fid_stats_from_a_to_b):
                 os.system(r'python3 fid_stats.py --dataset {} --source-domain {} --target-domain {} --gpu-id {} --valid-path {}'.format(
                     self.para_dict['dataset'], self.para_dict['source_domain'], self.para_dict['target_domain'], self.para_dict['gpu_id'], self.para_dict['valid_path']))
-            
             if not os.path.exists(self.fid_stats_from_a_to_b):
                 raise NotImplementedError('FID Still Not be Implemented Yet')
             else:
@@ -75,7 +73,6 @@ class CentralizedTrain():
             if not os.path.exists(self.fid_stats_from_b_to_a):
                 os.system(r'python3 fid_stats.py --dataset {} --source-domain {} --target-domain {} --gpu-id {} --valid-path {}'.format(
                     self.para_dict['dataset'], self.para_dict['target_domain'], self.para_dict['source_domain'], self.para_dict['gpu_id'], self.para_dict['valid_path']))
-            
             if not os.path.exists(self.fid_stats_from_b_to_a):
                 raise NotImplementedError('FID Still Not be Implemented Yet')
             else:
@@ -281,28 +278,29 @@ class CentralizedTrain():
         # evaluation from a to b
         mae, psnr, ssim, fid = self.trainer.evaluation(direction='from_a_to_b')
 
-        infor = '[Epoch {}/{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-            self.epoch+1, self.para_dict['num_epoch'], mae, psnr, ssim)
+        infor = '[Epoch {}/{}] [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['source_domain'], self.para_dict['target_domain'], mae, psnr, ssim)
 
         if self.para_dict['fid']:
             infor = '{} fid: {:.4f}'.format(infor, fid)
         print(infor)
         
         if self.para_dict['save_log']:
-            save_log(infor, self.file_path, description='_clients_from_a_to_b')
+            save_log(infor, self.file_path, description='_model_from_a_to_b')
 
         # evaluation from b to a
-        # mae, psnr, ssim, fid = self.trainer.evaluation(direction='from_b_to_a')
+        mae, psnr, ssim, fid = self.trainer.evaluation(direction='from_b_to_a')
 
-        # infor = '[Epoch {}/{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-        #     self.epoch+1, self.para_dict['num_epoch'], mae, psnr, ssim)
+        infor = '[Epoch {}/{}] [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['target_domain'], self.para_dict['source_domain'], mae, psnr, ssim)
 
-        # if self.para_dict['fid']:
-        #     infor = '{} fid: {:.4f}'.format(infor, fid)
-        # print(infor)
+        if self.para_dict['fid']:
+            infor = '{} fid: {:.4f}'.format(infor, fid)
+        print(infor)
 
-        # if self.para_dict['save_log']:
-        #     save_log(infor, self.file_path, description='_clients_from_b_to_a')
+        if self.para_dict['save_log']:
+            save_log(infor, self.file_path, description='_model_from_b_to_a')
+
 
         if self.para_dict['plot_distribution']:
             save_img_path = '{}/sample_distribution'.format(self.file_path)
