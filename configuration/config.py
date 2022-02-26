@@ -63,7 +63,7 @@ def parse_arguments_federated():
     parser.add_argument('--severe-scaling', '-sc', type=float, default=None, choices=[0.9, 1.1, 1.2])
     parser.add_argument('--num-augmentation', '-na', type=str, default=None, choices=['four', 'one', 'two'])
 
-    parser.add_argument('--save-model', action='store_true', default=True)
+    parser.add_argument('--save-model', action='store_true', default=False)
     parser.add_argument('--load-model', action='store_true', default=False)
     parser.add_argument('--load-model-dir', type=str, default=None)
 

@@ -7,7 +7,7 @@ clients_data_weight:
 - 0.1
 fed_aggregate_method: fed-avg
 # no differential privacy
-diff_privacy: false
+diff_privacy: true
 clip_bound: 1
 sensitivity: 2
 noise_multiplier: 1.07
