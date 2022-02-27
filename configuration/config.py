@@ -32,6 +32,7 @@ def parse_arguments_federated():
     parser.add_argument('--clients-data-weight', type=float, default=None, nargs='+')
     parser.add_argument('--clip-bound', type=float, default=None)
     parser.add_argument('--noise-multiplier', type=float, default=None)
+    parser.add_argument('--not-test-client', '-ntc', action='store_true', default=False)
 
     # centralized setting
     parser.add_argument('--dataset', '-d', type=str, default='ixi', choices=['ixi', 'brats2021'])

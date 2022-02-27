@@ -223,27 +223,29 @@ class FederatedTrain():
 
                 self.clients[i].train_epoch(inf=infor)
 
-            # evaluation from a to b
-            mae, psnr, ssim, fid = self.clients[i].evaluation(direction='from_a_to_b')
-            infor_1 = '{} [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-                infor, self.para_dict['source_domain'], self.para_dict['target_domain'], mae, psnr, ssim)
-            if self.para_dict['fid']:
-                infor_1 = '{} fid: {:.4f}'.format(infor_1, fid)
-            print(infor_1)
+            psnr = 0
+            if not self.para_dict['not_test_client']:
+                # evaluation from a to b
+                mae, psnr, ssim, fid = self.clients[i].evaluation(direction='from_a_to_b')
+                infor_1 = '{} [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+                    infor, self.para_dict['source_domain'], self.para_dict['target_domain'], mae, psnr, ssim)
+                if self.para_dict['fid']:
+                    infor_1 = '{} fid: {:.4f}'.format(infor_1, fid)
+                print(infor_1)
 
-            if self.para_dict['save_log']:
-                save_log(infor_1, self.file_path, description='_clients_from_a_to_b')
+                if self.para_dict['save_log']:
+                    save_log(infor_1, self.file_path, description='_clients_from_a_to_b')
 
-            # evaluation from b to a
-            mae, psnr_2, ssim, fid = self.clients[i].evaluation(direction='from_b_to_a')
-            infor_2 = '{} [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-                infor, self.para_dict['target_domain'], self.para_dict['source_domain'], mae, psnr_2, ssim)
-            if self.para_dict['fid']:
-                infor_2 = '{} fid: {:.4f}'.format(infor_2, fid)
-            print(infor_2)
+                # evaluation from b to a
+                mae, psnr_2, ssim, fid = self.clients[i].evaluation(direction='from_b_to_a')
+                infor_2 = '{} [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+                    infor, self.para_dict['target_domain'], self.para_dict['source_domain'], mae, psnr_2, ssim)
+                if self.para_dict['fid']:
+                    infor_2 = '{} fid: {:.4f}'.format(infor_2, fid)
+                print(infor_2)
 
-            if self.para_dict['save_log']:
-                save_log(infor_2, self.file_path, description='_clients_from_b_to_a')
+                if self.para_dict['save_log']:
+                    save_log(infor_2, self.file_path, description='_clients_from_b_to_a')
 
             # save resuts of psnr for aggregating models 
             self.client_psnr_list.append(psnr)

@@ -13,7 +13,7 @@ sensitivity: 2
 noise_multiplier: 1.07
 # training
 batch_size: 4 
-gpu_id: 0
+gpu_id: 1
 gpu_ids:
 - '01234567'
 lr: 0.0001
@@ -27,6 +27,7 @@ work_dir: ./work_dir
 save_log: true
 save_img: false
 debug: false 
+not_test_client: false
 # plot sample
 plot_distribution: false
 plot_num_sample: 2000
