@@ -28,6 +28,8 @@ def parse_arguments_federated():
     # federated setting
     parser.add_argument('--fed-aggregate-method', '-fam', type=str, default=None)
     parser.add_argument('--num-round', type=int, default=10)
+    parser.add_argument('--num-clients', type=int, default=None)
+    parser.add_argument('--clients-data-weight', type=float, default=None, nargs='+')
 
     # centralized setting
     parser.add_argument('--dataset', '-d', type=str, default='ixi', choices=['ixi', 'brats2021'])
