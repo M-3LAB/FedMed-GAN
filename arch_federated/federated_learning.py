@@ -293,7 +293,7 @@ class FederatedTrain():
         print(infor)
 
         if self.para_dict['save_log']:
-            save_log(infor, self.file_path, description='_server_from_a_to_b')
+            save_log(infor, self.file_path, description='_server_from_b_to_a')
 
 
         if self.para_dict['plot_distribution']:
