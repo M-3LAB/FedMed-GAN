@@ -262,6 +262,9 @@ class BASE_DATASET(torch.utils.data.Dataset):
                 unpaired_num = data_num - paired_num
 
                 if paired_num > self.data_total_num_list[i][0] or unpaired_num > self.data_total_num_list[i][1]:
+                    print('clinet: {}'.format(i))
+                    print('desire num of paired: {}, original num: {}'.format(paired_num, self.data_total_num_list[i][0]))
+                    print('desire num of unpaired: {}, original num: {}'.format(unpaired_num, self.data_total_num_list[i][1]))
                     raise ValueError('Not Enough Desired Data')
 
                 paired_data = self.client_data[i][0][:paired_num]
