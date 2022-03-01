@@ -14,10 +14,10 @@ class BraTS2019(BASE_DATASET):
                                         data_moda_ratio=data_moda_ratio, data_moda_case=data_moda_case)
         # infer assigned images
         self.fedmed_dataset = assigned_images
+        self._get_transform_modalities()
 
         if not assigned_data:
             self._check_noise_type()   
-            self._get_transform_modalities()
             self._check_sanity()
             self._generate_dataset()
             self._generate_client_indice()
