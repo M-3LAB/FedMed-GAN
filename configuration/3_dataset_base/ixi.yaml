@@ -15,12 +15,10 @@ size: 256
 num_img_save: 5
 single_img_infer: false
 assigned_images: [['IXI002-Guys-0828', 'IXI002-Guys-0828', 80], 
-                  ['IXI012-HH-1211', 'IXI012-HH-1211', 80],
-                  ['IXI106-Guys-0760', 'IXI106-Guys-0760', 80],
-                  ['IXI230-IOP-0869', 'IXI230-IOP-0869', 80],
-                  ['IXI508-HH-2268', 'IXI508-HH-2268', 80],
-                  ['IXI151-Guys-0793', 'IXI151-Guys-0793', 80],
-                  ['IXI090-Guys-0800', 'IXI090-Guys-0800', 80],
-                  ['IXI095-HH-1390', 'IXI095-HH-1390', 80]]
+                  ['IXI305-IOP-0871', 'IXI305-IOP-0871', 55],
+                  ['IXI508-HH-2268', 'IXI508-HH-2268', 74],
+                  ['IXI151-Guys-0793', 'IXI151-Guys-0793', 60],
+                  ['IXI297-Guys-0886', 'IXI297-Guys-0800', 77],
+                  ['IXI252-HH-1693', 'IXI252-HH-1693', 56]]
 
 
