@@ -200,7 +200,7 @@ class CentralizedTrain():
             self.assigned_dataset = IXI(root=self.para_dict['data_path'],
                                      modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                      extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                     noise_type='severe',
+                                     noise_type='normal',
                                      learn_mode='test',
                                      transform_data=self.severe_transform,
                                      data_mode='paired',
