@@ -221,7 +221,6 @@ class CentralizedTrain():
         self.assigned_loader = DataLoader(self.assigned_dataset, num_workers=self.para_dict['num_workers'],
                                  batch_size=1, shuffle=False)
 
-
     def init_model(self):
         if self.para_dict['model'] == 'cyclegan':
             self.trainer = CycleGAN(self.para_dict, self.train_loader, self.valid_loader,
