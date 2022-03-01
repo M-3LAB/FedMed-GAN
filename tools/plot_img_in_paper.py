@@ -97,51 +97,50 @@ def plot_sample():
 
 def plot_multi_imgs_centralized_in_paper(input_path, output_path):
 
-    plt.figure(figsize=(5*6, 4))
-    for i, j in enumerate([3, 6,  9, 12, 15, 30]):
+    plt.figure(figsize=(5*5, 4))
+    for i, j in enumerate([3, 6, 9, 15, 30]):
         input_img = '{}/sample_distribution/epoch_{}.npy'.format(input_path, j)
         real_a, fake_a, real_b, fake_b = np.load(input_img, allow_pickle=True)
         descript = 'Epoch'
         step = j
 
-        plt.subplot(1, 6, i+1)
+        plt.subplot(1, 5, i+1)
         plt.scatter(real_a[:400, 0], real_a[:400, 1], color='b', label='Real A', s=1, alpha=0.5)
         plt.scatter(fake_a[:400, 0], fake_a[:400, 1], color='r', label='Fake A', s=1, alpha=0.5)
-        plt.scatter(real_b[:400, 0], real_b[:400, 1], color='k', label='Real B', s=1, alpha=0.5)
-        plt.scatter(fake_b[:400, 0], fake_b[:400, 1], color='g', label='Fake B', s=1, alpha=0.5)
+        # plt.scatter(real_b[:400, 0], real_b[:400, 1], color='k', label='Real B', s=1, alpha=0.5)
+        # plt.scatter(fake_b[:400, 0], fake_b[:400, 1], color='g', label='Fake B', s=1, alpha=0.5)
 
         plt.xlim((0.1, 0.4))
         plt.ylim((0.1, 0.4))
         plt.grid()
-        plt.legend(loc=1, fontsize=8)
-        plt.title('{}: {}'.format(descript, step))
+        plt.legend(loc='lower left', fontsize=12, markerscale=5)
+        plt.title('{}: {}'.format(descript, step), fontdict={'weight':'normal','size':20})
 
     plt.savefig(output_path, bbox_inches='tight', pad_inches=0.2)
     plt.close()
 
-
 def plot_multi_imgs_federated_in_paper(input_path, output_path):
-    plt.figure(figsize=(5*6, 4))
-    for i, j in enumerate([1, 2, 3, 4, 5, 10]):
+    plt.figure(figsize=(5*5, 4))
+    for i, j in enumerate([1, 2, 3, 5, 10]):
         input_img = '{}/sample_distribution/round_{}.npy'.format(input_path, j)
         real_a, fake_a, real_b, fake_b = np.load(input_img, allow_pickle=True)
         descript = 'Round'
         step = j
 
-        plt.subplot(1, 6, i+1)
+        plt.subplot(1, 5, i+1)
         plt.scatter(real_a[:400, 0], real_a[:400, 1], color='b', label='Real A', s=1, alpha=0.5)
         plt.scatter(fake_a[:400, 0], fake_a[:400, 1], color='r', label='Fake A', s=1, alpha=0.5)
-        plt.scatter(real_b[:400, 0], real_b[:400, 1], color='k', label='Real B', s=1, alpha=0.5)
-        plt.scatter(fake_b[:400, 0], fake_b[:400, 1], color='g', label='Fake B', s=1, alpha=0.5)
+        # plt.scatter(real_b[:400, 0], real_b[:400, 1], color='k', label='Real B', s=1, alpha=0.5)
+        # plt.scatter(fake_b[:400, 0], fake_b[:400, 1], color='g', label='Fake B', s=1, alpha=0.5)
 
         plt.xlim((0.1, 0.4))
-        # if i == 0:
-        #     plt.xlim(0.2, 0.5)
+        if i == 0:
+            plt.xlim(0.2, 0.5)
 
         plt.ylim((0.1, 0.4))
         plt.grid()
-        plt.legend(loc=1, fontsize=8)
-        plt.title('{}: {}'.format(descript, step))
+        plt.legend(loc='lower left', fontsize=12, markerscale=5)
+        plt.title('{}: {}'.format(descript, step), fontdict={'weight':'normal','size':20})
 
     plt.savefig(output_path, bbox_inches='tight', pad_inches=0.2)
     plt.close()
@@ -233,21 +232,21 @@ if __name__ == '__main__':
     # plot_multi_imgs_ixi_centralized()
     # plot_multi_imgs_ixi_federated()
 
-    # ixi_central = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/work_dir/centralized/ixi/pd-t2'
-    # img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/ixi_central_pd_t2.png'
-    # plot_multi_imgs_centralized_in_paper(ixi_central, img_path)
+    ixi_central = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/work_dir/centralized/ixi/pd-t2'
+    img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/ixi_central_pd_t2.png'
+    plot_multi_imgs_centralized_in_paper(ixi_central, img_path)
 
-    # ixi_central_dp = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/work_dir/centralized/ixi/pd-t2-dp'
-    # img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/ixi_centeral_pd_t2_dp.png'
-    # plot_multi_imgs_centralized_in_paper(ixi_central_dp, img_path)
+    ixi_central_dp = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/work_dir/centralized/ixi/pd-t2-dp'
+    img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/ixi_centeral_pd_t2_dp.png'
+    plot_multi_imgs_centralized_in_paper(ixi_central_dp, img_path)
     
-    # ixi_federate = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/work_dir/federated/ixi/pd-t2'
-    # img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/ixi_federate_pd_t2.png'
-    # plot_multi_imgs_federated_in_paper(ixi_federate, img_path)
+    ixi_federate = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/work_dir/federated/ixi/pd-t2'
+    img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/ixi_federate_pd_t2.png'
+    plot_multi_imgs_federated_in_paper(ixi_federate, img_path)
 
-    # ixi_federate_no_dp = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/work_dir/federated/ixi/pd-t2-no-dp'
-    # img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/ixi_federate_pd_t2-no-dp.png'
-    # plot_multi_imgs_federated_in_paper(ixi_federate_no_dp, img_path)
+    ixi_federate_no_dp = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/work_dir/federated/ixi/pd-t2-no-dp'
+    img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/ixi/ixi_federate_pd_t2-no-dp.png'
+    plot_multi_imgs_federated_in_paper(ixi_federate_no_dp, img_path)
 
     # brats2021
     # brats_central = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/work_dir/centralized/brats2021/t1-flair'
@@ -266,5 +265,5 @@ if __name__ == '__main__':
     # img_path = '/home/xgy/jb-wang/M-3LAB/FedMed-GAN/legacy_code/vis_sample/brats2021/brats_federate_t1_flair-no-dp.png'
     # plot_multi_imgs_federated_in_paper(brats_federate_no_dp, img_path)
 
-    cyclegan_ixi_pd_t2_fed_avg()
-    cyclegan_ixi_pd_t2_fed_avg_no_dp()
+    # cyclegan_ixi_pd_t2_fed_avg()
+    # cyclegan_ixi_pd_t2_fed_avg_no_dp()
