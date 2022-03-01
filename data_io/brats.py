@@ -13,15 +13,11 @@ class BraTS2019(BASE_DATASET):
                                         data_mode=data_mode, data_num=data_num, data_paired_weight=data_paired_weight,
                                         data_moda_ratio=data_moda_ratio, data_moda_case=data_moda_case)
         # infer assigned images
-        self.assigned_data = assigned_data
-        self.assigned_images = assigned_images
+        self.fedmed_dataset = assigned_images
 
-        self._check_noise_type()   
-        self._get_transform_modalities()
-
-        if self.assigned_data:
-            self.dataset = self.assigned_images
-        else: 
+        if not assigned_data:
+            self._check_noise_type()   
+            self._get_transform_modalities()
             self._check_sanity()
             self._generate_dataset()
             self._generate_client_indice()
