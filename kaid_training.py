@@ -9,7 +9,7 @@ from model.FT.fourier_transform import *
 from model.FT.power_spectrum import *
 from metrics.kid.stats import *
 import numpy as np
-from model.ae.kid_ae import *
+from model.ae.kaid_ae import *
 from loss_function.simclr_loss import *
 from loss_function.common import cosine_similiarity
 from loss_function.triplet_loss import triplet_loss
@@ -159,13 +159,13 @@ if __name__ == '__main__':
         beta_b = np.load(para_dict['tag_beta_init_path'])
     
     # Model
-    kid_ae = KIDAE().to(device)
+    kaid_ae = KAIDAE().to(device)
     # Loss
     criterion_recon = torch.nn.L1Loss().to(device)
     #TODO: Triplet Loss Function added
 
     # Optimizer
-    optimizer = torch.optim.Adam(kid_ae.parameters(), lr=para_dict['lr'],
+    optimizer = torch.optim.Adam(kaid_ae.parameters(), lr=para_dict['lr'],
                                  betas=[para_dict['beta1'], para_dict['beta2']])
 
     # Scheduler
@@ -220,11 +220,11 @@ if __name__ == '__main__':
 
             optimizer.zero_grad()
 
-            real_a_hf_z, real_a_hf_hat = kid_ae(real_a_hf_mag)
-            real_a_lf_z, real_a_lf_hat = kid_ae(real_a_lf_mag)
+            real_a_hf_z, real_a_hf_hat = kaid_ae(real_a_hf_mag)
+            real_a_lf_z, real_a_lf_hat = kaid_ae(real_a_lf_mag)
 
-            real_b_hf_z, real_b_hf_hat = kid_ae(real_b_hf_mag)
-            real_b_lf_z, real_b_lf_hat = kid_ae(real_b_lf_mag)
+            real_b_hf_z, real_b_hf_hat = kaid_ae(real_b_hf_mag)
+            real_b_lf_z, real_b_lf_hat = kaid_ae(real_b_lf_mag)
 
             """
             Reconstruction

@@ -2,12 +2,12 @@ import torch
 import torch.nn as nn
 from model.cyclegan.cyclegan import UNetDown, UNetUp
 
-__all__ = ['KIDAE']
+__all__ = ['KAIDAE']
 
-class KIDAE(nn.Module):
+class KAIDAE(nn.Module):
 
     def __init__(self):
-        super(KIDAE, self).__init__()
+        super(KAIDAE, self).__init__()
         self.down1 = UNetDown(1, 64)
         self.down2 = UNetDown(64, 128)
         self.down3 = UNetDown(128, 256)
