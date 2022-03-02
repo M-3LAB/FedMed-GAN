@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 from tools.utilize import *
 from model.FT.fourier_transform import * 
 from model.FT.power_spectrum import *
-from metrics.kid.stats import *
+from metrics.kaid.stats import *
 import numpy as np
 from model.ae.kaid_ae import *
 from loss_function.simclr_loss import *
