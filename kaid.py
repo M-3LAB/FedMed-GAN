@@ -279,3 +279,5 @@ if __name__ == '__main__':
         generator = UG().to(device) 
     else:
         raise NotImplementedError('GAN Model Has Not Been Implemented Yet')
+    
+    #TODO: synthesis data loader

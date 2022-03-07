@@ -9,7 +9,6 @@ def parse_arguments_kid():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2021'])
     parser.add_argument('--noise-type', type=str, default='gaussian', choices=['normal', 'gaussian', 'slight', 'severe'])
-    parser.add_argument('--model', '-m', type=str, default='cyclegan', choices=['cyclegan', 'muint', 'unit'])
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--debug', action='store_true', default=None)
     parser.add_argument('--bise-stats', action='store_true', default=None)
@@ -22,6 +21,7 @@ def parse_arguments_kid():
     parser.add_argument('--debug', action='store_true', default=False)
     parser.add_argument('--pair-num', type=int, default=10000)
     parser.add_argument('--test-model', type=str, default='cyclegan', choices=['cyclegan','munit','unit'])
+    parser.add_argument('--mode', type=str, default='training')
     args = parser.parse_args()
     return args
 
