@@ -202,6 +202,7 @@ if __name__ == '__main__':
         batch_limit = int(para_dict['pair_num'] / para_dict['batch_size'])
 
     # Training 
+    #TODO: Alternative Training for different training loader
     for epoch in range(para_dict['num_epochs']):
         for i, batch in enumerate(normal_loader): 
         #TODO: noisy loader
@@ -269,15 +270,39 @@ if __name__ == '__main__':
                         '', i, batch_limit, loss_recon.item(), kid_triplet_loss.item())
     
     #Prediction
+    #TODO: Load GAN Model and KAID  
     if para_dict['test_model'] == 'cyclegan':
-        generator = CycleGen().to(device) 
+        generator_from_a_to_b = CycleGen().to(device) 
+        generator_from_b_to_a = CycleGen().to(device)
     elif para_dict['test_model'] == 'munit':
-        g_encoder = MUE().to(device)
-        g_decoder = MUD().to(device)
+
+        encoder_from_a_to_b = MUE().to(device)
+        decoder_from_a_to_b = MUD().to(device)
+
+        encoder_from_b_to_a = MUE().to(device)
+        decoder_from_b_to_a = MUD().to(device)
+
     elif para_dict['test_model'] == 'unit':
-        g_encoder = UE().to(device)
-        generator = UG().to(device) 
+
+        encoder_from_a_to_b = UE().to(device)
+        generator_from_a_to_b = UG().to(device) 
+        encoder_from_b_to_a = UE().to(device)
+        generator_from_b_to_a = UG().to(device) 
+
     else:
         raise NotImplementedError('GAN Model Has Not Been Implemented Yet')
     
     #TODO: synthesis data loader
+
+    for i, batch in enumerate(normal_loader): 
+        if i > batch_limit:
+                break
+
+        real_a = batch[para_dict['source_domain']]
+        real_b = batch[para_dict['target_domain']]
+        
+        # Synthesize Image 
+        if para_dict['test_model'] == 'cyclegan':
+            fake_b = generator_from_a_to_b(real_a)
+            fake_a = generator_from_b_to_a(real_b)
+    
