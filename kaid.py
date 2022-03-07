@@ -311,5 +311,7 @@ if __name__ == '__main__':
             pass
         else:
             raise NotImplementedError('Synthesis Model Not implemented yet')
+        
+        #Distance Begin to Calculate
             
     
