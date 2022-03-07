@@ -1,3 +1,4 @@
+from distutils.command.config import config
 import torch
 import yaml
 from configuration.config import parse_arguments_bise
@@ -189,11 +190,18 @@ if __name__ == '__main__':
     else:
         raise NotImplementedError('New Dataset Has Not Been Implemented Yet')
         
+    # Debug Mode
+    if para_dict['debug']:
+        batch_limit = 2
+
     # Training 
     for epoch in range(para_dict['num_epochs']):
         for i, batch in enumerate(ixi_normal_loader): 
-            if i > batch_limit:
-                break
+
+            if para_dict['debug']:
+                if i > batch_limit:
+                    break
+
             real_a = batch[para_dict['source_domain']]
             real_b = batch[para_dict['target_domain']]
 

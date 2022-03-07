@@ -19,6 +19,7 @@ def parse_arguments_kid():
     parser.add_argument('--num-epochs', type=int)
     parser.add_argument('--lambda-recon', type=float, default=1.0, help='weight for reconstruction loss')
     parser.add_argument('--lambda-triplet', type=float, default=1.0, help='weight for triplet loss')
+    parser.add_argument('--debug', action='store_true', default=False)
     args = parser.parse_args()
     return args
 
