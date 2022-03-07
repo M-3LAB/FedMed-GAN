@@ -193,14 +193,15 @@ if __name__ == '__main__':
     # Debug Mode
     if para_dict['debug']:
         batch_limit = 2
+    else:
+        batch_limit = int(para_dict['pair_num'] / para_dict['batch_size'])
 
     # Training 
     for epoch in range(para_dict['num_epochs']):
         for i, batch in enumerate(ixi_normal_loader): 
 
-            if para_dict['debug']:
-                if i > batch_limit:
-                    break
+            if i > batch_limit:
+                break
 
             real_a = batch[para_dict['source_domain']]
             real_b = batch[para_dict['target_domain']]
@@ -243,20 +244,19 @@ if __name__ == '__main__':
             loss_recon_real_a_lf = criterion_recon(real_a_lf_mag, real_a_lf_hat) 
             loss_recon_real_b_lf = criterion_recon(real_b_lf_mag, real_b_lf_hat)
 
-            loss_recon_total = (loss_recon_real_a_hf + loss_recon_real_b_hf 
+            loss_recon = (loss_recon_real_a_hf + loss_recon_real_b_hf 
                                 + loss_recon_real_a_lf + loss_recon_real_b_lf)
 
             """
             Triplet Loss
             """
             kid_triplet_loss = triplet_loss()
-            loss_total = kid_triplet_loss + loss_recon_total
+            loss_total = kid_triplet_loss + loss_recon
 
             loss_total.backward()
             optimizer.step()
             lr_scheduler.step()
 
             # Print Log
-            infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [Triplet loss: {:.4f}]'.format('', i, self.batch_limit,
-                        loss_generator_from_a_to_b.item(), loss_generator_from_b_to_a.item(),
-                        loss_discriminator_from_a_to_b.item(), loss_discriminator_from_b_to_a.item())
+            infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [Triplet loss: {:.4f}]'.format(
+                        '', i, batch_limit, loss_recon.item(), kid_triplet_loss.item())
