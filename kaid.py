@@ -310,7 +310,7 @@ if __name__ == '__main__':
         elif para_dict['test_model'] == 'unit':
             pass
         else:
-            raise NotImplementedError('Synthesis Model Not implemented yet')
+            raise NotImplementedError('Synthesis Model Not Implemented Yet')
         
         #Distance Begin to Calculate
         real_a_z = kaid_ae.encode(real_a)    
@@ -318,4 +318,6 @@ if __name__ == '__main__':
 
         real_b_z = kaid_ae.encode(real_b)
         fake_b_z = kaid_ae.encode(fake_b)
+
+        
     
