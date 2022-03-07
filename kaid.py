@@ -12,7 +12,7 @@ from metrics.kaid.stats import *
 import numpy as np
 from model.ae.kaid_ae import *
 from loss_function.simclr_loss import *
-from loss_function.common import cosine_similiarity
+from loss_function.common import cosine_similiarity, l1_diff, l2_diff
 from loss_function.triplet_loss import triplet_loss
 from model.cyclegan.cyclegan import CycleGen 
 from model.munit.munit import Encoder as MUE
