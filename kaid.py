@@ -313,5 +313,9 @@ if __name__ == '__main__':
             raise NotImplementedError('Synthesis Model Not implemented yet')
         
         #Distance Begin to Calculate
-            
+        real_a_z = kaid_ae.encode(real_a)    
+        fake_a_z = kaid_ae.encode(fake_a)
+
+        real_b_z = kaid_ae.encode(real_b)
+        fake_b_z = kaid_ae.encode(fake_b)
     
