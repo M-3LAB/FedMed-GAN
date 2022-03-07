@@ -17,6 +17,7 @@ from loss_function.triplet_loss import triplet_loss
 from model.cyclegan.cyclegan import CycleGen 
 from model.munit.munit import Encoder as MUE
 from model.munit.munit import Decoder as MUD
+from model.unit.unit import Encoder as UE 
 
 
 if __name__ == '__main__':
