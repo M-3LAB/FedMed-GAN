@@ -21,6 +21,7 @@ def parse_arguments_kid():
     parser.add_argument('--lambda-triplet', type=float, default=1.0, help='weight for triplet loss')
     parser.add_argument('--debug', action='store_true', default=False)
     parser.add_argument('--pair-num', type=int, default=10000)
+    parser.add_argument()
     args = parser.parse_args()
     return args
 

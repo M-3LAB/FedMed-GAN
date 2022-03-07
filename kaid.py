@@ -255,6 +255,7 @@ if __name__ == '__main__':
             """
             Triplet Loss
             """
+            #TODO: KAID Triplet Loss
             kid_triplet_loss = triplet_loss()
             loss_total = kid_triplet_loss + loss_recon
 
