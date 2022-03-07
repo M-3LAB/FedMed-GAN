@@ -14,6 +14,9 @@ from model.ae.kaid_ae import *
 from loss_function.simclr_loss import *
 from loss_function.common import cosine_similiarity
 from loss_function.triplet_loss import triplet_loss
+from model.cyclegan.cyclegan import CycleGen 
+from model.munit.munit import Encoder as MUE
+from model.munit.munit import Decoder as MUD
 
 
 if __name__ == '__main__':
@@ -128,7 +131,7 @@ if __name__ == '__main__':
     else:
         raise NotImplementedError("New Data Has Not Been Implemented")
 
-    #TODO: make sure normal and nosie loader release the same order of dataset
+    #TODO: make sure normal and nosiy loader release the same order of dataset
     if para_dict['dataset'] == 'ixi':
         ixi_normal_loader = DataLoader(ixi_normal_dataset, num_workers=para_dict['num_workers'],
                                        batch_size=para_dict['batch_size'], shuffle=True)
@@ -198,7 +201,8 @@ if __name__ == '__main__':
 
     # Training 
     for epoch in range(para_dict['num_epochs']):
-        for i, batch in enumerate(ixi_normal_loader): 
+        for i, batch in enumerate(normal_loader): 
+        #TODO: noisy loader
 
             if i > batch_limit:
                 break
@@ -260,3 +264,5 @@ if __name__ == '__main__':
             # Print Log
             infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [Triplet loss: {:.4f}]'.format(
                         '', i, batch_limit, loss_recon.item(), kid_triplet_loss.item())
+    
+    #Prediction
