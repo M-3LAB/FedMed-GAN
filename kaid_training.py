@@ -189,8 +189,7 @@ if __name__ == '__main__':
     else:
         raise NotImplementedError('New Dataset Has Not Been Implemented Yet')
         
-        
-    # Fourier Transform 
+    # Training 
     for epoch in range(para_dict['num_epochs']):
         for i, batch in enumerate(ixi_normal_loader): 
             if i > batch_limit:
@@ -198,6 +197,7 @@ if __name__ == '__main__':
             real_a = batch[para_dict['source_domain']]
             real_b = batch[para_dict['target_domain']]
 
+            # Fourier Transform 
             real_a_kspace = torch_fft(real_a)
             real_b_kspace = torch_fft(real_b)
 
@@ -235,13 +235,20 @@ if __name__ == '__main__':
             loss_recon_real_a_lf = criterion_recon(real_a_lf_mag, real_a_lf_hat) 
             loss_recon_real_b_lf = criterion_recon(real_b_lf_mag, real_b_lf_hat)
 
-            loss_total = loss_recon_real_a_hf + loss_recon_real_b_hf + loss_recon_real_a_lf + loss_recon_real_b_lf
+            loss_recon_total = (loss_recon_real_a_hf + loss_recon_real_b_hf 
+                                + loss_recon_real_a_lf + loss_recon_real_b_lf)
 
             """
             Triplet Loss
             """
             kid_triplet_loss = triplet_loss()
+            loss_total = kid_triplet_loss + loss_recon_total
 
             loss_total.backward()
             optimizer.step()
             lr_scheduler.step()
+
+            # Print Log
+            infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [Triplet loss: {:.4f}]'.format('', i, self.batch_limit,
+                        loss_generator_from_a_to_b.item(), loss_generator_from_b_to_a.item(),
+                        loss_discriminator_from_a_to_b.item(), loss_discriminator_from_b_to_a.item())
