@@ -23,7 +23,7 @@ from model.unit.unit import Generator as UG
 
 if __name__ == '__main__':
     args = parse_arguments_bise()
-    with open('./configuration/kid/kid_{}.yaml'.format(args.dataset), 'r') as f:
+    with open('./configuration/kaid/kaid_{}.yaml'.format(args.dataset), 'r') as f:
         para_dict = yaml.load(f, Loader=yaml.SafeLoader)
     para_dict = merge_config(para_dict, args)
     print(para_dict)
@@ -258,8 +258,8 @@ if __name__ == '__main__':
             Triplet Loss
             """
             #TODO: KAID Triplet Loss
-            kid_triplet_loss = triplet_loss()
-            loss_total = kid_triplet_loss + loss_recon
+            kaid_triplet_loss = triplet_loss()
+            loss_total = kaid_triplet_loss + loss_recon
 
             loss_total.backward()
             optimizer.step()
@@ -267,7 +267,7 @@ if __name__ == '__main__':
 
             # Print Log
             infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [Triplet loss: {:.4f}]'.format(
-                        '', i, batch_limit, loss_recon.item(), kid_triplet_loss.item())
+                        '', i, batch_limit, loss_recon.item(), kaid_triplet_loss.item())
     
     #Prediction
     #TODO: Load GAN Model and KAID  

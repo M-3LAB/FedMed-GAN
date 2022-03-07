@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-__all__ = ['minibatch_stddev_layer', 'l1_diff', 'l2_diff']
+__all__ = ['minibatch_stddev_layer']
 
 def minibatch_stddev_layer(input, stddev_group=4, stddev_feat=1):
     batch, channel, height, width = input.shape
@@ -16,30 +16,5 @@ def minibatch_stddev_layer(input, stddev_group=4, stddev_feat=1):
 
     return torch.cat([input, stddev], 1)
 
-def l1_diff(z_1, z_2):
-    """
-    L1 Difference
 
-    Args:
-        z_1 (vector): the hidden space of real image
-        z_2 (vector): the hidden space of fake image 
-    
-    Output:
-        the l1 difference between two hidden space 
-    
-    """
-    pass 
-
-def l2_diff(z_1, z_2):
-    """
-    L2 Difference
-
-    Args:
-        z_1 (vector): the hidden space of real image 
-        z_2 (vector): the hidden space of fake image 
-    
-    Output:
-        the l2 difference between two hidden space
-    """
-    pass 
     
