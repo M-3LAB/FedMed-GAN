@@ -18,6 +18,7 @@ from model.cyclegan.cyclegan import CycleGen
 from model.munit.munit import Encoder as MUE
 from model.munit.munit import Decoder as MUD
 from model.unit.unit import Encoder as UE 
+from model.unit.unit import Generator as UG
 
 
 if __name__ == '__main__':
@@ -268,3 +269,13 @@ if __name__ == '__main__':
                         '', i, batch_limit, loss_recon.item(), kid_triplet_loss.item())
     
     #Prediction
+    if para_dict['test_model'] == 'cyclegan':
+        generator = CycleGen().to(device) 
+    elif para_dict['test_model'] == 'munit':
+        g_encoder = MUE().to(device)
+        g_decoder = MUD().to(device)
+    elif para_dict['test_model'] == 'unit':
+        g_encoder = UE().to(device)
+        generator = UG().to(device) 
+    else:
+        raise NotImplementedError('GAN Model Has Not Been Implemented Yet')
