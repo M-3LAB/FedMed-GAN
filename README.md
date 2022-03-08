@@ -78,7 +78,7 @@ python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd'
 
 > BraTS2021 ['t1', 't2', 'flair']
 ```bash
-python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd'
+python3 kaid.py --dataset 'brats2021' --source-domain 't1' --target-domain 't2'
 ```
 
 ## Implementations of Data Processing
