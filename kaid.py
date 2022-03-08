@@ -322,6 +322,11 @@ if __name__ == '__main__':
         if para_dict['diff_method'] == 'l1':
             diff_a = l1_diff(real_a_z, fake_a_z)
             diff_b = l1_diff(real_b_z, fake_b_z)
+        elif para_dict['diff_method'] == 'l2':
+            diff_a = l2_diff(real_a_z, fake_a_z)
+            diff_b = l2_diff(real_b_z, fake_b_z)
+        else:
+            raise NotImplementedError('The Difference Method Has Not Been Calculated Yet')
 
 
         
