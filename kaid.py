@@ -1,5 +1,6 @@
 from distutils.command.config import config
 import torch
+import torch.nn as nn
 import yaml
 from configuration.config import parse_arguments_bise
 from data_io.ixi import IXI
