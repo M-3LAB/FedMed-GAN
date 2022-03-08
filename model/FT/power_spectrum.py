@@ -1,6 +1,6 @@
 import numpy as np
 
-__all__ == ['power_spectrum_1d']
+__all__ = ['power_spectrum_1d']
 
 def power_spectrum_1d(image, center=None):
     """
