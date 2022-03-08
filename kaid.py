@@ -66,7 +66,7 @@ if __name__ == '__main__':
                             'scale': [para_dict['b_scale_lower_limit'], para_dict['b_scale_uppper_limit']],
                             'size': (para_dict['size'], para_dict['size']),'fillcolor': 0}]
 
-    elif para_dict['noise_type'] == 'slight':
+    elif para_dict['noise_type'] == 'severe':
         noise_transform = [{'degrees':para_dict['severe_rotation'], 
                             'translate':[para_dict['severe_translation'], para_dict['severe_translation']],
                             'scale':[1-para_dict['severe_scaling'], 1+para_dict['severe_scaling']], 
