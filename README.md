@@ -70,6 +70,12 @@ python3 centralized_training.py --dataset 'brats2021' --model 'cyclegan' --sourc
 python3 centralized_training.py --dataset 'ixi' --model 'cyclegan' --source-domain 'pd' --target-domain 't2' --data-path '/disk1/medical/ixi' --valid-path '/disk1/medical/ixi'  
 ```
 
+## KAID Training
+> IXI  ['t2', 'pd']
+```bash
+python3 kaid.py
+```
+
 ## Implementations of Data Processing
 Sereval modes are described in the new settings of FedMed.
 
