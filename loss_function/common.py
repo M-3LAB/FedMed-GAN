@@ -11,13 +11,13 @@ def cosine_similiarity(t1, t2):
     """
     pass
 
-def l1_diff(z_1, z_2):
+def l1_diff(real_z, fake_z):
     """
     L1 Difference
 
     Args:
-        z_1 (vector): the hidden space of real image
-        z_2 (vector): the hidden space of fake image 
+        real_z (vector): the hidden space of real image
+        fake_z (vector): the hidden space of fake image 
     
     Output:
         the l1 difference between two hidden space 
@@ -25,13 +25,13 @@ def l1_diff(z_1, z_2):
     """
     pass 
 
-def l2_diff(z_1, z_2):
+def l2_diff(real_z, fake_z):
     """
     L2 Difference
 
     Args:
-        z_1 (vector): the hidden space of real image 
-        z_2 (vector): the hidden space of fake image 
+        real_z (vector): the hidden space of real image 
+        fake_z (vector): the hidden space of fake image 
     
     Output:
         the l2 difference between two hidden space

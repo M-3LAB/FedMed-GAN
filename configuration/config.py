@@ -22,6 +22,7 @@ def parse_arguments_kid():
     parser.add_argument('--pair-num', type=int, default=10000)
     parser.add_argument('--test-model', type=str, default='cyclegan', choices=['cyclegan','munit','unit'])
     parser.add_argument('--mode', type=str, default='train', choices=['train', 'prediction', 'trainpred'])
+    parser.add_argument('--diff-method', type=str, choices=['l1', 'l2'])
     args = parser.parse_args()
     return args
 

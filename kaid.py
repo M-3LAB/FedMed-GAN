@@ -319,5 +319,10 @@ if __name__ == '__main__':
         real_b_z = kaid_ae.encode(real_b)
         fake_b_z = kaid_ae.encode(fake_b)
 
+        if para_dict['diff_method'] == 'l1':
+            diff_a = l1_diff(real_a_z, fake_a_z)
+            diff_b = l1_diff(real_b_z, fake_b_z)
+
+
         
     
