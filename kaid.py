@@ -2,7 +2,7 @@ from distutils.command.config import config
 import torch
 import torch.nn as nn
 import yaml
-from configuration.config import parse_arguments_bise
+from configuration.config import parse_arguments_kaid
 from data_io.ixi import IXI
 from data_io.brats import BraTS2021
 from torch.utils.data import DataLoader
@@ -23,7 +23,7 @@ from model.unit.unit import Generator as UG
 
 
 if __name__ == '__main__':
-    args = parse_arguments_bise()
+    args = parse_arguments_kaid()
     with open('./configuration/kaid/kaid_{}.yaml'.format(args.dataset), 'r') as f:
         para_dict = yaml.load(f, Loader=yaml.SafeLoader)
     para_dict = merge_config(para_dict, args)

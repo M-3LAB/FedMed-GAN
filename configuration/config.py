@@ -5,7 +5,7 @@ __all__ = ['parse_argument_bise', 'parse_arguments_federated',
             'parse_arguments_centralized', 'parse_arguments_fid_stats']
 
 
-def parse_arguments_kid():
+def parse_arguments_kaid():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', '-d', type=str, default='brats2021', choices=['ixi', 'brats2021'])
     parser.add_argument('--noise-type', type=str, default='gaussian', choices=['normal', 'gaussian', 'slight', 'severe'])
