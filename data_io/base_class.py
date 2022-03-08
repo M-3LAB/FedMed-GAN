@@ -31,8 +31,7 @@ class BASE_DATASET(torch.utils.data.Dataset):
                 noise_type='normal', transform_data=None, client_weights=[1.0], dataset_splited=False,
                 data_mode='mixed', data_num=6000, data_paired_weight=0.2, data_moda_ratio=0.5, data_moda_case='case1', seed=3):
 
-        random.seed(seed)
-        
+        self.seed = seed 
         self.dataset_path = root
         self.extract_slice = extract_slice
         self.client_weights = client_weights
@@ -173,6 +172,7 @@ class BASE_DATASET(torch.utils.data.Dataset):
                                                    
     def _generate_dataset(self):
 
+        random.seed(self.seed)
         file_container = None
         if self.dataset_splited:
             # grab volumes, which are devided into trainset and validset
