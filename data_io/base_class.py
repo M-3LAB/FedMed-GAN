@@ -29,8 +29,9 @@ class BASE_DATASET(torch.utils.data.Dataset):
     """
     def __init__(self, root, modalities=["t1", "t2"], learn_mode="train", extract_slice=[29, 100],
                 noise_type='normal', transform_data=None, client_weights=[1.0], dataset_splited=False,
-                data_mode='mixed', data_num=6000, data_paired_weight=0.2, data_moda_ratio=0.5, data_moda_case='case1'):
-        random.seed(3)
+                data_mode='mixed', data_num=6000, data_paired_weight=0.2, data_moda_ratio=0.5, data_moda_case='case1', seed=3):
+
+        random.seed(seed)
         
         self.dataset_path = root
         self.extract_slice = extract_slice
