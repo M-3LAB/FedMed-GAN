@@ -87,22 +87,30 @@ if __name__ == '__main__':
                                  modalities=[para_dict['source_domain'], para_dict['target_domain']],
                                  extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                                  noise_type='normal',
-                                 learn_mode='test', #train or test is meaningless
+                                 learn_mode='train', #train or test is meaningless if dataset_splited is false
                                  transform_data=normal_transform,
                                  data_mode='paired',
+                                 data_num=para_dict['pair_num'],
                                  data_paired_weight=1.0,
-                                 data_splited=False)
+                                 client_weights=[1.0],
+                                 dataset_splited=False,
+                                 data_moda_ratio=1.0,
+                                 data_moda_case='case1')
         
         ixi_noise_dataset = IXI(root=para_dict['data_path'],
                                 modalities=[para_dict['source_domain'], para_dict['target_domain']],
                                 extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                                 noise_type=para_dict['noise_type'],
-                                learn_mode='test', #train or test is meaningless
+                                learn_mode='train', #train or test is meaningless if dataset_splited is false
                                 transform_data=noise_transform,
-                                data_paired=True,
+                                data_mode='paired',
+                                data_num=para_dict['pair_num'],
                                 data_paired_weight=1.0,
-                                data_splited=False)
-    
+                                client_weights=[1.0],
+                                dataset_splited=False,
+                                data_moda_ratio=1.0,
+                                data_moda_case='case1')
+        
     elif para_dict['dataset'] == 'brats2021':
         assert para_dict['source_domain'] in ['t1', 't2', 'flair']
         assert para_dict['target_domain'] in ['t1', 't2', 'flair']

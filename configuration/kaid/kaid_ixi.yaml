@@ -22,3 +22,4 @@ save_log: true
 debug: False 
 federated: false
 kaid_stats: false
+pair_num: 10000
