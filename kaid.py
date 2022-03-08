@@ -160,8 +160,8 @@ if __name__ == '__main__':
         brats_noisy_loader = DataLoader(brats_noise_dataset, num_workers=para_dict['num_workers'],
                                         batch_size=para_dict['batch_size'], shuffle=True)
     
-    #if para_dict['debug']:
-    #    batch_limit = 2
+    if para_dict['debug']:
+        batch_limit = 2
 
     ## Beta Spectral Statistics  
     #if para_dict['bise_stats']:
