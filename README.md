@@ -76,6 +76,11 @@ python3 centralized_training.py --dataset 'ixi' --model 'cyclegan' --source-doma
 python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd'
 ```
 
+> BraTS2021 ['t1', 't2', 'flair']
+```bash
+python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd'
+```
+
 ## Implementations of Data Processing
 Sereval modes are described in the new settings of FedMed.
 
