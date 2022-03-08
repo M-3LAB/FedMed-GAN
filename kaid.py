@@ -129,7 +129,6 @@ if __name__ == '__main__':
                                          data_num=para_dict['pair_num'],
                                          data_paired_weight=1.0,
                                          client_weights=[1.0],
-                                         dataset_splited=False,
                                          data_moda_ratio=1.0,
                                          data_moda_case='case1')
 
@@ -143,7 +142,6 @@ if __name__ == '__main__':
                                         data_num=para_dict['pair_num'],
                                         client_weights=[1.0],
                                         data_paired_weight=1.0,
-                                        dataset_spilited=False,
                                         data_moda_ratio=1.0,
                                         data_moda_case='case1')
 
