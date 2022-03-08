@@ -23,6 +23,8 @@ def parse_arguments_kid():
     parser.add_argument('--test-model', type=str, default='cyclegan', choices=['cyclegan','munit','unit'])
     parser.add_argument('--mode', type=str, default='train', choices=['train', 'prediction', 'trainpred'])
     parser.add_argument('--diff-method', type=str, choices=['l1', 'l2'])
+    parser.add_argument('--source-domain', type=str, default='t1', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--target-domain', type=str, default='t2', choices=['t1', 't2', 'pd', 'flair'])
     args = parser.parse_args()
     return args
 
