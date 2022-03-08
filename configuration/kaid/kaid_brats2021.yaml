@@ -20,3 +20,4 @@ work_dir: ./work_dir
 save_log: true
 debug: false
 federated: false
+pair_num: 10000

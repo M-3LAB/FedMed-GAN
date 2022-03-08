@@ -123,11 +123,15 @@ if __name__ == '__main__':
                                          modalities=[para_dict['source_domain'], para_dict['target_domain']],
                                          extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                                          noise_type='normal',
-                                         learn_mode='train', # train or test is meaningless
+                                         learn_mode='train', # train or test is meaningless if dataset_spilited is false
                                          transform_data=normal_transform,
-                                         data_paired=True,
+                                         data_mode='paired',
+                                         data_num=para_dict['pair_num'],
                                          data_paired_weight=1.0,
-                                         data_splited=False)
+                                         client_weights=[1.0],
+                                         dataset_splited=False,
+                                         data_moda_ratio=1.0,
+                                         data_moda_case='case1')
 
         brats_noise_dataset = BraTS2021(root=para_dict['data_path'],
                                         modalities=[para_dict['source_domain'], para_dict['target_domain']],
@@ -135,9 +139,13 @@ if __name__ == '__main__':
                                         learn_mode='train',
                                         extract_slice=[para_dict['es_lower_limit'], para_dict['es_higher_limit']],
                                         transform_data=noise_transform,
-                                        data_paired=True,
+                                        data_mode='paired',
+                                        data_num=para_dict['pair_num'],
+                                        client_weights=[1.0],
                                         data_paired_weight=1.0,
-                                        data_spilited=False)
+                                        dataset_spilited=False,
+                                        data_moda_ratio=1.0,
+                                        data_moda_case='case1')
 
     else:
         raise NotImplementedError("New Data Has Not Been Implemented")
