@@ -18,13 +18,12 @@ def parse_arguments_kaid():
     parser.add_argument('--num-epochs', type=int)
     parser.add_argument('--lambda-recon', type=float, default=1.0, help='weight for reconstruction loss')
     parser.add_argument('--lambda-triplet', type=float, default=1.0, help='weight for triplet loss')
-    parser.add_argument('--debug', action='store_true', default=False)
     parser.add_argument('--pair-num', type=int, default=10000)
     parser.add_argument('--test-model', type=str, default='cyclegan', choices=['cyclegan','munit','unit'])
     parser.add_argument('--mode', type=str, default='train', choices=['train', 'prediction', 'trainpred'])
     parser.add_argument('--diff-method', type=str, choices=['l1', 'l2'])
-    parser.add_argument('--source-domain', type=str, default='t1', choices=['t1', 't2', 'pd', 'flair'])
-    parser.add_argument('--target-domain', type=str, default='t2', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--source-domain', '-s', type=str, default='t1', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--target-domain', '-t', type=str, default='t2', choices=['t1', 't2', 'pd', 'flair'])
     args = parser.parse_args()
     return args
 
