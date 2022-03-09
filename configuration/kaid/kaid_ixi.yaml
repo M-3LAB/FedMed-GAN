@@ -30,3 +30,5 @@ beta2: 0.999
 #schduler
 step_size: 30
 gamma: 0.1
+#msl
+msl_path: ./msl_stats
