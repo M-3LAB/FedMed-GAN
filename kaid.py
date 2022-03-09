@@ -185,9 +185,9 @@ if __name__ == '__main__':
     criterion_recon = torch.nn.L1Loss().to(device)
     #TODO: Triplet Loss Function added
 
-    ## Optimizer
-    #optimizer = torch.optim.Adam(kaid_ae.parameters(), lr=para_dict['lr'],
-    #                             betas=[para_dict['beta1'], para_dict['beta2']])
+    # Optimizer
+    optimizer = torch.optim.Adam(kaid_ae.parameters(), lr=para_dict['lr'],
+                                 betas=[para_dict['beta1'], para_dict['beta2']])
 
     ## Scheduler
     #lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=para_dict['step_size'],
