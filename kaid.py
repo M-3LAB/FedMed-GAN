@@ -228,7 +228,7 @@ if __name__ == '__main__':
         msl_b = np.load(tag_msl_path)
 
     # Training 
-    ##TODO: Alternative Training for different training loader
+    #TODO: Alternative Training for different training loader
     #for epoch in range(para_dict['num_epochs']):
     #    for i, batch in enumerate(normal_loader): 
     #    #TODO: noisy loader
