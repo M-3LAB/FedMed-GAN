@@ -10,7 +10,7 @@ import torchvision
 import glob
 
 __all__ = ['seed_everything', 'parse_device_list', 'allocate_gpus', 
-           'merge_config', 'convert_list_float_type',
+           'merge_config', 'convert_list_float_type', 'create_folders',
            'weights_init_normal', 'LambdaLR', 'load_model', 'merge_config', 'override_config', 'extract_config',
            'record_path', 'save_arg', 'save_log', 'save_script', 'save_image', 'save_model']
 
@@ -158,3 +158,8 @@ def load_model(model, file_path, description):
     model.load_state_dict(checkpoint['model_state_dict'])
 
     return model
+
+def create_folders(tag_path):
+    if not os.path.exists(tag_path):
+        os.makedirs(tag_path)
+    
