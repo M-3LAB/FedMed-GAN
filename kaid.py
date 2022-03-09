@@ -227,11 +227,11 @@ if __name__ == '__main__':
     #        real_a_kspace = torch_fft(real_a)
     #        real_b_kspace = torch_fft(real_b)
 
-    #        real_a_hf = torch_high_pass_filter(real_a_kspace, beta_a)
-    #        real_b_hf = torch_high_pass_filter(real_b_kspace, beta_b)
+    #        real_a_hf = torch_high_pass_filter(real_a_kspace, msl_a)
+    #        real_b_hf = torch_high_pass_filter(real_b_kspace, msl_b)
 
-    #        real_a_lf = torch_low_pass_filter(real_a_kspace, beta_a)
-    #        real_b_lf = torch_low_pass_filter(real_b_kspace, beta_b)
+    #        real_a_lf = torch_low_pass_filter(real_a_kspace, msl_a)
+    #        real_b_lf = torch_low_pass_filter(real_b_kspace, msl_b)
 
     #        """
     #        Magnitude: sqrt(re^2 + im^2) tells you the amplitude of the component at the corresponding frequency
