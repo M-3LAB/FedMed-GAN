@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 from tools.utilize import *
 from model.FT.fourier_transform import * 
 from model.FT.power_spectrum import *
-from metrics.kaid.stats import *
+from metrics.kaid.stats import mask_stats 
 import numpy as np
 from model.ae.kaid_ae import *
 from loss_function.simclr_loss import *
@@ -195,18 +195,18 @@ if __name__ == '__main__':
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=para_dict['step_size'],
                                                    gamma=para_dict['gamma']) 
     
-    # Beta Spectral Statistics  
-    if para_dict['kaid_stats']:
+    # Mask Statistics  
+    if para_dict['mask_stats']:
         """
         """
-        src_dict, tag_dict = beta_stats(normal_loader, para_dict['source_domain'], 
+        src_dict, tag_dict = mask_stats(normal_loader, para_dict['source_domain'], 
                                         para_dict['target_domain'])
 
         print(f"source_domain: {para_dict['source_domain']}, its_dict: {src_dict}")
         print(f"target_domain: {para_dict['source_domain']}, its_dict: {src_dict}")
 
-        src_best_beta_list = best_beta_list(src_dict)
-        tag_best_beta_list = best_beta_list(tag_dict)
+        src_best_msl_list = best_msl_list(src_dict)
+        tag_best_msl_list = best_msl_list(tag_dict)
 
         beta_a = src_best_beta_list[0]
         beta_b = tag_best_beta_list[0]

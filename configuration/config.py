@@ -1,5 +1,4 @@
 import argparse
-from asyncio import FastChildWatcher
 
 __all__ = ['parse_argument_bise', 'parse_arguments_federated', 
             'parse_arguments_centralized', 'parse_arguments_fid_stats']
@@ -11,7 +10,7 @@ def parse_arguments_kaid():
     parser.add_argument('--noise-type', type=str, default='gaussian', choices=['normal', 'gaussian', 'slight', 'severe'])
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--debug', action='store_true', default=None)
-    parser.add_argument('--kaid-stats', action='store_true', default=None)
+    parser.add_argument('--mask-stats', action='store_true', default=None, help='mask stastical learning')
     parser.add_argument('--delta-diff', type=float, default=None)
     parser.add_argument('--num-epochs', type=int)
     parser.add_argument('--lambda-recon', type=float, default=1.0, help='weight for reconstruction loss')

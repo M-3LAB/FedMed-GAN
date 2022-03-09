@@ -4,8 +4,8 @@ from model.FT.power_spectrum import *
 from model.FT.fourier_transform import *
 from evaluation.common import *
 
-__all__ = ['beta_stats', 'frequency_diff', 'beta_frequency_diff', 'delta_diff',
-            'best_beta_list']
+__all__ = ['mask_stats', 'frequency_diff', 'mask_frequency_diff', 'delta_diff',
+           'best_msl_list']
 
 def frequency_diff(hf_kspace, lf_kspace):
     """
@@ -19,7 +19,7 @@ def frequency_diff(hf_kspace, lf_kspace):
     diff = torch.abs(hf_total - lf_total).numpy()
     return diff
 
-def beta_frequency_diff(kspace, beta):
+def mask_frequency_diff(kspace, beta):
 
     diff_list = []
 
@@ -37,7 +37,7 @@ def delta_diff(kspace, beta_init):
     img_size = kspace.size()[2]
     beta_max_limit = img_size / 4
 
-    diff_list = beta_frequency_diff(kspace, beta_init)
+    diff_list = mask_frequency_diff(kspace, beta_init)
     avg_diff = average(diff_list)
     beta = beta_init 
 
@@ -50,7 +50,7 @@ def delta_diff(kspace, beta_init):
         if beta > beta_max_limit:
             break
 
-        new_diff_list = beta_frequency_diff(kspace, beta)
+        new_diff_list = mask_frequency_diff(kspace, beta)
         new_avg_diff = average(new_diff_list)
 
         if new_avg_diff < avg_diff:
@@ -61,15 +61,15 @@ def delta_diff(kspace, beta_init):
 
     return delta_dic
         
-def beta_stats(data_loader, source_domain, target_domain, beta_a=None, 
-               beta_b=None, img_size=256):
+def mask_stats(data_loader, source_domain, target_domain, msl=None, img_size=256):
+
     """
     Args:
-        beta:  (2 * beta) **2 is the size of the mask
+        msl: the side length of mask  
     """
     
-    if beta_a is None:
-        beta_a = 1
+    if msl is None:
+        msl = 1
 
     if beta_b is None:
         beta_b = 1
@@ -94,14 +94,14 @@ def beta_stats(data_loader, source_domain, target_domain, beta_a=None,
 
     return a_delta_dic, b_delta_dic
 
-def best_beta_list(delta_dic, delta_diff):
+def best_msl_list(delta_dic, delta_diff):
 
-    beta_list = []
+    msl_list = []
     for key in delta_dic:
         if delta_dic[key] < delta_diff: 
-            beta_list.append(key)
+            msl_list.append(key)
 
-    return beta_list
+    return msl_list
 
 
 
