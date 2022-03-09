@@ -193,28 +193,28 @@ if __name__ == '__main__':
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=para_dict['step_size'],
                                                    gamma=para_dict['gamma']) 
     
-    #if para_dict['dataset'] == 'ixi':
-    #    """
-    #    IXI: PD and T2
-    #    BraTS: T1, T2 and FLAIR
-    #    """
-    #    normal_loader = ixi_normal_loader 
-    #    noisy_loader = ixi_noisy_loader
-    #    assert para_dict['source_domain'] in ['pd', 't2']
-    #    assert para_dict['target_domain'] in ['pd', 't2']
-    #elif para_dict['dataset'] == 'brats2021':
-    #    normal_loader = brats_normal_loader 
-    #    noisy_loader = brats_noisy_loader
-    #    assert para_dict['source_domain'] in ['t1', 't2', 'flair']
-    #    assert para_dict['target_domain'] in ['t1', 't2', 'flair']
-    #else:
-    #    raise NotImplementedError('New Dataset Has Not Been Implemented Yet')
-    #    
-    ## Debug Mode
-    #if para_dict['debug']:
-    #    batch_limit = 2
-    #else:
-    #    batch_limit = int(para_dict['pair_num'] / para_dict['batch_size'])
+    if para_dict['dataset'] == 'ixi':
+        """
+        IXI: PD and T2
+        BraTS: T1, T2 and FLAIR
+        """
+        normal_loader = ixi_normal_loader 
+        noisy_loader = ixi_noisy_loader
+        assert para_dict['source_domain'] in ['pd', 't2']
+        assert para_dict['target_domain'] in ['pd', 't2']
+    elif para_dict['dataset'] == 'brats2021':
+        normal_loader = brats_normal_loader 
+        noisy_loader = brats_noisy_loader
+        assert para_dict['source_domain'] in ['t1', 't2', 'flair']
+        assert para_dict['target_domain'] in ['t1', 't2', 'flair']
+    else:
+        raise NotImplementedError('New Dataset Has Not Been Implemented Yet')
+        
+    # Debug Mode
+    if para_dict['debug']:
+        batch_limit = 2
+    else:
+        batch_limit = int(para_dict['pair_num'] / para_dict['batch_size'])
 
     ## Training 
     ##TODO: Alternative Training for different training loader
