@@ -110,6 +110,13 @@ if __name__ == '__main__':
                                 dataset_splited=False,
                                 data_moda_ratio=1.0,
                                 data_moda_case='case1')
+
+        #TODO: make sure normal and nosiy loader release the same order of dataset
+        normal_loader = DataLoader(ixi_normal_dataset, num_workers=para_dict['num_workers'],
+                                   batch_size=para_dict['batch_size'], shuffle=False)
+
+        noisy_loader = DataLoader(ixi_noise_dataset, num_workers=para_dict['num_workers'],
+                                  batch_size=para_dict['batch_size'], shuffle=False)
         
     elif para_dict['dataset'] == 'brats2021':
         assert para_dict['source_domain'] in ['t1', 't2', 'flair']
@@ -144,39 +151,16 @@ if __name__ == '__main__':
                                         data_paired_weight=1.0,
                                         data_moda_ratio=1.0,
                                         data_moda_case='case1')
+        
+        #TODO: make sure normal and nosiy loader release the same order of dataset
+        normal_loader = DataLoader(brats_normal_dataset, num_workers=para_dict['num_workers'],
+                                   batch_size=para_dict['batch_size'], shuffle=False)
 
+        noisy_loader = DataLoader(brats_noise_dataset, num_workers=para_dict['num_workers'],
+                                  batch_size=para_dict['batch_size'], shuffle=False)
     else:
         raise NotImplementedError("New Data Has Not Been Implemented")
 
-    #TODO: make sure normal and nosiy loader release the same order of dataset
-    if para_dict['dataset'] == 'ixi':
-        ixi_normal_loader = DataLoader(ixi_normal_dataset, num_workers=para_dict['num_workers'],
-                                       batch_size=para_dict['batch_size'], shuffle=True)
-        ixi_noisy_loader = DataLoader(ixi_noise_dataset, num_workers=para_dict['num_workers'],
-                                      batch_size=para_dict['batch_size'], shuffle=True)
-    if para_dict['dataset'] == 'brats2021':
-        brats_normal_loader = DataLoader(brats_normal_dataset, num_workers=para_dict['num_workers'],
-                                         batch_size=para_dict['batch_size'], shuffle=True)
-        brats_noisy_loader = DataLoader(brats_noise_dataset, num_workers=para_dict['num_workers'],
-                                        batch_size=para_dict['batch_size'], shuffle=True)
-
-    if para_dict['dataset'] == 'ixi':
-        """
-        IXI: PD and T2
-        BraTS: T1, T2 and FLAIR
-        """
-        normal_loader = ixi_normal_loader 
-        noisy_loader = ixi_noisy_loader
-        assert para_dict['source_domain'] in ['pd', 't2']
-        assert para_dict['target_domain'] in ['pd', 't2']
-    elif para_dict['dataset'] == 'brats2021':
-        normal_loader = brats_normal_loader 
-        noisy_loader = brats_noisy_loader
-        assert para_dict['source_domain'] in ['t1', 't2', 'flair']
-        assert para_dict['target_domain'] in ['t1', 't2', 'flair']
-    else:
-        raise NotImplementedError('New Dataset Has Not Been Implemented Yet')
-        
     # Debug Mode
     if para_dict['debug']:
         batch_limit = 2
