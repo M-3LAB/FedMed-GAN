@@ -1,6 +1,4 @@
-from distutils.command.config import config
 import torch
-import torch.nn as nn
 import yaml
 from configuration.config import parse_arguments_kaid
 from data_io.ixi import IXI
@@ -159,40 +157,7 @@ if __name__ == '__main__':
                                          batch_size=para_dict['batch_size'], shuffle=True)
         brats_noisy_loader = DataLoader(brats_noise_dataset, num_workers=para_dict['num_workers'],
                                         batch_size=para_dict['batch_size'], shuffle=True)
-    
-    if para_dict['debug']:
-        batch_limit = 2
 
-    ## Beta Spectral Statistics  
-    #if para_dict['bise_stats']:
-    #    src_dict, tag_dict = beta_stats(ixi_normal_loader, para_dict['source_domain'], 
-    #                                    para_dict['target_domain'])
-    #    print(f"source_domain: {para_dict['source_domain']}, its_dict: {src_dict}")
-    #    print(f"target_domain: {para_dict['source_domain']}, its_dict: {src_dict}")
-
-    #    src_best_beta_list = best_beta_list(src_dict)
-    #    tag_best_beta_list = best_beta_list(tag_dict)
-
-    #    beta_a = src_best_beta_list[0]
-    #    beta_b = tag_best_beta_list[0]
-    #else:
-    #    beta_a = np.load(para_dict['src_beta_init_path'])
-    #    beta_b = np.load(para_dict['tag_beta_init_path'])
-    
-    # Model
-    kaid_ae = KAIDAE().to(device)
-    # Loss
-    criterion_recon = torch.nn.L1Loss().to(device)
-    #TODO: Triplet Loss Function added
-
-    # Optimizer
-    optimizer = torch.optim.Adam(kaid_ae.parameters(), lr=para_dict['lr'],
-                                 betas=[para_dict['beta1'], para_dict['beta2']])
-
-    # Scheduler
-    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=para_dict['step_size'],
-                                                   gamma=para_dict['gamma']) 
-    
     if para_dict['dataset'] == 'ixi':
         """
         IXI: PD and T2
@@ -215,6 +180,39 @@ if __name__ == '__main__':
         batch_limit = 2
     else:
         batch_limit = int(para_dict['pair_num'] / para_dict['batch_size'])
+
+    # Model
+    kaid_ae = KAIDAE().to(device)
+    # Loss
+    criterion_recon = torch.nn.L1Loss().to(device)
+    #TODO: Triplet Loss Function added
+
+    # Optimizer
+    optimizer = torch.optim.Adam(kaid_ae.parameters(), lr=para_dict['lr'],
+                                 betas=[para_dict['beta1'], para_dict['beta2']])
+
+    # Scheduler
+    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=para_dict['step_size'],
+                                                   gamma=para_dict['gamma']) 
+    
+    ## Beta Spectral Statistics  
+    #if para_dict['bise_stats']:
+    #    src_dict, tag_dict = beta_stats(ixi_normal_loader, para_dict['source_domain'], 
+    #                                    para_dict['target_domain'])
+    #    print(f"source_domain: {para_dict['source_domain']}, its_dict: {src_dict}")
+    #    print(f"target_domain: {para_dict['source_domain']}, its_dict: {src_dict}")
+
+    #    src_best_beta_list = best_beta_list(src_dict)
+    #    tag_best_beta_list = best_beta_list(tag_dict)
+
+    #    beta_a = src_best_beta_list[0]
+    #    beta_b = tag_best_beta_list[0]
+    #else:
+    #    beta_a = np.load(para_dict['src_beta_init_path'])
+    #    beta_b = np.load(para_dict['tag_beta_init_path'])
+    
+    
+    
 
     ## Training 
     ##TODO: Alternative Training for different training loader
