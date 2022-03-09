@@ -2,7 +2,7 @@
 
 The implementation of the papers
 
-+ ['FedMed-GAN: Federated Multi-Modal Unsupervised Brain Image Synthesis'](https://arxiv.org/abs/2201.08953)
++ ['FedMed-GAN: Federated Domain-Translation on Unsupervised Cross-Modality Brain Image Synthesis'](https://arxiv.org/abs/2201.08953)
 
 + ['FedMed-ATL: Misaligned Unpaired Brain Image Synthesis via Affine Transform Loss'](https://arxiv.org/abs/2201.12589)
 
