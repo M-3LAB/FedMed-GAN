@@ -94,7 +94,7 @@ def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=
 
     return a_delta_dic, b_delta_dic
 
-def best_msl_list(delta_dic, delta_diff):
+def best_msl_list(delta_dic, delta_diff=None):
 
     msl_list = []
     for key in delta_dic:
