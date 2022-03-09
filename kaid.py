@@ -181,9 +181,9 @@ if __name__ == '__main__':
     
     # Model
     kaid_ae = KAIDAE().to(device)
-    ## Loss
+    # Loss
     criterion_recon = torch.nn.L1Loss().to(device)
-    ##TODO: Triplet Loss Function added
+    #TODO: Triplet Loss Function added
 
     ## Optimizer
     #optimizer = torch.optim.Adam(kaid_ae.parameters(), lr=para_dict['lr'],
