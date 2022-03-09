@@ -179,10 +179,10 @@ if __name__ == '__main__':
     #    beta_a = np.load(para_dict['src_beta_init_path'])
     #    beta_b = np.load(para_dict['tag_beta_init_path'])
     
-    ## Model
-    #kaid_ae = KAIDAE().to(device)
+    # Model
+    kaid_ae = KAIDAE().to(device)
     ## Loss
-    #criterion_recon = torch.nn.L1Loss().to(device)
+    criterion_recon = torch.nn.L1Loss().to(device)
     ##TODO: Triplet Loss Function added
 
     ## Optimizer

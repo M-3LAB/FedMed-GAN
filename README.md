@@ -73,12 +73,12 @@ python3 centralized_training.py --dataset 'ixi' --model 'cyclegan' --source-doma
 ## KAID Training
 > IXI  ['t2', 'pd']
 ```bash
-python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd'
+python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd' -g 0
 ```
 
 > BraTS2021 ['t1', 't2', 'flair']
 ```bash
-python3 kaid.py --dataset 'brats2021' --source-domain 't1' --target-domain 't2'
+python3 kaid.py --dataset 'brats2021' --source-domain 't1' --target-domain 't2' -g 0
 ```
 
 ## Implementations of Data Processing
