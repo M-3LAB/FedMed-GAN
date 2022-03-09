@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 from tools.utilize import *
 from model.FT.fourier_transform import * 
 from model.FT.power_spectrum import *
-from metrics.kaid.stats import mask_stats 
+from metrics.kaid.stats import mask_stats, best_msl_list 
 import numpy as np
 from model.ae.kaid_ae import *
 from loss_function.simclr_loss import *
@@ -198,6 +198,8 @@ if __name__ == '__main__':
     # Mask Statistics  
     if para_dict['mask_stats']:
         """
+        src: Source Domain
+        tag: Target Domain
         """
         src_dict, tag_dict = mask_stats(normal_loader, para_dict['source_domain'], 
                                         para_dict['target_domain'])
@@ -208,14 +210,11 @@ if __name__ == '__main__':
         src_best_msl_list = best_msl_list(src_dict)
         tag_best_msl_list = best_msl_list(tag_dict)
 
-        beta_a = src_best_beta_list[0]
-        beta_b = tag_best_beta_list[0]
+        msl_a = src_best_msl_list[0]
+        msl_b = tag_best_msl_list[0]
     else:
-        beta_a = np.load(para_dict['source_domain_beta_init_path'])
-        beta_b = np.load(para_dict['target_domain_beta_init_path'])
-    
-    
-    
+        msl_a = np.load(para_dict['src_msl_init_path'])
+        msl_b = np.load(para_dict['tag_msl_init_path'])
 
     ## Training 
     ##TODO: Alternative Training for different training loader
