@@ -18,6 +18,7 @@ from model.munit.munit import Encoder as MUE
 from model.munit.munit import Decoder as MUD
 from model.unit.unit import Encoder as UE 
 from model.unit.unit import Generator as UG
+from tools.utilize import create_folders
 import os
 
 
@@ -197,11 +198,19 @@ if __name__ == '__main__':
                                                    gamma=para_dict['gamma']) 
     
     # Mask Statistics  
+    """
+    src: source domain
+    tag: target domain
+    """ 
+
+    src_msl_path = os.path.join(para_dict['msl_path'], para_dict['dataset'], para_dict['source_domain']) 
+    tag_msl_path = os.path.join(para_dict['msl_path'], para_dict['dataset'], para_dict['target_domain']) 
+
+    create_folders(src_msl_path) 
+    create_folders(tag_msl_path)
+
     if para_dict['mask_stats']:
-        """
-        src: Source Domain
-        tag: Target Domain
-        """
+       
         src_dict, tag_dict = mask_stats(normal_loader, para_dict['source_domain'], 
                                         para_dict['target_domain'])
 
