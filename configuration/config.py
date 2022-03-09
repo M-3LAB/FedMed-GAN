@@ -11,6 +11,8 @@ def parse_arguments_kaid():
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--debug', action='store_true', default=None)
     parser.add_argument('--mask-stats', action='store_true', default=None, help='mask stastical learning')
+    parser.add_argument('--')
+    parser.add_argument()
     parser.add_argument('--delta-diff', type=float, default=None)
     parser.add_argument('--num-epochs', type=int)
     parser.add_argument('--lambda-recon', type=float, default=1.0, help='weight for reconstruction loss')

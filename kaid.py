@@ -284,7 +284,7 @@ if __name__ == '__main__':
     #        infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [Triplet loss: {:.4f}]'.format(
     #                    '', i, batch_limit, loss_recon.item(), kaid_triplet_loss.item())
     
-    ##Prediction
+    # Score Prediction
     ##TODO: Load GAN Model and KAID  
     #if para_dict['test_model'] == 'cyclegan':
     #    generator_from_a_to_b = CycleGen().to(device) 
