@@ -25,3 +25,6 @@ lr: 0.001
 #optimizer
 beta1: 0.5
 beta2: 0.999
+#schduler
+step_size: 30
+gamma: 0.1

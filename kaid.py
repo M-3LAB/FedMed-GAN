@@ -189,9 +189,9 @@ if __name__ == '__main__':
     optimizer = torch.optim.Adam(kaid_ae.parameters(), lr=para_dict['lr'],
                                  betas=[para_dict['beta1'], para_dict['beta2']])
 
-    ## Scheduler
-    #lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=para_dict['step_size'],
-    #                                               gamma=para_dict['gamma']) 
+    # Scheduler
+    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=para_dict['step_size'],
+                                                   gamma=para_dict['gamma']) 
     
     #if para_dict['dataset'] == 'ixi':
     #    """
