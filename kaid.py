@@ -194,7 +194,7 @@ if __name__ == '__main__':
     create_folders(src_msl_path) 
     create_folders(tag_msl_path)
 
-    if para_dict['mask_stats']:
+    if para_dict['msl_stats']:
        
         src_dict, tag_dict = mask_stats(normal_loader, para_dict['source_domain'], 
                                         para_dict['target_domain'])
