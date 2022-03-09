@@ -19,12 +19,12 @@ def frequency_diff(hf_kspace, lf_kspace):
     diff = torch.abs(hf_total - lf_total).numpy()
     return diff
 
-def mask_frequency_diff(kspace, beta):
+def mask_frequency_diff(kspace, msl):
 
     diff_list = []
 
-    kspace_hf = torch_high_pass_filter(kspace, beta)
-    kspace_lf = torch_low_pass_filter(kspace, beta)
+    kspace_hf = torch_high_pass_filter(kspace, msl)
+    kspace_lf = torch_low_pass_filter(kspace, msl)
 
     # batchsize = kspace.size()[0]
     for idx in range(kspace.size()[0]):
@@ -33,31 +33,31 @@ def mask_frequency_diff(kspace, beta):
     
     return diff_list
 
-def delta_diff(kspace, beta_init):
+def delta_diff(kspace, msl_init):
     img_size = kspace.size()[2]
-    beta_max_limit = img_size / 4
+    msl_max_limit = img_size / 4
 
-    diff_list = mask_frequency_diff(kspace, beta_init)
+    diff_list = mask_frequency_diff(kspace, msl_init)
     avg_diff = average(diff_list)
-    beta = beta_init 
+    msl = msl_init 
 
     delta_dic = {} 
     #diff_dic = {}
 
     for _ in range(100):
 
-        beta += 1
-        if beta > beta_max_limit:
+        msl += 1
+        if msl > msl_max_limit:
             break
 
-        new_diff_list = mask_frequency_diff(kspace, beta)
+        new_diff_list = mask_frequency_diff(kspace, msl)
         new_avg_diff = average(new_diff_list)
 
         if new_avg_diff < avg_diff:
             avg_diff = new_avg_diff
 
         delta = np.abs(new_avg_diff - avg_diff) 
-        delta_dic[beta] = delta
+        delta_dic[msl] = delta
 
     return delta_dic
         
