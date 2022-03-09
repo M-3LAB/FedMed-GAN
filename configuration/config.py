@@ -16,7 +16,7 @@ def parse_arguments_kaid():
     parser.add_argument('--num-epochs', type=int)
     parser.add_argument('--lambda-recon', type=float, default=1.0, help='weight for reconstruction loss')
     parser.add_argument('--lambda-triplet', type=float, default=1.0, help='weight for triplet loss')
-    parser.add_argument('--pair-num', type=int, default=10000)
+    parser.add_argument('--pair-num', '-pn', type=int, default=10000)
     parser.add_argument('--test-model', type=str, default='cyclegan', choices=['cyclegan','munit','unit'])
     #parser.add_argument('--mode', type=str, default='train', choices=['train', 'pred', 'trainpred'])
     parser.add_argument('--diff-method', type=str, choices=['l1', 'l2'])
