@@ -11,10 +11,8 @@ def parse_arguments_kaid():
     parser.add_argument('--noise-type', type=str, default='gaussian', choices=['normal', 'gaussian', 'slight', 'severe'])
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--debug', action='store_true', default=None)
-    parser.add_argument('--bise-stats', action='store_true', default=None)
+    parser.add_argument('--kaid-stats', action='store_true', default=None)
     parser.add_argument('--delta-diff', type=float, default=None)
-    parser.add_argument('--step-size', type=int, default=30, help='learning rate will be adjust for epoch numbers')
-    parser.add_argument('--gamma', type=float, default=0.1, help='Multiplicative factor of learning rate decay')
     parser.add_argument('--num-epochs', type=int)
     parser.add_argument('--lambda-recon', type=float, default=1.0, help='weight for reconstruction loss')
     parser.add_argument('--lambda-triplet', type=float, default=1.0, help='weight for triplet loss')
@@ -24,6 +22,11 @@ def parse_arguments_kaid():
     parser.add_argument('--diff-method', type=str, choices=['l1', 'l2'])
     parser.add_argument('--source-domain', '-s', type=str, default='t1', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--target-domain', '-t', type=str, default='t2', choices=['t1', 't2', 'pd', 'flair'])
+    parser.add_argument('--lr', type=float)
+    parser.add_argument('--step-size', type=int, default=30, help='learning rate will be adjust for epoch numbers')
+    parser.add_argument('--gamma', type=float, default=0.1, help='Multiplicative factor of learning rate decay')
+    parser.add_argument('--beta1', type=float, default=0.5, help='Adam Optimizer parameter')
+    parser.add_argument('--beta2', type=float, default=0.999, help='Adam Optimizer parameter')
     args = parser.parse_args()
     return args
 
