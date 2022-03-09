@@ -201,6 +201,7 @@ if __name__ == '__main__':
     """
     src: source domain
     tag: target domain
+    msl: mask side length
     """ 
 
     src_msl_path = os.path.join(para_dict['msl_path'], para_dict['dataset'], para_dict['source_domain']) 
@@ -223,8 +224,8 @@ if __name__ == '__main__':
         msl_a = src_best_msl_list[0]
         msl_b = tag_best_msl_list[0]
     else:
-        msl_a = np.load(para_dict['src_msl'])
-        msl_b = np.load(para_dict['tag_msl'])
+        msl_a = np.load(src_msl_path)
+        msl_b = np.load(tag_msl_path)
 
     ## Training 
     ##TODO: Alternative Training for different training loader
