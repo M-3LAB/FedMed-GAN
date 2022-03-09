@@ -21,3 +21,7 @@ save_log: true
 debug: false
 federated: false
 pair_num: 10000
+lr: 0.001
+#optimizer
+beta1: 0.5
+beta2: 0.999
