@@ -86,6 +86,7 @@ def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=
         real_a_list = concate_tensor_lists(real_a_list, real_a, i) 
         real_b_list = concate_tensor_lists(real_b_list, real_b, i) 
 
+    print(f'loop concate finished')
     real_a_kspace = torch_fft(real_a_list) 
     real_b_kspace = torch_fft(real_b_list) 
 

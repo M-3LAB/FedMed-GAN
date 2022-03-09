@@ -213,6 +213,7 @@ if __name__ == '__main__':
 
     # Training 
     #TODO: Alternative Training for different training loader
+
     #for epoch in range(para_dict['num_epochs']):
     #    for i, batch in enumerate(normal_loader): 
     #    #TODO: noisy loader
