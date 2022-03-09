@@ -227,7 +227,7 @@ if __name__ == '__main__':
         msl_a = np.load(src_msl_path)
         msl_b = np.load(tag_msl_path)
 
-    ## Training 
+    # Training 
     ##TODO: Alternative Training for different training loader
     #for epoch in range(para_dict['num_epochs']):
     #    for i, batch in enumerate(normal_loader): 
