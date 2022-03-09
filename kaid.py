@@ -213,8 +213,8 @@ if __name__ == '__main__':
         msl_a = src_best_msl_list[0]
         msl_b = tag_best_msl_list[0]
     else:
-        msl_a = np.load(para_dict['src_msl_init_path'])
-        msl_b = np.load(para_dict['tag_msl_init_path'])
+        msl_a = np.load(para_dict['src_msl'])
+        msl_b = np.load(para_dict['tag_msl'])
 
     ## Training 
     ##TODO: Alternative Training for different training loader

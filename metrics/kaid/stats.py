@@ -61,18 +61,18 @@ def delta_diff(kspace, msl_init):
 
     return delta_dic
         
-def mask_stats(data_loader, source_domain, target_domain, source_msl=None, target_msl=None, img_size=256):
+def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=None, img_size=256):
 
     """
     Args:
         msl (Mask Side Length): the side length of mask  
     """
     
-    if source_msl is None:
-        source_msl = 1
+    if src_msl is None:
+        src_msl = 1
 
-    if target_msl is None:
-        target_msl = 1
+    if tag_msl is None:
+        tag_msl = 1
     
     real_a_list = torch.randn(data_loader.batch_size, 1, img_size, img_size)
     real_b_list = torch.randn(data_loader.batch_size, 1, img_size, img_size)
@@ -89,8 +89,8 @@ def mask_stats(data_loader, source_domain, target_domain, source_msl=None, targe
     real_a_kspace = torch_fft(real_a_list) 
     real_b_kspace = torch_fft(real_b_list) 
 
-    a_delta_dic = delta_diff(real_a_kspace, source_msl)
-    b_delta_dic = delta_diff(real_b_kspace, target_msl)
+    a_delta_dic = delta_diff(real_a_kspace, src_msl)
+    b_delta_dic = delta_diff(real_b_kspace, tag_msl)
 
     return a_delta_dic, b_delta_dic
 
