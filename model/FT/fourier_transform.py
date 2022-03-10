@@ -102,8 +102,8 @@ def torch_high_pass_filter(k_space, msl):
     """
     Args:
         k_space: torch tensor, BCHW 
-        msl:  mask side length, (2 * msl) **2 is the size of the mask, 
-              mask refers to the low frequency zone  
+        msl: the half of mask side length, (2 * msl) **2 is the size of the mask, 
+             mask refers to the low frequency zone  
         return: high_frequency_k_space
     """
     _, _, height, width = k_space.size()
@@ -117,8 +117,8 @@ def torch_low_pass_filter(k_space, msl):
     """
     Args:
         k_space: torch tensor, BCHW 
-        msl:  mask side length, (2 * msl) **2 is the size of the mask, 
-              mask refers to the low frequency zone  
+        msl: the half of mask side length, (2 * msl) **2 is the size of the mask, 
+             mask refers to the low frequency zone  
         return: low_frequency_k_space
     """
     _, _, height, width = k_space.size()

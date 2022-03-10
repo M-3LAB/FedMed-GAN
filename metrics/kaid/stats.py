@@ -16,7 +16,7 @@ def frequency_diff(hf_kspace, lf_kspace):
     lf_kspace_abs = torch.abs(lf_kspace) 
     hf_total = torch.sum(hf_kspace_abs)
     lf_total = torch.sum(lf_kspace_abs)
-    diff = torch.abs(hf_total - lf_total).numpy()
+    diff = torch.abs(hf_total - lf_total).numpy() 
     return diff
 
 def mask_frequency_diff(kspace, msl):
@@ -26,19 +26,23 @@ def mask_frequency_diff(kspace, msl):
     hf = torch_high_pass_filter(kspace, msl)
     lf = torch_low_pass_filter(kspace, msl)
 
-    # batchsize = kspace.size()[0]
-    for idx in range(kspace.size()[0]):
+    batchsize = kspace.size()[0]
+    for idx in range(batchsize):
         diff = frequency_diff(hf[idx,:,:,:], lf[idx,:,:,:])
         diff_list.append(diff)
     
     return diff_list
 
-def delta_diff(kspace, msl_init):
-    img_size = kspace.size()[2]
+def delta_diff(kspace, msl_init, img_size):
     msl_max_limit = img_size / 4
 
     diff_list = mask_frequency_diff(kspace, msl_init)
+    print(f'msl_init: {msl_init}')
+    print(f'diff_list init: {diff_list}')
+
     avg_diff = average(diff_list)
+    print(f'average_diff init: {avg_diff}')
+
     msl = msl_init 
 
     delta_dic = {} 
@@ -50,13 +54,16 @@ def delta_diff(kspace, msl_init):
             break
 
         new_diff_list = mask_frequency_diff(kspace, msl)
+        print(f'msl: {msl}')
+        print(f'new diff_list: {new_diff_list}')
         new_avg_diff = average(new_diff_list)
-
-        if new_avg_diff < avg_diff:
-            avg_diff = new_avg_diff
+        print(f'new average_diff : {new_avg_diff}')
 
         delta = np.abs(new_avg_diff - avg_diff) 
         delta_dic[msl] = delta
+
+        if new_avg_diff < avg_diff:
+            avg_diff = new_avg_diff
 
     return delta_dic
         
@@ -64,7 +71,7 @@ def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=
 
     """
     Args:
-        msl (Mask Side Length): the side length of mask  
+        msl: the half of mask side length  
         src: source domain 
         tag: target domain
     """
@@ -91,8 +98,8 @@ def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=
 
     print(f'src_msl: {src_msl}')
     print(f'tag_msl: {tag_msl}')
-    a_delta_dic = delta_diff(real_a_kspace, src_msl)
-    b_delta_dic = delta_diff(real_b_kspace, tag_msl)
+    a_delta_dic = delta_diff(real_a_kspace, src_msl, img_size)
+    b_delta_dic = delta_diff(real_b_kspace, tag_msl, img_size)
 
     return a_delta_dic, b_delta_dic
 
