@@ -113,20 +113,21 @@ def torch_high_pass_filter(k_space, msl):
     high_k_space[:, :,ch-msl:ch+msl,cw-msl:cw+msl] = 0
     return high_k_space
 
-def torch_low_pass_filter(k_space, beta):
+def torch_low_pass_filter(k_space, msl):
     """
     Args:
         k_space: torch tensor, BCHW 
-        beta:  (2 * beta) **2 is the size of the mask, mask refers to the low frequency zone  
+        msl:  mask side length, (2 * msl) **2 is the size of the mask, 
+              mask refers to the low frequency zone  
         return: low_frequency_k_space
     """
     _, _, height, width = k_space.size()
-    ch = height / 2
-    cw = width / 2
+    ch = int(height / 2)
+    cw = int(width / 2)
     low_k_space = torch.zeros_like(k_space) 
-    low_k_space[:, :,ch-beta:ch+beta,cw-beta:cw+beta] = k_space[:, :,
-                                                                ch-beta:ch+beta,
-                                                                cw-beta:cw+beta] 
+    low_k_space[:, :,ch-msl:ch+msl,cw-msl:cw+msl] = k_space[:, :,
+                                                                ch-msl:ch+msl,
+                                                                cw-msl:cw+msl] 
 
     return low_k_space
 
