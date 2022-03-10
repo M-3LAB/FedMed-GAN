@@ -240,13 +240,13 @@ if __name__ == '__main__':
             Phase: atan2(im, re) tells you the relative phase of that component
             """
 
-    #        real_a_hf_mag = torch.abs(real_a_hf).to(device)
-    #        real_a_lf_mag = torch.abs(real_a_lf).to(device)
+            real_a_hf_mag = torch.abs(real_a_hf).to(device)
+            real_a_lf_mag = torch.abs(real_a_lf).to(device)
 
-    #        real_b_hf_mag = torch.abs(real_b_hf).to(device)
-    #        real_b_lf_mag = torch.abs(real_b_lf).to(device)
+            real_b_hf_mag = torch.abs(real_b_hf).to(device)
+            real_b_lf_mag = torch.abs(real_b_lf).to(device)
 
-    #        optimizer.zero_grad()
+            optimizer.zero_grad()
 
     #        real_a_hf_z, real_a_hf_hat = kaid_ae(real_a_hf_mag)
     #        real_a_lf_z, real_a_lf_hat = kaid_ae(real_a_lf_mag)
