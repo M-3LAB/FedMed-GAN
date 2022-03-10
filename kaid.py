@@ -187,12 +187,9 @@ if __name__ == '__main__':
     tag: target domain
     msl: the half of mask side length
     """ 
+    msl_path = os.path.join(para_dict['msl_path'], para_dict['dataset']) 
 
-    src_msl_path = os.path.join(para_dict['msl_path'], para_dict['dataset'], para_dict['source_domain']) 
-    tag_msl_path = os.path.join(para_dict['msl_path'], para_dict['dataset'], para_dict['target_domain']) 
-
-    create_folders(src_msl_path) 
-    create_folders(tag_msl_path)
+    create_folders(msl_path) 
 
     if para_dict['msl_stats']:
        
@@ -207,9 +204,11 @@ if __name__ == '__main__':
 
         msl_a = src_best_msl_list[0]
         msl_b = tag_best_msl_list[0]
+        np.savez_compressed(os.path.join(msl_path, para_dict['source_domain']), msl=msl_a)
+        np.savez_compressed(os.path.join(msl_path, para_dict['target_domain']), msl=msl_b)
     else:
-        msl_a = np.load(src_msl_path)
-        msl_b = np.load(tag_msl_path)
+        msl_a = np.load(os.path.join(msl_path, para_dict['source_domain'])+'.npz')
+        msl_b = np.load(os.path.join(msl_path, para_dict['target_domain'])+'.npz')
 
     # Training 
     #TODO: Alternative Training for different training loader

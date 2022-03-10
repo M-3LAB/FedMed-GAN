@@ -14,8 +14,6 @@ __all__ = ['torch_rfft','torch_irfft','torch_ifft','torch_fft', 'np_fft', 'np_if
            'extract_ampl', 'torch_high_pass_filter', 'torch_low_pass_filter', 
            'np_high_pass_filter', 'np_low_pass_filter']
 
-
-
 def torch_rfft(mri_img):
     """
     Convert image into K-space, only for the real part of input 
