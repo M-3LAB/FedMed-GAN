@@ -200,16 +200,16 @@ if __name__ == '__main__':
                                         para_dict['target_domain'])
 
         print(f"source_domain: {para_dict['source_domain']}, its_dict: {src_dict}")
-        print(f"target_domain: {para_dict['source_domain']}, its_dict: {src_dict}")
+        print(f"target_domain: {para_dict['target_domain']}, its_dict: {tag_dict}")
 
-        src_best_msl_list = best_msl_list(src_dict)
-        tag_best_msl_list = best_msl_list(tag_dict)
+    #    src_best_msl_list = best_msl_list(src_dict)
+    #    tag_best_msl_list = best_msl_list(tag_dict)
 
-        msl_a = src_best_msl_list[0]
-        msl_b = tag_best_msl_list[0]
-    else:
-        msl_a = np.load(src_msl_path)
-        msl_b = np.load(tag_msl_path)
+    #    msl_a = src_best_msl_list[0]
+    #    msl_b = tag_best_msl_list[0]
+    #else:
+    #    msl_a = np.load(src_msl_path)
+    #    msl_b = np.load(tag_msl_path)
 
     # Training 
     #TODO: Alternative Training for different training loader
