@@ -209,8 +209,8 @@ if __name__ == '__main__':
     else:
         msl_a = np.load(os.path.join(msl_path, para_dict['source_domain'])+'.npz')['msl']
         msl_b = np.load(os.path.join(msl_path, para_dict['target_domain'])+'.npz')['msl']
-        print(f'msl_a: {msl_a}')
-        print(f'msl_b: {msl_b}')
+        print(f"{para_dict['source_domain']} msl: {msl_a}")
+        print(f"{para_dict['target_domain']} msl: {msl_b}")
     
     # Training 
     #TODO: Alternative Training for different training loader
@@ -251,20 +251,20 @@ if __name__ == '__main__':
             real_a_hf_z, real_a_hf_hat = kaid_ae(real_a_hf_mag)
             real_a_lf_z, real_a_lf_hat = kaid_ae(real_a_lf_mag)
 
-    #        real_b_hf_z, real_b_hf_hat = kaid_ae(real_b_hf_mag)
-    #        real_b_lf_z, real_b_lf_hat = kaid_ae(real_b_lf_mag)
+            real_b_hf_z, real_b_hf_hat = kaid_ae(real_b_hf_mag)
+            real_b_lf_z, real_b_lf_hat = kaid_ae(real_b_lf_mag)
 
-    #        """
-    #        Reconstruction
-    #        """
-    #        loss_recon_real_a_hf = criterion_recon(real_a_hf_mag, real_a_hf_hat) 
-    #        loss_recon_real_b_hf = criterion_recon(real_b_hf_mag, real_b_hf_hat)
+            """
+            Reconstruction
+            """
+            loss_recon_real_a_hf = criterion_recon(real_a_hf_mag, real_a_hf_hat) 
+            loss_recon_real_b_hf = criterion_recon(real_b_hf_mag, real_b_hf_hat)
 
-    #        loss_recon_real_a_lf = criterion_recon(real_a_lf_mag, real_a_lf_hat) 
-    #        loss_recon_real_b_lf = criterion_recon(real_b_lf_mag, real_b_lf_hat)
+            loss_recon_real_a_lf = criterion_recon(real_a_lf_mag, real_a_lf_hat) 
+            loss_recon_real_b_lf = criterion_recon(real_b_lf_mag, real_b_lf_hat)
 
-    #        loss_recon = (loss_recon_real_a_hf + loss_recon_real_b_hf 
-    #                            + loss_recon_real_a_lf + loss_recon_real_b_lf)
+            loss_recon = (loss_recon_real_a_hf + loss_recon_real_b_hf 
+                                + loss_recon_real_a_lf + loss_recon_real_b_lf)
 
     #        """
     #        Triplet Loss
