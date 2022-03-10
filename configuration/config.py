@@ -23,10 +23,10 @@ def parse_arguments_kaid():
     parser.add_argument('--source-domain', '-s', type=str, default='t1', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--target-domain', '-t', type=str, default='t2', choices=['t1', 't2', 'pd', 'flair'])
     parser.add_argument('--lr', type=float, default=None, help='learning rate')
-    parser.add_argument('--step-size', type=int, default=30, help='learning rate will be adjust for epoch numbers')
-    parser.add_argument('--gamma', type=float, default=0.1, help='Multiplicative factor of learning rate decay')
-    parser.add_argument('--beta1', type=float, default=0.5, help='Adam Optimizer parameter')
-    parser.add_argument('--beta2', type=float, default=0.999, help='Adam Optimizer parameter')
+    parser.add_argument('--step-size', type=int, default=None, help='learning rate will be adjust for epoch numbers')
+    parser.add_argument('--gamma', type=float, default=None, help='Multiplicative factor of learning rate decay')
+    parser.add_argument('--beta1', type=float, default=None, help='Adam Optimizer parameter')
+    parser.add_argument('--beta2', type=float, default=None, help='Adam Optimizer parameter')
     args = parser.parse_args()
     return args
 

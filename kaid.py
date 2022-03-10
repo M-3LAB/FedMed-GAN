@@ -248,7 +248,7 @@ if __name__ == '__main__':
 
             optimizer.zero_grad()
 
-    #        real_a_hf_z, real_a_hf_hat = kaid_ae(real_a_hf_mag)
+            real_a_hf_z, real_a_hf_hat = kaid_ae(real_a_hf_mag)
     #        real_a_lf_z, real_a_lf_hat = kaid_ae(real_a_lf_mag)
 
     #        real_b_hf_z, real_b_hf_hat = kaid_ae(real_b_hf_mag)
