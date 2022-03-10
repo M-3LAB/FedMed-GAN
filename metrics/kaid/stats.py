@@ -23,12 +23,12 @@ def mask_frequency_diff(kspace, msl):
 
     diff_list = []
 
-    kspace_hf = torch_high_pass_filter(kspace, msl)
-    kspace_lf = torch_low_pass_filter(kspace, msl)
+    hf = torch_high_pass_filter(kspace, msl)
+    lf = torch_low_pass_filter(kspace, msl)
 
     # batchsize = kspace.size()[0]
     for idx in range(kspace.size()[0]):
-        diff = frequency_diff(kspace_hf[idx,:,:,:] - kspace_lf[idx,:,:,:])
+        diff = frequency_diff(hf[idx,:,:,:], lf[idx,:,:,:])
         diff_list.append(diff)
     
     return diff_list
