@@ -42,7 +42,6 @@ def delta_diff(kspace, msl_init):
     msl = msl_init 
 
     delta_dic = {} 
-    #diff_dic = {}
 
     for _ in range(100):
 
