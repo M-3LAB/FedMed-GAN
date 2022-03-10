@@ -37,8 +37,8 @@ def delta_diff(kspace, msl_init, img_size):
     msl_max_limit = img_size / 4
 
     diff_list = mask_frequency_diff(kspace, msl_init)
-    print(f'msl_init: {msl_init}')
-    print(f'diff_list init: {diff_list}')
+    #print(f'msl_init: {msl_init}')
+    #print(f'diff_list init: {diff_list}')
 
     avg_diff = average(diff_list)
     print(f'average_diff init: {avg_diff}')
@@ -54,10 +54,10 @@ def delta_diff(kspace, msl_init, img_size):
             break
 
         new_diff_list = mask_frequency_diff(kspace, msl)
-        print(f'msl: {msl}')
-        print(f'new diff_list: {new_diff_list}')
+        #print(f'msl: {msl}')
+        #print(f'new diff_list: {new_diff_list}')
         new_avg_diff = average(new_diff_list)
-        print(f'new average_diff : {new_avg_diff}')
+        #print(f'new average_diff : {new_avg_diff}')
 
         delta = np.abs(new_avg_diff - avg_diff) 
         delta_dic[msl] = delta
@@ -96,8 +96,8 @@ def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=
     real_a_kspace = torch_fft(real_a_list) 
     real_b_kspace = torch_fft(real_b_list) 
 
-    print(f'src_msl: {src_msl}')
-    print(f'tag_msl: {tag_msl}')
+    #print(f'src_msl: {src_msl}')
+    #print(f'tag_msl: {tag_msl}')
     a_delta_dic = delta_diff(real_a_kspace, src_msl, img_size)
     b_delta_dic = delta_diff(real_b_kspace, tag_msl, img_size)
 
@@ -105,7 +105,7 @@ def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=
 
 def best_msl_list(delta_dic, delta_diff=None):
 
-    print(f'delta_diff: {delta_diff}')
+    #print(f'delta_diff: {delta_diff}')
 
     msl_list = []
     for key in delta_dic:
