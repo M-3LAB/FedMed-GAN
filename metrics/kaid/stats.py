@@ -66,18 +66,18 @@ def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=
     """
     Args:
         msl (Mask Side Length): the side length of mask  
+        src: source domain 
+        tag: target domain
     """
     
     if src_msl is None:
-        src_msl = 1
+        src_msl = 2
 
     if tag_msl is None:
-        tag_msl = 1
+        tag_msl = 2
     
     real_a_list = torch.randn(data_loader.batch_size, 1, img_size, img_size)
     real_b_list = torch.randn(data_loader.batch_size, 1, img_size, img_size)
-
-    #result_dic = {} # The first element is domain a and the second element is domain b
 
     for i, batch in enumerate(data_loader):
         # two modality: source domain(A) and target domain(B). The aim is to generate B image 
@@ -90,6 +90,8 @@ def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=
     real_a_kspace = torch_fft(real_a_list) 
     real_b_kspace = torch_fft(real_b_list) 
 
+    print(f'src_msl: {src_msl}')
+    print(f'tag_msl: {tag_msl}')
     a_delta_dic = delta_diff(real_a_kspace, src_msl)
     b_delta_dic = delta_diff(real_b_kspace, tag_msl)
 
