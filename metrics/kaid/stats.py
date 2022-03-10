@@ -105,6 +105,8 @@ def mask_stats(data_loader, source_domain, target_domain, src_msl=None, tag_msl=
 
 def best_msl_list(delta_dic, delta_diff=None):
 
+    print(f'delta_diff: {delta_diff}')
+
     msl_list = []
     for key in delta_dic:
         if delta_dic[key] < delta_diff: 

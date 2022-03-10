@@ -207,9 +207,11 @@ if __name__ == '__main__':
         np.savez_compressed(os.path.join(msl_path, para_dict['source_domain']), msl=msl_a)
         np.savez_compressed(os.path.join(msl_path, para_dict['target_domain']), msl=msl_b)
     else:
-        msl_a = np.load(os.path.join(msl_path, para_dict['source_domain'])+'.npz')
-        msl_b = np.load(os.path.join(msl_path, para_dict['target_domain'])+'.npz')
-
+        msl_a = np.load(os.path.join(msl_path, para_dict['source_domain'])+'.npz')['msl']
+        msl_b = np.load(os.path.join(msl_path, para_dict['target_domain'])+'.npz')['msl']
+        print(f'msl_a: {msl_a}')
+        print(f'msl_b: {msl_b}')
+    
     # Training 
     #TODO: Alternative Training for different training loader
 

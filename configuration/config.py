@@ -12,7 +12,7 @@ def parse_arguments_kaid():
     parser.add_argument('--debug', action='store_true', default=None)
     parser.add_argument('--msl-stats', action='store_true', help='mask stastical learning')
     parser.add_argument('--msl-path', type=str, default=None, help='mask side length storage path')
-    parser.add_argument('--delta-diff', type=float, default=1000)
+    parser.add_argument('--delta-diff', type=float, default=None, help='mask side length difference vairation thereshold value')
     parser.add_argument('--num-epochs', type=int)
     parser.add_argument('--lambda-recon', type=float, default=1.0, help='weight for reconstruction loss')
     parser.add_argument('--lambda-triplet', type=float, default=1.0, help='weight for triplet loss')
