@@ -215,30 +215,30 @@ if __name__ == '__main__':
     # Training 
     #TODO: Alternative Training for different training loader
 
-    #for epoch in range(para_dict['num_epochs']):
-    #    for i, batch in enumerate(normal_loader): 
-    #    #TODO: noisy loader
+    for epoch in range(para_dict['num_epochs']):
+        for i, batch in enumerate(normal_loader): 
+        #TODO: noisy loader
 
-    #        if i > batch_limit:
-    #            break
+            if i > batch_limit:
+                break
 
-    #        real_a = batch[para_dict['source_domain']]
-    #        real_b = batch[para_dict['target_domain']]
+            real_a = batch[para_dict['source_domain']]
+            real_b = batch[para_dict['target_domain']]
 
-    #        # Fourier Transform 
-    #        real_a_kspace = torch_fft(real_a)
-    #        real_b_kspace = torch_fft(real_b)
+            # Fourier Transform 
+            real_a_kspace = torch_fft(real_a)
+            real_b_kspace = torch_fft(real_b)
 
-    #        real_a_hf = torch_high_pass_filter(real_a_kspace, msl_a)
-    #        real_b_hf = torch_high_pass_filter(real_b_kspace, msl_b)
+            real_a_hf = torch_high_pass_filter(real_a_kspace, msl_a)
+            real_b_hf = torch_high_pass_filter(real_b_kspace, msl_b)
 
-    #        real_a_lf = torch_low_pass_filter(real_a_kspace, msl_a)
-    #        real_b_lf = torch_low_pass_filter(real_b_kspace, msl_b)
+            real_a_lf = torch_low_pass_filter(real_a_kspace, msl_a)
+            real_b_lf = torch_low_pass_filter(real_b_kspace, msl_b)
 
-    #        """
-    #        Magnitude: sqrt(re^2 + im^2) tells you the amplitude of the component at the corresponding frequency
-    #        Phase: atan2(im, re) tells you the relative phase of that component
-    #        """
+            """
+            Magnitude: sqrt(re^2 + im^2) tells you the amplitude of the component at the corresponding frequency
+            Phase: atan2(im, re) tells you the relative phase of that component
+            """
 
     #        real_a_hf_mag = torch.abs(real_a_hf).to(device)
     #        real_a_lf_mag = torch.abs(real_a_lf).to(device)

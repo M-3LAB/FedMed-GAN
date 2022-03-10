@@ -17,6 +17,7 @@ gpu_id: 0
 gpu_ids:
 - '01234567'
 num_workers: 8 
+num_epochs: 50
 work_dir: ./work_dir
 save_log: true
 debug: False 
