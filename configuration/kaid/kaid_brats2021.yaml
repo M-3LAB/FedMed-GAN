@@ -32,4 +32,6 @@ gamma: 0.1
 #msl
 msl_path: ./msl_stats
 msl_stats: False 
+msl_assigned: False
+msl_assigned_value: 10
 delta_diff: 10000

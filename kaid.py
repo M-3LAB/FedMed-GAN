@@ -192,7 +192,7 @@ if __name__ == '__main__':
     create_folders(msl_path) 
 
     if para_dict['msl_stats']:
-       
+        assert para_dict['msl_assigned'] is False, 'msl_stats and msl_assigned are contradictory'
         src_dict, tag_dict = mask_stats(normal_loader, para_dict['source_domain'], 
                                         para_dict['target_domain'])
 
@@ -206,6 +206,10 @@ if __name__ == '__main__':
         msl_b = tag_best_msl_list[0]
         np.savez_compressed(os.path.join(msl_path, para_dict['source_domain']), msl=msl_a)
         np.savez_compressed(os.path.join(msl_path, para_dict['target_domain']), msl=msl_b)
+    elif para_dict['msl_assigned']:
+        assert para_dict['msl_stats'] is False, 'msl_stats and msl_assigned are contradictory'
+        msl_a = int(para_dict['msl_assigned_value'])
+        msl_b = int(para_dict['msl_assigned_value'])
     else:
         msl_a = np.load(os.path.join(msl_path, para_dict['source_domain'])+'.npz')['msl']
         msl_b = np.load(os.path.join(msl_path, para_dict['target_domain'])+'.npz')['msl']
