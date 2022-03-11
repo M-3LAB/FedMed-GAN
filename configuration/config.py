@@ -11,6 +11,8 @@ def parse_arguments_kaid():
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--debug', action='store_true', default=None)
     parser.add_argument('--msl-stats', action='store_true', help='mask stastical learning')
+    parser.add_argument('--msl-assigned', action='store_true', help='mask assigned flag')
+    parser.add_argument('--msl-assigned-value', type=float, help='msl assigned value')
     parser.add_argument('--msl-path', type=str, default=None, help='mask side length storage path')
     parser.add_argument('--delta-diff', type=float, default=None, help='mask side length difference vairation thereshold value')
     parser.add_argument('--num-epochs', type=int, default=None)
