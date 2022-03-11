@@ -42,3 +42,5 @@ lambda_recon: 1.0
 lambda_contrastive: 1.0
 lambda_hf: 1.0
 lambda_lf: 1.0
+#test_model
+test_model: cyclegan

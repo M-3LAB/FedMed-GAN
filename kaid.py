@@ -291,27 +291,27 @@ if __name__ == '__main__':
             print(infor)         
     
     # Score Prediction
-    ##TODO: Load GAN Model and KAID  
-    #if para_dict['test_model'] == 'cyclegan':
-    #    generator_from_a_to_b = CycleGen().to(device) 
-    #    generator_from_b_to_a = CycleGen().to(device)
-    #elif para_dict['test_model'] == 'munit':
+    #TODO: Load GAN Model and KAID  
+    if para_dict['test_model'] == 'cyclegan':
+        generator_from_a_to_b = CycleGen().to(device) 
+        generator_from_b_to_a = CycleGen().to(device)
+    elif para_dict['test_model'] == 'munit':
 
-    #    encoder_from_a_to_b = MUE().to(device)
-    #    decoder_from_a_to_b = MUD().to(device)
+        encoder_from_a_to_b = MUE().to(device)
+        decoder_from_a_to_b = MUD().to(device)
 
-    #    encoder_from_b_to_a = MUE().to(device)
-    #    decoder_from_b_to_a = MUD().to(device)
+        encoder_from_b_to_a = MUE().to(device)
+        decoder_from_b_to_a = MUD().to(device)
 
-    #elif para_dict['test_model'] == 'unit':
+    elif para_dict['test_model'] == 'unit':
 
-    #    encoder_from_a_to_b = UE().to(device)
-    #    generator_from_a_to_b = UG().to(device) 
-    #    encoder_from_b_to_a = UE().to(device)
-    #    generator_from_b_to_a = UG().to(device) 
+        encoder_from_a_to_b = UE().to(device)
+        generator_from_a_to_b = UG().to(device) 
+        encoder_from_b_to_a = UE().to(device)
+        generator_from_b_to_a = UG().to(device) 
 
-    #else:
-    #    raise NotImplementedError('GAN Model Has Not Been Implemented Yet')
+    else:
+        raise NotImplementedError('GAN Model Has Not Been Implemented Yet')
     
     ##TODO: synthesis data loader
 
