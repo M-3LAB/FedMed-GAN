@@ -1,8 +1,14 @@
 import argparse
 
-__all__ = ['parse_argument_bise', 'parse_arguments_federated', 
+__all__ = ['parse_argument_bise', 'parse_arguments_federated', 'parse_arguments_nirps', 
             'parse_arguments_centralized', 'parse_arguments_fid_stats']
 
+
+def parse_arguments_nirps():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model', type=str, choices=['cyclegan', 'munit', 'unit'])
+    args = parser.parse_args()
+    return args
 
 def parse_arguments_kaid():
     parser = argparse.ArgumentParser()

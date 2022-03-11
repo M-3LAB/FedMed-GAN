@@ -317,7 +317,7 @@ if __name__ == '__main__':
 
     for i, batch in enumerate(normal_loader): 
         if i > batch_limit:
-                break
+            break
 
     #    real_a = batch[para_dict['source_domain']]
     #    real_b = batch[para_dict['target_domain']]
