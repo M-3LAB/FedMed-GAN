@@ -319,26 +319,26 @@ if __name__ == '__main__':
         if i > batch_limit:
             break
 
-    #    real_a = batch[para_dict['source_domain']]
-    #    real_b = batch[para_dict['target_domain']]
-    #    
-    #    # Synthesize Image 
-    #    if para_dict['test_model'] == 'cyclegan':
-    #        fake_b = generator_from_a_to_b(real_a)
-    #        fake_a = generator_from_b_to_a(real_b)
-    #    elif para_dict['test_model'] == 'munit':
-    #        pass
-    #    elif para_dict['test_model'] == 'unit':
-    #        pass
-    #    else:
-    #        raise NotImplementedError('Synthesis Model Not Implemented Yet')
-    #    
-    #    #Distance 
-    #    real_a_z = kaid_ae.encode(real_a)    
-    #    fake_a_z = kaid_ae.encode(fake_a)
+        real_a = batch[para_dict['source_domain']]
+        real_b = batch[para_dict['target_domain']]
+        
+        # Synthesize Image 
+        if para_dict['test_model'] == 'cyclegan':
+            fake_b = generator_from_a_to_b(real_a)
+            fake_a = generator_from_b_to_a(real_b)
+        elif para_dict['test_model'] == 'munit':
+            pass
+        elif para_dict['test_model'] == 'unit':
+            pass
+        else:
+            raise NotImplementedError('Synthesis Model Not Implemented Yet')
+        
+        #Distance 
+        real_a_z = kaid_ae.encode(real_a)    
+        fake_a_z = kaid_ae.encode(fake_a)
 
-    #    real_b_z = kaid_ae.encode(real_b)
-    #    fake_b_z = kaid_ae.encode(fake_b)
+        real_b_z = kaid_ae.encode(real_b)
+        fake_b_z = kaid_ae.encode(fake_b)
 
     #    if para_dict['diff_method'] == 'l1':
     #        diff_a = l1_diff(real_a_z, fake_a_z)
