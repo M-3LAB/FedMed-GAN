@@ -319,13 +319,13 @@ if __name__ == '__main__':
         if i > batch_limit:
             break
 
-        real_a = batch[para_dict['source_domain']]
-        real_b = batch[para_dict['target_domain']]
+        real_a = batch[para_dict['source_domain']].to(device)
+        real_b = batch[para_dict['target_domain']].to(device)
         
         # Synthesize Image 
         if para_dict['test_model'] == 'cyclegan':
-            fake_b = generator_from_a_to_b(real_a)
-            fake_a = generator_from_b_to_a(real_b)
+            fake_b = generator_from_a_to_b(real_a).to(device)
+            fake_a = generator_from_b_to_a(real_b).to(device)
         elif para_dict['test_model'] == 'munit':
             pass
         elif para_dict['test_model'] == 'unit':
