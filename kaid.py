@@ -274,7 +274,7 @@ if __name__ == '__main__':
             """
             loss_high_frequency = criterion_high_freq(real_a_hf_z, real_b_hf_z) 
             loss_low_frequency = criterion_low_freq(real_a_lf_z, real_b_lf_z)
-            contrastive_loss = (para_dict['lamda_hf'] * loss_high_frequency -
+            contrastive_loss = (para_dict['lambda_hf'] * loss_high_frequency -
                                 para_dict['lambda_lf'] * loss_low_frequency)
 
             loss_total = (para_dict['lambda_contrastive'] * contrastive_loss + 
