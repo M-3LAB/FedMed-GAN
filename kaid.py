@@ -313,11 +313,11 @@ if __name__ == '__main__':
     else:
         raise NotImplementedError('GAN Model Has Not Been Implemented Yet')
     
-    ##TODO: synthesis data loader
+    #TODO: synthesis data loader
 
-    #for i, batch in enumerate(normal_loader): 
-    #    if i > batch_limit:
-    #            break
+    for i, batch in enumerate(normal_loader): 
+        if i > batch_limit:
+                break
 
     #    real_a = batch[para_dict['source_domain']]
     #    real_b = batch[para_dict['target_domain']]
