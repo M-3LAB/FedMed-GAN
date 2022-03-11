@@ -78,7 +78,7 @@ class Unit(Base):
         real_b = batch[self.config['target_domain']].to(self.device)           
         # get shared latent representation
         mu1, Z1 = self.generator_from_a_to_b_enc(real_a, self.device)
-        mu2, Z2 = self.generator_from_a_to_b_enc(real_b, self.device)
+        mu2, Z2 = self.generator_from_b_to_a_enc(real_b, self.device)
 
         # reconstruct images
         fake_fake_a = self.generator_from_a_to_b_dec(Z1)
