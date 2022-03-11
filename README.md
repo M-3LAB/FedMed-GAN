@@ -81,6 +81,11 @@ python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd' -g 0 -
 python3 kaid.py --dataset 'brats2021' --source-domain 't1' --target-domain 't2' -g 0 --msl-assigned
 ```
 
+## KAID Debug 
+```bash
+python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd' -g 0 --msl-assigned --msl-assigned-value 10 --debug --num-epochs 2
+```
+
 ## Implementations of Data Processing
 Sereval modes are described in the new settings of FedMed.
 
