@@ -12,7 +12,7 @@ import numpy as np
 from model.ae.kaid_ae import *
 from loss_function.simclr_loss import *
 from loss_function.distance import cosine_similiarity, l1_diff, l2_diff
-from loss_function.triplet_loss import triplet_loss
+from loss_function.contrastive_loss import contrastive_loss
 from model.cyclegan.cyclegan import CycleGen 
 from model.munit.munit import Encoder as MUE
 from model.munit.munit import Decoder as MUD
@@ -270,20 +270,20 @@ if __name__ == '__main__':
             loss_recon = (loss_recon_real_a_hf + loss_recon_real_b_hf 
                                 + loss_recon_real_a_lf + loss_recon_real_b_lf)
 
-    #        """
-    #        Triplet Loss
-    #        """
-    #        #TODO: KAID Triplet Loss
-    #        kaid_triplet_loss = triplet_loss()
-    #        loss_total = kaid_triplet_loss + loss_recon
+            """
+            Contrastive Loss
+            """
+            #TODO: KAID Contrastive Loss
+            kaid_contrastive_loss = contrastive_loss()
+            loss_total = kaid_contrastive_loss + loss_recon
 
-    #        loss_total.backward()
-    #        optimizer.step()
-    #        lr_scheduler.step()
+            loss_total.backward()
+            optimizer.step()
+            lr_scheduler.step()
 
-    #        # Print Log
-    #        infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [Triplet loss: {:.4f}]'.format(
-    #                    '', i, batch_limit, loss_recon.item(), kaid_triplet_loss.item())
+            # Print Log
+            infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [contrastive loss: {:.4f}]'.format(
+                        '', i, batch_limit, loss_recon.item(), kaid_contrastive_loss.item())
     
     # Score Prediction
     ##TODO: Load GAN Model and KAID  
