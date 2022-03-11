@@ -171,7 +171,7 @@ if __name__ == '__main__':
     kaid_ae = KAIDAE().to(device)
     # Loss
     criterion_recon = torch.nn.L1Loss().to(device)
-    #TODO: Triplet Loss Function added
+    #TODO: Contrastive Loss Function added
 
     # Optimizer
     optimizer = torch.optim.Adam(kaid_ae.parameters(), lr=para_dict['lr'],
