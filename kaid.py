@@ -287,6 +287,8 @@ if __name__ == '__main__':
             # Print Log
             infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [contrastive loss: {:.4f}]'.format(
                         '', i, batch_limit, loss_recon.item(), contrastive_loss.item())
+
+            print(infor)         
     
     # Score Prediction
     ##TODO: Load GAN Model and KAID  
