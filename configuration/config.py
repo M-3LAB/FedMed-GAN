@@ -18,6 +18,8 @@ def parse_arguments_kaid():
     parser.add_argument('--num-epochs', type=int, default=None)
     parser.add_argument('--lambda-recon', type=float, default=1.0, help='weight for reconstruction loss')
     parser.add_argument('--lambda-contrastive', type=float, default=1.0, help='weight for contrastive loss')
+    parser.add_argument('--lambda-hf', type=float, default=1.0, help='weight for high frequency part')
+    parser.add_argument('--lambda-lf', type=float, default=1.0, help='weight for low frequency part')
     parser.add_argument('--pair-num', '-pn', type=int, default=10000)
     parser.add_argument('--test-model', type=str, default='cyclegan', choices=['cyclegan','munit','unit'])
     #parser.add_argument('--mode', type=str, default='train', choices=['train', 'pred', 'trainpred'])
