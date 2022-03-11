@@ -275,7 +275,8 @@ if __name__ == '__main__':
             """
             #TODO: KAID Contrastive Loss
             kaid_contrastive_loss = contrastive_loss()
-            loss_total = kaid_contrastive_loss + loss_recon
+            loss_total = (para_dict['lambda_contrastive'] * kaid_contrastive_loss + 
+                          para_dict['lambda_recon'] * loss_recon)
 
             loss_total.backward()
             optimizer.step()
