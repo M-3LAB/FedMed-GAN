@@ -11,8 +11,6 @@ from metrics.kaid.stats import mask_stats, best_msl_list
 import numpy as np
 from model.ae.kaid_ae import *
 from loss_function.simclr_loss import *
-from loss_function.distance import cosine_similiarity, l1_diff, l2_diff
-from loss_function.contrastive_loss import contrastive_loss
 from model.cyclegan.cyclegan import CycleGen 
 from model.munit.munit import Encoder as MUE
 from model.munit.munit import Decoder as MUD
@@ -171,7 +169,8 @@ if __name__ == '__main__':
     kaid_ae = KAIDAE().to(device)
     # Loss
     criterion_recon = torch.nn.L1Loss().to(device)
-    #TODO: Contrastive Loss Function added
+    criterion_high_freq = torch.nn.MSELoss(reduction='mean').to(device)
+    criterion_low_freq = torch.nn.MSELoss(reduction='mean').to(device)
 
     # Optimizer
     optimizer = torch.optim.Adam(kaid_ae.parameters(), lr=para_dict['lr'],
@@ -273,9 +272,12 @@ if __name__ == '__main__':
             """
             Contrastive Loss
             """
-            #TODO: KAID Contrastive Loss
-            kaid_contrastive_loss = contrastive_loss()
-            loss_total = (para_dict['lambda_contrastive'] * kaid_contrastive_loss + 
+            loss_high_frequency = criterion_high_freq(real_a_hf_z, real_b_hf_z) 
+            loss_low_frequency = criterion_low_freq(real_a_lf_z, real_b_lf_z)
+            contrastive_loss = (para_dict['lamda_hf'] * loss_high_frequency -
+                                para_dict['lambda_lf'] * loss_low_frequency)
+
+            loss_total = (para_dict['lambda_contrastive'] * contrastive_loss + 
                           para_dict['lambda_recon'] * loss_recon)
 
             loss_total.backward()
@@ -284,7 +286,7 @@ if __name__ == '__main__':
 
             # Print Log
             infor = '\r{}[Batch {}/{}] [Recons loss: {:.4f}] [contrastive loss: {:.4f}]'.format(
-                        '', i, batch_limit, loss_recon.item(), kaid_contrastive_loss.item())
+                        '', i, batch_limit, loss_recon.item(), contrastive_loss.item())
     
     # Score Prediction
     ##TODO: Load GAN Model and KAID  
