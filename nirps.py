@@ -75,30 +75,9 @@ class NIRPS(object):
                 print('fid stats from b to a: {}'.format(self.fid_stats_from_b_to_a))
 
         print('work dir: {}'.format(self.file_path))
-        print('noise type: {}'.format(self.para_dict['noise_type']))
-
-        if self.para_dict['noise_type'] == 'reg':
-            print('noise level: {}'.format(self.para_dict['noise_level']))
 
 
     def load_data(self):
-        if self.para_dict['auxiliary_rotation']:
-            convert_list_float_type(self.para_dict['angle_list'])
-            #TODO: Automatically enlarge the number of rotation labels
-            assert len(self.para_dict['angle_list']) == 3
-
-        if self.para_dict['auxiliary_translation']:
-            convert_list_float_type(self.para_dict['translation_list'])
-            assert max(self.para_dict['translation_list']) <= 30
-            #TODO: Automatically enlarge the number of translation labels
-            assert len(self.para_dict['translation_list']) == 1
-
-        if self.para_dict['auxiliary_scaling']:
-            convert_list_float_type(self.para_dict['scaling_list'])
-            assert max(self.para_dict['scaling_list']) <= 1.2        
-            #TODO: Automatically enlarge the number of scaling labels
-            assert len(self.para_dict['scaling_list']) == 3
-
         self.normal_transform = [{'degrees':0, 'translate':[0.00, 0.00],
                                      'scale':[1.00, 1.00], 
                                      'size':(self.para_dict['size'], self.para_dict['size'])},
@@ -106,48 +85,16 @@ class NIRPS(object):
                                   'scale':[1.00, 1.00], 
                                   'size':(self.para_dict['size'], self.para_dict['size'])}]
 
-        self.gaussian_transform = [{'mu':self.para_dict['a_mu'], 'sigma':self.para_dict['a_sigma'],
-                                     'size':(self.para_dict['size'], self.para_dict['size'])},
-                                    {'mu':self.para_dict['b_mu'], 'sigma':self.para_dict['b_sigma'],
-                                     'size':(self.para_dict['size'], self.para_dict['size'])}]
-        self.slight_transform = [{'degrees': self.para_dict['noise_level'], 
-                                     'translate': [0.02*self.para_dict['noise_level'], 0.02*self.para_dict['noise_level']],
-                                     'scale':[1-0.02*self.para_dict['noise_level'], 1-0.02*self.para_dict['noise_level']], 
-                                     'size':(self.para_dict['size'], self.para_dict['size'])},
-                                    {'degrees': self.para_dict['noise_level'], 
-                                     'translate': [0.02*self.para_dict['noise_level'], 0.02*self.para_dict['noise_level']],
-                                     'scale':[1-0.02*self.para_dict['noise_level'], 1-0.02*self.para_dict['noise_level']], 
-                                     'size':(self.para_dict['size'], self.para_dict['size'])}]
-        self.severe_transform = [{'degrees':self.para_dict['severe_rotation'], 
-                                     'translate':[self.para_dict['severe_translation'], self.para_dict['severe_translation']],
-                                     'scale':[1-self.para_dict['severe_scaling'], 1+self.para_dict['severe_scaling']], 
-                                     'size':(self.para_dict['size'], self.para_dict['size'])},
-                                    {'degrees':self.para_dict['severe_rotation'], 
-                                     'translate':[self.para_dict['severe_translation'], self.para_dict['severe_translation']],
-                                     'scale':[1-self.para_dict['severe_scaling'], 1+self.para_dict['severe_scaling']], 
-                                     'size':(self.para_dict['size'], self.para_dict['size'])}]
-
-        if self.para_dict['noise_type'] == 'normal':
-            self.noise_transform = self.normal_transform
-        elif self.para_dict['noise_type'] == 'gaussian':
-            self.noise_transform = self.gaussian_transform
-        elif self.para_dict['noise_type'] == 'slight':
-            self.noise_transform = self.slight_transform
-        elif self.para_dict['noise_type'] == 'severe': 
-            self.noise_transform = self.severe_transform
-        else:
-            raise NotImplementedError('New Noise Has not been Implemented')
-
         if self.para_dict['dataset'] == 'brats2021':
             assert self.para_dict['source_domain'] in ['t1', 't2', 'flair']
             assert self.para_dict['target_domain'] in ['t1', 't2', 'flair']
             self.train_dataset = BraTS2021(root=self.para_dict['data_path'],
                                            modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                            extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                           noise_type=self.para_dict['noise_type'],
+                                           noise_type='normal',
                                            learn_mode='train',
-                                           transform_data=self.noise_transform,
-                                           client_weights=self.para_dict['clients_data_weight'],
+                                           transform_data=self.normal_transform,
+                                           client_weights=[1.0],
                                            data_mode=self.para_dict['data_mode'],
                                            data_num=self.para_dict['data_num'],
                                            data_paired_weight=self.para_dict['data_paired_weight'],
