@@ -342,3 +342,6 @@ class NIRPS(object):
             print('\n---> work dir {}'.format(self.file_path), file=f)
             print(self.args, file=f)
         print('---------------------')
+
+if __name__ == '__main__':
+    pass
