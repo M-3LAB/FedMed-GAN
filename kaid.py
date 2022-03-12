@@ -10,7 +10,6 @@ from model.FT.power_spectrum import *
 from metrics.kaid.stats import mask_stats, best_msl_list 
 import numpy as np
 from model.ae.kaid_ae import *
-from loss_function.simclr_loss import *
 from model.cyclegan.cyclegan import CycleGen 
 from model.munit.munit import Encoder as MUE
 from model.munit.munit import Decoder as MUD
@@ -18,6 +17,7 @@ from model.unit.unit import Encoder as UE
 from model.unit.unit import Generator as UG
 from tools.utilize import create_folders
 import os
+from loss_function.distance import l1_diff, l2_diff, cosine_similiarity
 
 
 if __name__ == '__main__':
@@ -115,6 +115,10 @@ if __name__ == '__main__':
 
         noisy_loader = DataLoader(ixi_noise_dataset, num_workers=para_dict['num_workers'],
                                   batch_size=para_dict['batch_size'], shuffle=False)
+
+        test_loader = DataLoader(ixi_normal_dataset, num_workers=para_dict['num_workers'],
+                                 batch_size=1, shuffle=False)
+
         
     elif para_dict['dataset'] == 'brats2021':
         assert para_dict['source_domain'] in ['t1', 't2', 'flair']
@@ -156,6 +160,9 @@ if __name__ == '__main__':
 
         noisy_loader = DataLoader(brats_noise_dataset, num_workers=para_dict['num_workers'],
                                   batch_size=para_dict['batch_size'], shuffle=False)
+        
+        test_loader = DataLoader(brats_normal_dataset, num_workers=para_dict['num_workers'],
+                                 batch_size=1, shuffle=False)
     else:
         raise NotImplementedError("New Data Has Not Been Implemented")
 
@@ -314,8 +321,8 @@ if __name__ == '__main__':
         raise NotImplementedError('GAN Model Has Not Been Implemented Yet')
     
     #TODO: synthesis data loader
-
-    for i, batch in enumerate(normal_loader): 
+    # Single Image Quality, batchsize=1
+    for i, batch in enumerate(test_loader): 
         if i > batch_limit:
             break
 
