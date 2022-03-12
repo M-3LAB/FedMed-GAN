@@ -12,7 +12,7 @@ def cosine_similiarity(real_z, fake_z):
         fake_z (vector): the hidden space of fake image 
     
     Output:
-        the l1 difference between two hidden space 
+        cosine similiarity distance between two hidden space 
     
     """
     cos = nn.CosineSimilarity(dim=1, eps=1e-6)
