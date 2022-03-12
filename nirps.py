@@ -88,6 +88,7 @@ class NIRPS(object):
         if self.para_dict['dataset'] == 'brats2021':
             assert self.para_dict['source_domain'] in ['t1', 't2', 'flair']
             assert self.para_dict['target_domain'] in ['t1', 't2', 'flair']
+
             self.train_dataset = BraTS2021(root=self.para_dict['data_path'],
                                            modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                            extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
@@ -97,9 +98,10 @@ class NIRPS(object):
                                            client_weights=[1.0],
                                            data_mode=self.para_dict['data_mode'],
                                            data_num=self.para_dict['data_num'],
-                                           data_paired_weight=self.para_dict['data_paired_weight'],
-                                           data_moda_ratio=self.para_dict['data_moda_ratio'],
-                                           data_moda_case=self.para_dict['data_moda_case'])
+                                           data_paired_weight=1.0,
+                                           data_moda_ratio=1.0,
+                                           data_moda_case='case1')
+
             self.valid_dataset = BraTS2021(root=self.para_dict['valid_path'],
                                            modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                            noise_type='normal',
@@ -107,31 +109,24 @@ class NIRPS(object):
                                            extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
                                            transform_data=self.normal_transform,
                                            data_mode='paired')
-            self.assigned_dataset = BraTS2021(root=self.para_dict['valid_path'],
-                                           modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
-                                           noise_type='severe',
-                                           learn_mode='test',
-                                           extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                           transform_data=self.severe_transform,
-                                           data_mode='paired',
-                                           assigned_data=self.para_dict['single_img_infer'],
-                                           assigned_images=self.para_dict['assigned_images']) 
+            
         elif self.para_dict['dataset'] == 'ixi':
             assert self.para_dict['source_domain'] in ['t2', 'pd']
             assert self.para_dict['target_domain'] in ['t2', 'pd']
+
             self.train_dataset = IXI(root=self.para_dict['data_path'],
-                                    modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
-                                    extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                    noise_type=self.para_dict['noise_type'],
-                                    learn_mode='train',
-                                    transform_data=self.noise_transform,
-                                    data_mode=self.para_dict['data_mode'],
-                                    data_num=self.para_dict['data_num'],
-                                    data_paired_weight=self.para_dict['data_paired_weight'],
-                                    client_weights=self.para_dict['clients_data_weight'],
-                                    dataset_splited=True,
-                                    data_moda_ratio=self.para_dict['data_moda_ratio'],
-                                    data_moda_case=self.para_dict['data_moda_case'])
+                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
+                                     extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
+                                     noise_type=self.para_dict['noise_type'],
+                                     learn_mode='train',
+                                     transform_data=self.noise_transform,
+                                     data_mode=self.para_dict['data_mode'],
+                                     data_num=self.para_dict['data_num'],
+                                     data_paired_weight=self.para_dict['data_paired_weight'],
+                                     client_weights=self.para_dict['clients_data_weight'],
+                                     dataset_splited=True,
+                                     data_moda_ratio=self.para_dict['data_moda_ratio'],
+                                     data_moda_case=self.para_dict['data_moda_case'])
             self.valid_dataset = IXI(root=self.para_dict['data_path'],
                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                     extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
