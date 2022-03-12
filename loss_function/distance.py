@@ -31,7 +31,7 @@ def l1_diff(real_z, fake_z):
         the l1 difference between two hidden space 
     
     """
-    distance = torch.abs(real_z, fake_z)
+    distance = torch.abs(real_z - fake_z)
     return distance
 
 def l2_diff(real_z, fake_z):

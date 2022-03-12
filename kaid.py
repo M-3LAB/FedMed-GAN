@@ -359,8 +359,8 @@ if __name__ == '__main__':
         else:
             raise NotImplementedError('The Difference Method Has Not Been Calculated Yet')
 
-        print(f"The Diff of Modality {para_dict['source_domain']} : {diff_a}")
-        print(f"The Diff of Modality {para_dict['target_domain']} : {diff_b}")
+        print(f"The mean diff of Modality {para_dict['source_domain']} : {torch.mean(diff_a)}")
+        print(f"The mean diff of Modality {para_dict['target_domain']} : {torch.mean(diff_b)}")
 
 
         
