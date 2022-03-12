@@ -1,0 +1,22 @@
+dataset: ixi
+source_domain: pd
+target_domain: t2
+data_path: /disk1/medical/ixi
+valid_path: /disk1/medical/ixi
+data_mode: 'mixed'
+data_num: 6000 
+data_paired_weight: 0.5 
+data_moda_ratio: 0.5
+data_moda_case: 'case1'
+data_partition: manual
+es_higher_limit: 80 
+es_lower_limit: 50
+size: 256 
+num_img_save: 5
+single_img_infer: false
+assigned_images: [['IXI002-Guys-0828', 'IXI002-Guys-0828', 80], 
+                  ['IXI305-IOP-0871', 'IXI305-IOP-0871', 55],
+                  ['IXI508-HH-2268', 'IXI508-HH-2268', 74],
+                  ['IXI151-Guys-0793', 'IXI151-Guys-0793', 60],
+                  ['IXI297-Guys-0886', 'IXI297-Guys-0886', 77],
+                  ['IXI252-HH-1693', 'IXI252-HH-1693', 56]]

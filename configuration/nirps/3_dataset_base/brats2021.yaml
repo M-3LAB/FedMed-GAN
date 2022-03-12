@@ -1,0 +1,25 @@
+dataset: brats2021
+source_domain: t1
+target_domain: t2
+data_path: /disk1/medical/brats2021/training
+valid_path: /disk1/medical/brats2021/validation
+data_mode: 'mixed'
+data_num: 6000 
+data_paired_weight: 0.5 
+data_moda_ratio: 0.5
+data_moda_case: 'case1'
+data_partition: manual
+es_higher_limit: 80 
+es_lower_limit: 50
+size: 256 
+num_img_save: 5
+single_img_infer: false
+assigned_images: [['BraTS2021_00001', 'BraTS2021_00001', 70], 
+                  ['BraTS2021_00013', 'BraTS2021_00013', 70],
+                  ['BraTS2021_00438', 'BraTS2021_00438', 70],
+                  ['BraTS2021_01668', 'BraTS2021_01668', 70],
+                  ['BraTS2021_01712', 'BraTS2021_01712', 70],
+                  ['BraTS2021_01756', 'BraTS2021_01756', 70],
+                  ['BraTS2021_00585', 'BraTS2021_00585', 70],
+                  ['BraTS2021_01679', 'BraTS2021_01679', 70],
+                  ['BraTS2021_01763', 'BraTS2021_01763', 70]]
