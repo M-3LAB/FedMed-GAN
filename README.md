@@ -86,6 +86,11 @@ python3 kaid.py --dataset 'brats2021' --source-domain 't1' --target-domain 't2' 
 python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd' -g 0 --msl-assigned --msl-assigned-value 10 --debug --num-epochs 2
 ```
 
+## NIRPS Dataset Build Up
+```bash
+python3 nirps.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd' -g 0 --msl-assigned --msl-assigned-value 10 --debug --num-epochs 2
+```
+
 ## Implementations of Data Processing
 Sereval modes are described in the new settings of FedMed.
 
