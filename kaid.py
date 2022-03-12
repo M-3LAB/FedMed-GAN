@@ -347,17 +347,20 @@ if __name__ == '__main__':
         real_b_z = kaid_ae.encode(real_b)
         fake_b_z = kaid_ae.encode(fake_b)
 
-    #    if para_dict['diff_method'] == 'l1':
-    #        diff_a = l1_diff(real_a_z, fake_a_z)
-    #        diff_b = l1_diff(real_b_z, fake_b_z)
-    #    elif para_dict['diff_method'] == 'l2':
-    #        diff_a = l2_diff(real_a_z, fake_a_z)
-    #        diff_b = l2_diff(real_b_z, fake_b_z)
-    #    else:
-    #        raise NotImplementedError('The Difference Method Has Not Been Calculated Yet')
+        if para_dict['diff_method'] == 'l1':
+            diff_a = l1_diff(real_a_z, fake_a_z)
+            diff_b = l1_diff(real_b_z, fake_b_z)
+        elif para_dict['diff_method'] == 'l2':
+            diff_a = l2_diff(real_a_z, fake_a_z)
+            diff_b = l2_diff(real_b_z, fake_b_z)
+        elif para_dict['diff_method'] == 'cos':
+            diff_a = cosine_similiarity(real_a_z, fake_a_z)
+            diff_b = cosine_similiarity(real_b_z, fake_b_z)
+        else:
+            raise NotImplementedError('The Difference Method Has Not Been Calculated Yet')
 
-    #    print(f"The Diff of Modality {para_dict['source_domain']} : {diff_a}")
-    #    print(f"The Diff of Modality {para_dict['target_domain']} : {diff_b}")
+        print(f"The Diff of Modality {para_dict['source_domain']} : {diff_a}")
+        print(f"The Diff of Modality {para_dict['target_domain']} : {diff_b}")
 
 
         
