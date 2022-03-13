@@ -153,7 +153,7 @@ class NIRPS(object):
                                        batch_size=1, 
                                        shuffle=False)
         
-        #self.assigned_loader = None
+        self.assigned_loader = None
 
     def init_model(self):
         if self.para_dict['model'] == 'cyclegan':
@@ -189,7 +189,7 @@ class NIRPS(object):
             discr_from_b_to_a = load_model(self.trainer.discriminator_from_b_to_a, self.para_dict['load_model_dir'], 'd_from_b_to_a')
             self.trainer.set_model(gener_from_a_to_b_enc, gener_from_a_to_b_dec, gener_from_b_to_a_enc, gener_from_b_to_a_dec, discr_from_a_to_b, discr_from_b_to_a)
 
-    def save_models(self, psnr):
+    def save_models(self, psnr=None, ssim=None, fid=None):
         if self.para_dict['model'] == 'cyclegan':
             gener_from_a_to_b, gener_from_b_to_a, discr_from_a_to_b, discr_from_b_to_a = self.trainer.get_model()
             save_model(gener_from_a_to_b, '{}/checkpoint/g_from_a_to_b'.format(self.file_path), self.para_dict, psnr)

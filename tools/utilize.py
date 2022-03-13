@@ -139,7 +139,7 @@ def save_image(image, name, image_path):
     torchvision.utils.save_image(image, '{}/{}'.format(image_path, name), normalize=False)
 
 
-def save_model(model, file_path, para_dict, psnr):
+def save_model(model, file_path, para_dict, psnr, ssim, fid):
     if not os.path.exists(file_path):
         os.makedirs(file_path)
     for file in glob.glob('{}/*.pth'.format(file_path)):
