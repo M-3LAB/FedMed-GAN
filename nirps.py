@@ -117,16 +117,16 @@ class NIRPS(object):
             self.train_dataset = IXI(root=self.para_dict['data_path'],
                                      modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                      extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                     noise_type=self.para_dict['noise_type'],
+                                     noise_type='normal',
                                      learn_mode='train',
-                                     transform_data=self.noise_transform,
+                                     transform_data=self.normal_transform,
                                      data_mode=self.para_dict['data_mode'],
                                      data_num=self.para_dict['data_num'],
-                                     data_paired_weight=self.para_dict['data_paired_weight'],
-                                     client_weights=self.para_dict['clients_data_weight'],
+                                     data_paired_weight=1.0,
+                                     client_weights=[1.0],
                                      dataset_splited=True,
-                                     data_moda_ratio=self.para_dict['data_moda_ratio'],
-                                     data_moda_case=self.para_dict['data_moda_case'])
+                                     data_moda_ratio=1.0,
+                                     data_moda_case='case1')
             self.valid_dataset = IXI(root=self.para_dict['data_path'],
                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
                                     extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
@@ -135,29 +135,16 @@ class NIRPS(object):
                                     transform_data=self.normal_transform,
                                     data_mode='paired',
                                     dataset_splited=True)
-            self.assigned_dataset = IXI(root=self.para_dict['data_path'],
-                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
-                                     extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                     noise_type='normal',
-                                     learn_mode='test',
-                                     transform_data=self.severe_transform,
-                                     data_mode='paired',
-                                     dataset_splited=False,
-                                     assigned_data=self.para_dict['single_img_infer'],
-                                     assigned_images=self.para_dict['assigned_images']) 
         else:
             raise NotImplementedError('This Dataset Has Not Been Implemented Yet')
 
-        self.client_data_list = self.train_dataset.client_data_indices
         self.train_loader = DataLoader(self.train_dataset,
                                        batch_size=self.para_dict['batch_size'],
-                                       drop_last=True,
                                        num_workers=self.para_dict['num_workers'],
-                                       sampler=SubsetRandomSampler(self.client_data_list[0]))
+                                       shuffle=True)
+
         self.valid_loader = DataLoader(self.valid_dataset, num_workers=self.para_dict['num_workers'],
-                                 batch_size=self.para_dict['batch_size'], shuffle=False)
-        self.assigned_loader = DataLoader(self.assigned_dataset, num_workers=self.para_dict['num_workers'],
-                                 batch_size=1, shuffle=False)
+                                       batch_size=self.para_dict['batch_size'], shuffle=False)
 
     def init_model(self):
         if self.para_dict['model'] == 'cyclegan':
