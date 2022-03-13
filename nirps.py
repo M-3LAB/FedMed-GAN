@@ -110,15 +110,15 @@ class NIRPS(object):
                                            transform_data=self.normal_transform,
                                            data_mode='paired')
             
-            #self.assigned_dataset = BraTS2021(root=self.para_dict['valid_path'],
-            #                                  modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
-            #                                  noise_type='normal',
-            #                                  learn_mode='test',
-            #                                  extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-            #                                  transform_data=self.normal_transform,
-            #                                  data_mode='paired',
-            #                                  assigned_data=self.para_dict['single_img_infer'],
-            #                                  assigned_images=self.para_dict['assigned_images']) 
+            self.assigned_dataset = BraTS2021(root=self.para_dict['valid_path'],
+                                              modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
+                                              noise_type='normal',
+                                              learn_mode='test',
+                                              extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
+                                              transform_data=self.normal_transform,
+                                              data_mode='paired',
+                                              assigned_data=True,
+                                              assigned_images=None) 
             
         elif self.para_dict['dataset'] == 'ixi':
             assert self.para_dict['source_domain'] in ['t2', 'pd']
@@ -156,7 +156,7 @@ class NIRPS(object):
         self.valid_loader = DataLoader(self.valid_dataset, num_workers=self.para_dict['num_workers'],
                                        batch_size=self.para_dict['batch_size'], shuffle=False)
         
-        self.assigned_loader = None
+        #self.assigned_loader = None
 
     def init_model(self):
         if self.para_dict['model'] == 'cyclegan':
