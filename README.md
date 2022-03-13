@@ -1,7 +1,5 @@
 # FedMed-GAN
 
-The implementation of the papers
-
 ## Preliminary
 > Dependency
 
