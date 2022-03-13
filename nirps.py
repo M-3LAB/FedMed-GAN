@@ -108,17 +108,9 @@ class NIRPS(object):
                                            learn_mode='test',
                                            extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
                                            transform_data=self.normal_transform,
-                                           data_mode='paired')
-            
-            self.assigned_dataset = BraTS2021(root=self.para_dict['valid_path'],
-                                              modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
-                                              noise_type='normal',
-                                              learn_mode='test',
-                                              extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                              transform_data=self.normal_transform,
-                                              data_mode='paired',
-                                              assigned_data=True,
-                                              assigned_images=None) 
+                                           data_mode='paired',
+                                           assigned_data=True,
+                                           assigned_images=None) 
             
         elif self.para_dict['dataset'] == 'ixi':
             assert self.para_dict['source_domain'] in ['t2', 'pd']
@@ -137,14 +129,17 @@ class NIRPS(object):
                                      dataset_splited=True,
                                      data_moda_ratio=1.0,
                                      data_moda_case='case1')
+
             self.valid_dataset = IXI(root=self.para_dict['data_path'],
-                                    modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
-                                    extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
-                                    noise_type='normal',
-                                    learn_mode='test',
-                                    transform_data=self.normal_transform,
-                                    data_mode='paired',
-                                    dataset_splited=True)
+                                     modalities=[self.para_dict['source_domain'], self.para_dict['target_domain']],
+                                     extract_slice=[self.para_dict['es_lower_limit'], self.para_dict['es_higher_limit']],
+                                     noise_type='normal',
+                                     learn_mode='test',
+                                     transform_data=self.normal_transform,
+                                     data_mode='paired',
+                                     dataset_splited=False,
+                                     assigned_data=True,
+                                     assigned_images=None) 
         else:
             raise NotImplementedError('This Dataset Has Not Been Implemented Yet')
 
@@ -153,8 +148,10 @@ class NIRPS(object):
                                        num_workers=self.para_dict['num_workers'],
                                        shuffle=True)
 
-        self.valid_loader = DataLoader(self.valid_dataset, num_workers=self.para_dict['num_workers'],
-                                       batch_size=self.para_dict['batch_size'], shuffle=False)
+        self.valid_loader = DataLoader(self.valid_dataset, 
+                                       num_workers=self.para_dict['num_workers'],
+                                       batch_size=self.para_dict['batch_size'], 
+                                       shuffle=False)
         
         #self.assigned_loader = None
 
