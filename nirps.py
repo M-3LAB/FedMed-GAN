@@ -150,7 +150,7 @@ class NIRPS(object):
 
         self.valid_loader = DataLoader(self.valid_dataset, 
                                        num_workers=self.para_dict['num_workers'],
-                                       batch_size=self.para_dict['batch_size'], 
+                                       batch_size=1, 
                                        shuffle=False)
         
         #self.assigned_loader = None
