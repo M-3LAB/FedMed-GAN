@@ -155,6 +155,8 @@ class NIRPS(object):
 
         self.valid_loader = DataLoader(self.valid_dataset, num_workers=self.para_dict['num_workers'],
                                        batch_size=self.para_dict['batch_size'], shuffle=False)
+        
+        self.assigned_loader = None
 
     def init_model(self):
         if self.para_dict['model'] == 'cyclegan':
