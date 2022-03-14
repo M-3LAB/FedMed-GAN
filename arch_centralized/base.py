@@ -294,7 +294,7 @@ class Base():
         mae_list, psnr_list, ssim_list = [], [], []
         fid_value = 0
 
-        if direction != 'from_a_to_b':
+        if direction == 'from_b_to_a':
             for i, batch in enumerate(self.valid_loader):
                 imgs, tmps = self.collect_generated_images(batch=batch)
                 real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
@@ -312,7 +312,9 @@ class Base():
             if self.config['fid']:
                 fid_value = fid(fake_list, self.config['batch_size_inceptionV3'],
                                 self.config['source_domain'], self.fid_stats_from_b_to_a, self.device)
-        else: # from a to b
+            return average(mae_list), average(psnr_list), average(ssim_list), fid_value     
+
+        elif direction == 'from_a_to_b':
             for i, batch in enumerate(self.valid_loader):
                 imgs, tmps = self.collect_generated_images(batch=batch)
                 real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
@@ -331,7 +333,13 @@ class Base():
                 fid_value = fid(fake_list, self.config['batch_size_inceptionV3'],
                                 self.config['target_domain'], self.fid_stats_from_a_to_b, self.device)
 
-        return average(mae_list), average(psnr_list), average(ssim_list), fid_value     
+            return average(mae_list), average(psnr_list), average(ssim_list), fid_value     
+        
+        elif direction == 'both':
+            pass
+
+        else:
+            raise NotImplementedError('Direction Has Not Been Implemented Yet')
 
     def get_model(self, description='centralized'):
         return self.generator_from_a_to_b_enc, self.generator_from_b_to_a_enc, self.generator_from_a_to_b_dec,\

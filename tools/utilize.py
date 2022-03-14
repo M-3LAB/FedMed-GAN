@@ -9,8 +9,8 @@ import shutil
 import torchvision
 import glob
 
-__all__ = ['seed_everything', 'parse_device_list', 'allocate_gpus', 
-           'merge_config', 'convert_list_float_type', 'create_folders',
+__all__ = ['seed_everything', 'parse_device_list', 'allocate_gpus', 'average',  
+           'merge_config', 'convert_list_float_type', 'create_folders', 'concate_tensor_list',
            'weights_init_normal', 'LambdaLR', 'load_model', 'merge_config', 'override_config', 'extract_config',
            'record_path', 'save_arg', 'save_log', 'save_script', 'save_image', 'save_model']
 
@@ -162,4 +162,14 @@ def load_model(model, file_path, description):
 def create_folders(tag_path):
     if not os.path.exists(tag_path):
         os.makedirs(tag_path)
+
+def average(l):
+       return sum(l) / len(l)  
+
+def concate_tensor_lists(imgs_list, img, i):
+    if i == 0:
+        imgs_list = img
+    else: 
+        imgs_list = torch.cat((imgs_list, img), 0)
+    return imgs_list
     
