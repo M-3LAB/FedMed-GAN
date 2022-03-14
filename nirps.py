@@ -230,17 +230,17 @@ class NIRPS(object):
     def work_flow(self):
         self.trainer.train_epoch()
         # evaluation from a to b
-        mae, psnr, ssim, fid = self.trainer.evaluation(direction='from_a_to_b')
+        (source_mae, source_psnr, source_ssim, source_fid, target_mae, target_psnr, target_ssim, target_fid) = self.trainer.evaluation(direction='both')
 
-        infor = '[Epoch {}/{}] [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['source_domain'], self.para_dict['target_domain'], mae, psnr, ssim)
+        src_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['source_domain'], source_mae, source_psnr, source_ssim)
 
         if self.para_dict['fid']:
-            infor = '{} fid: {:.4f}'.format(infor, fid)
-        print(infor)
+            src_infor = '{} fid: {:.4f}'.format(src_infor, source_fid)
+        print(src_infor)
         
         if self.para_dict['save_log']:
-            save_log(infor, self.file_path, description='_model_from_a_to_b')
+            save_log(src_infor, self.file_path, description='both')
 
         # evaluation from b to a
         mae, psnr, ssim, fid = self.trainer.evaluation(direction='from_b_to_a')
