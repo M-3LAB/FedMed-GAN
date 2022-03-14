@@ -76,6 +76,8 @@ class NIRPS(object):
 
         print('work dir: {}'.format(self.file_path))
 
+    def setup_folder(self):
+        pass
 
     def load_data(self):
         self.normal_transform = [{'degrees':0, 'translate':[0.00, 0.00],
@@ -263,6 +265,7 @@ class NIRPS(object):
     def run_work_flow(self):
         self.load_config()
         self.preliminary()
+        self.setup_folder()
         self.load_data()
         self.init_model()
         print('---------------------')
