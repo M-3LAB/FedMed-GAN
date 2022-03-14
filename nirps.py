@@ -1,5 +1,4 @@
 import torch
-import torch.nn as nn
 from configuration.config import parse_arguments_nirps
 import yaml
 import os
@@ -89,6 +88,15 @@ class NIRPS(object):
 
         self.model_source_fp = os.path.join(self.source_modality_fp, self.para_dict['model']) 
         self.model_target_fp = os.path.join(self.target_modality_fp, self.para_dict['model'])
+        create_folders(self.model_source_fp)
+        create_folders(self.model_target_fp)
+
+        for i in range(self.num_epoch):
+            epoch_model_source_fp = os.path.join(self.model_source_fp, i) 
+            epoch_model_target_fp = os.path.join(self.model_target_fp, i) 
+            create_folders(epoch_model_source_fp)
+            create_folders(epoch_model_target_fp)
+            
 
     def load_data(self):
         self.normal_transform = [{'degrees':0, 'translate':[0.00, 0.00],
