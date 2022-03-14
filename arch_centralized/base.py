@@ -291,8 +291,14 @@ class Base():
     def evaluation(self, direction='from_a_to_b'):
     
         fake_list = torch.randn(self.config['batch_size'], 1, self.config['size'], self.config['size'])
-        mae_list, psnr_list, ssim_list = [], [], []
-        fid_value = 0
+        if direction == 'both':
+            a_mae_list, a_psnr_list, a_ssim_list = [], [], []
+            b_mae_list, b_psnr_list, b_ssim_list = [], [], []
+            a_fid = 0
+            b_fid = 0
+        else:
+            mae_list, psnr_list, ssim_list = [], [], []
+            fid_value = 0
 
         if direction == 'from_b_to_a':
             for i, batch in enumerate(self.valid_loader):
@@ -336,7 +342,31 @@ class Base():
             return average(mae_list), average(psnr_list), average(ssim_list), fid_value     
         
         elif direction == 'both':
-            pass
+            for i, batch in enumerate(self.valid_loader):
+                imgs, tmps = self.collect_generated_images(batch=batch)
+                real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
+
+                if self.config['fid']:
+                    fake_list = concate_tensor_lists(fake_list, fake_b, i)
+
+                # mae                
+                a_mae = mae(real_a, fake_a)
+                b_mae = mae(real_b, fake_b)
+
+                # psnr
+                a_psnr = psnr(real_a, fake_a)
+                b_psnr = psnr(real_b, fake_b)
+
+                a_ssim = ssim(real_a, fake_a)
+                b_ssim = ssim(real_b, fake_b)
+
+                a_mae_list.append(a_mae)
+                a_psnr_list.append(a_psnr)
+                a_ssim_list.append(a_ssim)
+
+
+                
+            
 
         else:
             raise NotImplementedError('Direction Has Not Been Implemented Yet')
