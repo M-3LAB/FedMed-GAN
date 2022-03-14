@@ -210,37 +210,33 @@ class NIRPS(object):
             discr_from_b_to_a = load_model(self.trainer.discriminator_from_b_to_a, self.para_dict['load_model_dir'], 'd_from_b_to_a')
             self.trainer.set_model(gener_from_a_to_b_enc, gener_from_a_to_b_dec, gener_from_b_to_a_enc, gener_from_b_to_a_dec, discr_from_a_to_b, discr_from_b_to_a)
 
-    def save_models(self, epoch=None):
+    def save_models(self, fp=None, epoch=None):
         if self.para_dict['model'] == 'cyclegan':
             gener_from_a_to_b, gener_from_b_to_a, discr_from_a_to_b, discr_from_b_to_a = self.trainer.get_model()
-            save_model_per_epoch(gener_from_a_to_b, '{}/checkpoint/g_from_a_to_b'.format(self.file_path), self.para_dict, epoch)
-            save_model_per_epoch(gener_from_b_to_a, '{}/checkpoint/g_from_b_to_a'.format(self.file_path), self.para_dict, epoch)
-            save_model_per_epoch(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(self.file_path), self.para_dict, epoch)
-            save_model_per_epoch(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(self.file_path), self.para_dict, epoch)
+            save_model_per_epoch(gener_from_a_to_b, '{}/checkpoint/g_from_a_to_b'.format(fp), self.para_dict, epoch)
+            save_model_per_epoch(gener_from_b_to_a, '{}/checkpoint/g_from_b_to_a'.format(fp), self.para_dict, epoch)
+            save_model_per_epoch(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(fp), self.para_dict, epoch)
+            save_model_per_epoch(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(fp), self.para_dict, epoch)
 
         elif self.para_dict['model'] == 'munit' or self.para_dict['model'] == 'unit':
             gener_from_a_to_b_enc, gener_from_a_to_b_dec, gener_from_b_to_a_enc, gener_from_b_to_a_dec, discr_from_a_to_b, discr_from_b_to_a = self.trainer.get_model()
-            save_model(gener_from_a_to_b_enc, '{}/checkpoint/g_from_a_to_b_enc'.format(self.file_path), self.para_dict, epoch)
-            save_model(gener_from_a_to_b_dec, '{}/checkpoint/g_from_a_to_b_dec'.format(self.file_path), self.para_dict, epoch)
-            save_model(gener_from_b_to_a_enc, '{}/checkpoint/g_from_b_to_a_enc'.format(self.file_path), self.para_dict, epoch)
-            save_model(gener_from_b_to_a_dec, '{}/checkpoint/g_from_b_to_a_dec'.format(self.file_path), self.para_dict, epoch)
-            save_model(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(self.file_path), self.para_dict, epoch)
-            save_model(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(self.file_path), self.para_dict, epoch)
+            save_model(gener_from_a_to_b_enc, '{}/checkpoint/g_from_a_to_b_enc'.format(fp), self.para_dict, epoch)
+            save_model(gener_from_a_to_b_dec, '{}/checkpoint/g_from_a_to_b_dec'.format(fp), self.para_dict, epoch)
+            save_model(gener_from_b_to_a_enc, '{}/checkpoint/g_from_b_to_a_enc'.format(fp), self.para_dict, epoch)
+            save_model(gener_from_b_to_a_dec, '{}/checkpoint/g_from_b_to_a_dec'.format(fp), self.para_dict, epoch)
+            save_model(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(fp), self.para_dict, epoch)
+            save_model(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(fp), self.para_dict, epoch)
 
     def work_flow(self):
         self.trainer.train_epoch()
         # evaluation from a to b
         (source_mae, source_psnr, source_ssim, source_fid, target_mae, target_psnr, target_ssim, target_fid) = self.trainer.evaluation(direction='both')
 
-        src_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['source_domain'], source_mae, source_psnr, source_ssim)
+        src_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f} fid: {:.4f}'.format(
+            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['source_domain'], source_mae, source_psnr, source_ssim, source_fid)
 
-        tag_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['target_domain'], target_mae, target_psnr, target_ssim)
-
-        if self.para_dict['fid']:
-            src_infor = '{} fid: {:.4f}'.format(src_infor, source_fid)
-            tag_infor = '{} fid: {:.4f}'.format(tag_infor, target_fid)
+        tag_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f} fid: {:.4f}'.format(
+            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['target_domain'], target_mae, target_psnr, target_ssim, target_fid)
         
         print(src_infor)
         print(tag_infor)
