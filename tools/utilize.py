@@ -6,7 +6,6 @@ import os
 import yaml
 import time
 import shutil
-import torchvision
 import glob
 
 __all__ = ['seed_everything', 'parse_device_list', 'allocate_gpus', 'average',  
