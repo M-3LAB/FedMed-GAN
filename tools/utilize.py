@@ -9,7 +9,7 @@ import shutil
 import glob
 import torchvision
 
-__all__ = ['seed_everything', 'parse_device_list', 'allocate_gpus', 'average',  
+__all__ = ['seed_everything', 'parse_device_list', 'allocate_gpus', 'average', 'save_model_per_epoch', 
            'merge_config', 'convert_list_float_type', 'create_folders', 'concate_tensor_lists',
            'weights_init_normal', 'LambdaLR', 'load_model', 'merge_config', 'override_config', 'extract_config',
            'record_path', 'save_arg', 'save_log', 'save_script', 'save_image', 'save_model']
@@ -148,6 +148,9 @@ def save_model(model, file_path, para_dict, psnr, ssim, fid, kaid):
     model_path = '{}/best_model_{}_{}_{:.4f}_{:.4f}_{:.4f}.pth'.format(
         file_path, para_dict['source_domain'], para_dict['target_domain'], psnr, ssim, fid, kaid)
     torch.save({'model_state_dict': model.state_dict()}, model_path)
+
+def save_model_per_epoch(model, file_path, para_dict, epoch):
+    pass
 
 def load_model(model, file_path, description):
     if not os.path.exists(file_path):
