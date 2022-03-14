@@ -215,8 +215,8 @@ class NIRPS(object):
             gener_from_a_to_b, gener_from_b_to_a, discr_from_a_to_b, discr_from_b_to_a = self.trainer.get_model()
             save_model_per_epoch(gener_from_a_to_b, '{}/checkpoint/g_from_a_to_b'.format(fp), self.para_dict, epoch)
             save_model_per_epoch(gener_from_b_to_a, '{}/checkpoint/g_from_b_to_a'.format(fp), self.para_dict, epoch)
-            save_model_per_epoch(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(fp), self.para_dict, epoch)
-            save_model_per_epoch(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(fp), self.para_dict, epoch)
+            #save_model_per_epoch(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(fp), self.para_dict, epoch)
+            #save_model_per_epoch(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(fp), self.para_dict, epoch)
 
         elif self.para_dict['model'] == 'munit' or self.para_dict['model'] == 'unit':
             gener_from_a_to_b_enc, gener_from_a_to_b_dec, gener_from_b_to_a_enc, gener_from_b_to_a_dec, discr_from_a_to_b, discr_from_b_to_a = self.trainer.get_model()
@@ -224,8 +224,8 @@ class NIRPS(object):
             save_model(gener_from_a_to_b_dec, '{}/checkpoint/g_from_a_to_b_dec'.format(fp), self.para_dict, epoch)
             save_model(gener_from_b_to_a_enc, '{}/checkpoint/g_from_b_to_a_enc'.format(fp), self.para_dict, epoch)
             save_model(gener_from_b_to_a_dec, '{}/checkpoint/g_from_b_to_a_dec'.format(fp), self.para_dict, epoch)
-            save_model(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(fp), self.para_dict, epoch)
-            save_model(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(fp), self.para_dict, epoch)
+            #save_model(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(fp), self.para_dict, epoch)
+            #save_model(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(fp), self.para_dict, epoch)
 
     def work_flow(self):
         self.trainer.train_epoch()
@@ -244,6 +244,12 @@ class NIRPS(object):
         if self.para_dict['save_log']:
             save_log(src_infor, self.file_path, description='both')
             save_log(tag_infor, self.file_path, description='both')
+        
+        for i in range(self.num_epoch):
+            epoch_model_source_fp = os.path.join(self.model_source_fp, i) 
+            epoch_model_target_fp = os.path.join(self.model_target_fp, i) 
+            self.save_models(fp=epoch_model_source_fp, epoch=i)
+            self.save_models(fp=epoch_model_target_fp, epoch=i)
         
         #if self.para_dict['save_model']:
         #    if psnr > self.best_psnr:
