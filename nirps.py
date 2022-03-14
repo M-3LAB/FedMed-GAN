@@ -251,11 +251,6 @@ class NIRPS(object):
             self.save_models(fp=epoch_model_source_fp, epoch=i)
             self.save_models(fp=epoch_model_target_fp, epoch=i)
         
-        #if self.para_dict['save_model']:
-        #    if psnr > self.best_psnr:
-        #        self.save_models(psnr)
-        #        self.best_psnr = psnr
-
         #if self.para_dict['save_img']:
         #    save_img_path = '{}/images/epoch_{}'.format(self.file_path, self.epoch+1)
         #    if not os.path.exists(save_img_path):
