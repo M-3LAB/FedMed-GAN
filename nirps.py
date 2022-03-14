@@ -235,50 +235,36 @@ class NIRPS(object):
         src_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
             self.epoch+1, self.para_dict['num_epoch'], self.para_dict['source_domain'], source_mae, source_psnr, source_ssim)
 
+        tag_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
+            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['target_domain'], target_mae, target_psnr, target_ssim)
+
         if self.para_dict['fid']:
             src_infor = '{} fid: {:.4f}'.format(src_infor, source_fid)
+            tag_infor = '{} fid: {:.4f}'.format(tag_infor, target_fid)
+        
         print(src_infor)
+        print(tag_infor)
         
         if self.para_dict['save_log']:
             save_log(src_infor, self.file_path, description='both')
+            save_log(tag_infor, self.file_path, description='both')
+        
+        #if self.para_dict['save_model']:
+        #    if psnr > self.best_psnr:
+        #        self.save_models(psnr)
+        #        self.best_psnr = psnr
 
-        # evaluation from b to a
-        mae, psnr, ssim, fid = self.trainer.evaluation(direction='from_b_to_a')
+        #if self.para_dict['save_img']:
+        #    save_img_path = '{}/images/epoch_{}'.format(self.file_path, self.epoch+1)
+        #    if not os.path.exists(save_img_path):
+        #        os.makedirs(save_img_path)
+        #    self.trainer.infer_images(save_img_path, self.valid_loader)
 
-        infor = '[Epoch {}/{}] [{} -> {}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f}'.format(
-            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['target_domain'], self.para_dict['source_domain'], mae, psnr, ssim)
-
-        if self.para_dict['fid']:
-            infor = '{} fid: {:.4f}'.format(infor, fid)
-        print(infor)
-
-        if self.para_dict['save_log']:
-            save_log(infor, self.file_path, description='_model_from_b_to_a')
-
-
-        if self.para_dict['plot_distribution']:
-            save_img_path = '{}/sample_distribution'.format(self.file_path)
-            if not os.path.exists(save_img_path):
-                os.makedirs(save_img_path)
-            save_img_path = '{}/epoch_{}.png'.format(save_img_path, self.epoch+1)
-            self.trainer.visualize_feature(self.epoch+1, save_img_path, self.train_loader)
-
-        if self.para_dict['save_model']:
-            if psnr > self.best_psnr:
-                self.save_models(psnr)
-                self.best_psnr = psnr
-
-        if self.para_dict['save_img']:
-            save_img_path = '{}/images/epoch_{}'.format(self.file_path, self.epoch+1)
-            if not os.path.exists(save_img_path):
-                os.makedirs(save_img_path)
-            self.trainer.infer_images(save_img_path, self.valid_loader)
-
-        if self.para_dict['single_img_infer']:
-            save_img_path = '{}/images_assigned/epoch_{}'.format(self.file_path, self.epoch+1)
-            if not os.path.exists(save_img_path):
-                os.makedirs(save_img_path)
-            self.trainer.infer_images(save_img_path, self.assigned_loader)
+        #if self.para_dict['single_img_infer']:
+        #    save_img_path = '{}/images_assigned/epoch_{}'.format(self.file_path, self.epoch+1)
+        #    if not os.path.exists(save_img_path):
+        #        os.makedirs(save_img_path)
+        #    self.trainer.infer_images(save_img_path, self.assigned_loader)
 
 
     def run_work_flow(self):
