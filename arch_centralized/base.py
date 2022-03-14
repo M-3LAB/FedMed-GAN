@@ -376,7 +376,8 @@ class Base():
                 a_fid = fid(fake_list, self.config['batch_size_inceptionV3'],
                                 self.config['source_domain'], self.fid_stats_from_b_to_a, self.device)
             
-            return (average(a_mae_list), average(a_psnr_list), average(a_ssim_list)) 
+            return (average(a_mae_list), average(a_psnr_list), average(a_ssim_list), a_fid,
+                    average(b_mae_list), average(b_psnr_list), average(b_ssim_list), b_fid) 
         else:
             raise NotImplementedError('Direction Has Not Been Implemented Yet')
 
