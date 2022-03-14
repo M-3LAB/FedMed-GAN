@@ -649,7 +649,7 @@ class Base():
         #Now it only supports one translation distance
         assert len(self.translation_list) == 1
         out = x
-        quadrant_list = np.array([[1,1], [1, -1], [-1, 1], [-1, 1]]) 
+        quadrant_list = np.array([[1,1], [1, -1], [-1, 1], [-1, -1]]) 
 
         if num_augmentation == 'four':
             for i in range(len(self.translation_list)):
