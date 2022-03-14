@@ -77,12 +77,15 @@ class NIRPS(object):
         print('work dir: {}'.format(self.file_path))
 
     def setup_folder(self):
-
+    
         dataset_path = self.para_dict['dataset']
         create_folders(dataset_path)
 
         source_modality_path = os.path.join(dataset_path, self.para_dict['source_domain'])
         create_folders(source_modality_path)
+
+        target_modality_path = os.path.join(dataset_path, self.para_dict['target_domain'])
+        create_folders(target_modality_path)
 
     def load_data(self):
         self.normal_transform = [{'degrees':0, 'translate':[0.00, 0.00],
