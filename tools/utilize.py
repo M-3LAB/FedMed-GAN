@@ -7,9 +7,10 @@ import yaml
 import time
 import shutil
 import glob
+import torchvision
 
 __all__ = ['seed_everything', 'parse_device_list', 'allocate_gpus', 'average',  
-           'merge_config', 'convert_list_float_type', 'create_folders', 'concate_tensor_list',
+           'merge_config', 'convert_list_float_type', 'create_folders', 'concate_tensor_lists',
            'weights_init_normal', 'LambdaLR', 'load_model', 'merge_config', 'override_config', 'extract_config',
            'record_path', 'save_arg', 'save_log', 'save_script', 'save_image', 'save_model']
 

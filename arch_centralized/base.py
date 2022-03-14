@@ -12,7 +12,6 @@ from model.reg.loss import smooothing_loss
 from tools.utilize import *
 from model.unit.unit import *
 from metrics.metrics import mae, psnr, ssim, fid
-from evaluation.common import concate_tensor_lists, average
 from loss_function.simclr_loss import simclr_loss
 from loss_function.supercon_loss import supercon_loss
 from tools.visualize import plot_sample
@@ -291,6 +290,7 @@ class Base():
     def evaluation(self, direction='from_a_to_b'):
     
         fake_list = torch.randn(self.config['batch_size'], 1, self.config['size'], self.config['size'])
+
         if direction == 'both':
             a_mae_list, a_psnr_list, a_ssim_list = [], [], []
             b_mae_list, b_psnr_list, b_ssim_list = [], [], []
@@ -357,6 +357,7 @@ class Base():
                 a_psnr = psnr(real_a, fake_a)
                 b_psnr = psnr(real_b, fake_b)
 
+                # ssim
                 a_ssim = ssim(real_a, fake_a)
                 b_ssim = ssim(real_b, fake_b)
 
@@ -364,10 +365,18 @@ class Base():
                 a_psnr_list.append(a_psnr)
                 a_ssim_list.append(a_ssim)
 
+                b_mae_list.append(b_mae)
+                b_psnr_list.append(b_psnr)
+                b_ssim_list.append(b_ssim)
 
-                
+            if self.config['fid']:
+                b_fid = fid(fake_list, self.config['batch_size_inceptionV3'],
+                                self.config['target_domain'], self.fid_stats_from_a_to_b, self.device)
+
+                a_fid = fid(fake_list, self.config['batch_size_inceptionV3'],
+                                self.config['source_domain'], self.fid_stats_from_b_to_a, self.device)
             
-
+            return (average(a_mae_list), average(a_psnr_list), average(a_ssim_list)) 
         else:
             raise NotImplementedError('Direction Has Not Been Implemented Yet')
 
