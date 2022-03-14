@@ -7,6 +7,7 @@ __all__ = ['parse_argument_bise', 'parse_arguments_federated', 'parse_arguments_
 def parse_arguments_nirps():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, choices=['cyclegan', 'munit', 'unit'])
+    parser.add_argument('--dataset', '-d', type=str, default='ixi', choices=['ixi', 'brats2021'])
     #parser.add_argument('--nirps-structure', '-ns', action='store_true', help='flag for nirps structure')
     args = parser.parse_args()
     return args
