@@ -199,12 +199,12 @@ class NIRPS(object):
 
         elif self.para_dict['model'] == 'munit' or self.para_dict['model'] == 'unit':
             gener_from_a_to_b_enc, gener_from_a_to_b_dec, gener_from_b_to_a_enc, gener_from_b_to_a_dec, discr_from_a_to_b, discr_from_b_to_a = self.trainer.get_model()
-            save_model(gener_from_a_to_b_enc, '{}/checkpoint/g_from_a_to_b_enc'.format(self.file_path), self.para_dict, psnr, ssim, fid)
-            save_model(gener_from_a_to_b_dec, '{}/checkpoint/g_from_a_to_b_dec'.format(self.file_path), self.para_dict, psnr, ssim, fid)
-            save_model(gener_from_b_to_a_enc, '{}/checkpoint/g_from_b_to_a_enc'.format(self.file_path), self.para_dict, psnr, ssim, fid)
-            save_model(gener_from_b_to_a_dec, '{}/checkpoint/g_from_b_to_a_dec'.format(self.file_path), self.para_dict, psnr, ssim, fid)
-            save_model(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(self.file_path), self.para_dict, psnr, ssim, fid)
-            save_model(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(self.file_path), self.para_dict, psnr, ssim, fid)
+            save_model(gener_from_a_to_b_enc, '{}/checkpoint/g_from_a_to_b_enc'.format(self.file_path), self.para_dict, psnr, ssim, fid, kaid)
+            save_model(gener_from_a_to_b_dec, '{}/checkpoint/g_from_a_to_b_dec'.format(self.file_path), self.para_dict, psnr, ssim, fid, kaid)
+            save_model(gener_from_b_to_a_enc, '{}/checkpoint/g_from_b_to_a_enc'.format(self.file_path), self.para_dict, psnr, ssim, fid, kaid)
+            save_model(gener_from_b_to_a_dec, '{}/checkpoint/g_from_b_to_a_dec'.format(self.file_path), self.para_dict, psnr, ssim, fid, kaid)
+            save_model(discr_from_a_to_b, '{}/checkpoint/d_from_a_to_b'.format(self.file_path), self.para_dict, psnr, ssim, fid, kaid)
+            save_model(discr_from_b_to_a, '{}/checkpoint/d_from_b_to_a'.format(self.file_path), self.para_dict, psnr, ssim, fid, kaid)
 
     def work_flow(self):
         self.trainer.train_epoch()
