@@ -91,6 +91,9 @@ class NIRPS(object):
         create_folders(self.model_source_fp)
         create_folders(self.model_target_fp)
 
+        self.model_source_gt_fp = os.path.join(self.model_source_fp, 'gt')
+        self.model_target_gt_fp = os.path.join(self.model_target_gt_fp, 'gt')
+
         for i in range(self.num_epoch):
             epoch_model_source_fp = os.path.join(self.model_source_fp, i) 
             epoch_model_target_fp = os.path.join(self.model_target_fp, i) 
@@ -253,6 +256,7 @@ class NIRPS(object):
             self.trainer.infer_nirps_generated(src_epoch_path=epoch_model_source_fp,
                                                tag_epoch_path=epoch_model_target_fp,
                                                data_loader=self.valid_loader)
+            
         
         #for i in range(self.num_epoch):
         #    epoch_model_source_fp = os.path.join(self.model_source_fp, i) 

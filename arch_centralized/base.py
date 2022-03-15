@@ -451,6 +451,10 @@ class Base():
                 
                 save_image(fake_a, 'm_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_a, psnr_a, ssim_a), src_img_path)
                 save_image(fake_b, 'm_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_b, psnr_b, ssim_b), tag_img_path)
+    
+    @torch.no_grad()
+    def infer_nirps_gt(self, src_gt_path, tag_gt_path, data_loader):
+        pass
 
 
     @torch.no_grad()
