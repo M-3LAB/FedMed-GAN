@@ -466,8 +466,6 @@ class Base():
                 save_image(real_a, self.config['source_domain'] + '.png', src_gt_path)
                 save_image(real_b, self.config['target_domain'] + '.png', tag_gt_path)
             
-
-
     @torch.no_grad()
     def visualize_feature(self, epoch, save_img_path, data_loader):
         real_a, fake_a, real_b, fake_b = [], [], [], []
