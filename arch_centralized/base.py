@@ -425,27 +425,33 @@ class Base():
                 save_image(fake_fake_b, 'fake_fake_b.png', img_path)
 
     @torch.no_grad()
-    def infer_nirps(self, save_img_path, data_loader):
+    def infer_nirps(self, src_epoch_path, tag_epoch_path, data_loader):
+        """
+        src_epoch_path: source image path for each epoch
+        tag_epoch_path: target image path for each epoch
+        """
+        assert data_loader.batch_size == 1, 'infer nirps should be for single image'
         for i, batch in enumerate(data_loader):
-            imgs, tmps = self.collect_generated_images(batch=batch)
-            real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
+            imgs, _ = self.collect_generated_images(batch=batch)
+            real_a, real_b, fake_a, fake_b, _, _, = imgs
             if i <= self.config['num_img_save']:
-                img_path = '{}/{}-slice-{}'.format(
-                    save_img_path, batch['name_a'][0], batch['slice_num'].numpy()[0])
+                mae_b = mae(real_b, fake_b).item()
+                psnr_b = psnr(real_b, fake_b).item()
+                ssim_b = ssim(real_b, fake_b).item()
 
-                mae_value = mae(real_b, fake_b).item() 
-                psnr_value = psnr(real_b, fake_b).item()
-                ssim_value = ssim(real_b, fake_b).item()
-                    
-                img_all = torch.cat((real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b), 0)
-                save_image(img_all, 'all_m_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_value, psnr_value, ssim_value), img_path)
+                mae_a = mae(real_a, fake_a).item()
+                psnr_a = psnr(real_a, fake_a).item()
+                ssim_a = ssim(real_a, fake_a).item()
 
-                save_image(real_a, 'real_a.png', img_path)
-                save_image(real_b, 'real_b.png', img_path)
-                save_image(fake_a, 'fake_a.png', img_path)
-                save_image(fake_b, 'fake_b.png', img_path)
-                save_image(fake_fake_a, 'fake_fake_a.png', img_path)
-                save_image(fake_fake_b, 'fake_fake_b.png', img_path)
+                src_img_path = '{}/{}-slice-{}'.format(
+                    src_epoch_path, batch['name_a'][0], batch['slice_num'].numpy()[0])
+
+                tag_img_path = '{}/{}-slice-{}'.format(
+                    tag_epoch_path, batch['name_b'][0], batch['slice_num'].numpy()[0])
+                
+                save_image(fake_a, 'm_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_a, psnr_a, ssim_a), src_img_path)
+                save_image(fake_b, 'm_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_b, psnr_b, ssim_b), tag_img_path)
+
 
     @torch.no_grad()
     def visualize_feature(self, epoch, save_img_path, data_loader):
