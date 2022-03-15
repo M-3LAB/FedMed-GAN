@@ -187,10 +187,6 @@ class NIRPS(object):
         else:
             raise ValueError('Model is invalid!')
 
-        if self.para_dict['load_model']:
-            self.load_models()
-            print('load model: {}'.format(self.para_dict['load_model_dir']))
-
     def save_models(self, fp=None, epoch=None):
         if self.para_dict['model'] == 'cyclegan':
             gener_from_a_to_b, gener_from_b_to_a, discr_from_a_to_b, discr_from_b_to_a = self.trainer.get_model()
@@ -218,9 +214,8 @@ class NIRPS(object):
         print(src_infor)
         print(tag_infor)
         
-        if self.para_dict['save_log']:
-            save_log(src_infor, self.file_path, description='both')
-            save_log(tag_infor, self.file_path, description='both')
+        save_log(src_infor, self.file_path, description='both')
+        save_log(tag_infor, self.file_path, description='both')
         
         for i in range(self.num_epoch):
             epoch_model_source_fp = os.path.join(self.model_source_fp, i) 
@@ -255,4 +250,10 @@ class NIRPS(object):
 
 if __name__ == '__main__':
     args = parse_arguments_nirps()
-    pass
+
+    for key_arg in ['dataset', 'model', 'source_domain', 'target_domain']:
+        if not vars(args)[key_arg]:
+            raise ValueError('Parameter {} must be refered!'.format(key_arg))
+
+    work = NIRPS(args=args)
+    work.run_work_flow()
