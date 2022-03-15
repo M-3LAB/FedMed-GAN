@@ -256,29 +256,11 @@ class NIRPS(object):
             self.trainer.infer_nirps_generated(src_epoch_path=epoch_model_source_fp,
                                                tag_epoch_path=epoch_model_target_fp,
                                                data_loader=self.valid_loader)
+        
+        self.trainer.infer_nirps_gt(src_gt_path=self.model_source_gt_fp,
+                                    tag_gt_path=self.model_target_gt_fp,
+                                    data_loader=self.valid_loader)
             
-        
-        #for i in range(self.num_epoch):
-        #    epoch_model_source_fp = os.path.join(self.model_source_fp, i) 
-        #    epoch_model_target_fp = os.path.join(self.model_target_fp, i) 
-        #    self.infer_nirps(save_img_path=epoch_model_source_fp, data_loader=self.valid_loader)
-        #    self.infer_nirps(save_img_path=epoch_model_target_fp, data_loader=self.valid_loader)
-        
-    
-        
-        #if self.para_dict['save_img']:
-        #    save_img_path = '{}/images/epoch_{}'.format(self.file_path, self.epoch+1)
-        #    if not os.path.exists(save_img_path):
-        #        os.makedirs(save_img_path)
-        #    self.trainer.infer_images(save_img_path, self.valid_loader)
-
-        #if self.para_dict['single_img_infer']:
-        #    save_img_path = '{}/images_assigned/epoch_{}'.format(self.file_path, self.epoch+1)
-        #    if not os.path.exists(save_img_path):
-        #        os.makedirs(save_img_path)
-        #    self.trainer.infer_images(save_img_path, self.assigned_loader)
-
-
     def run_work_flow(self):
         self.load_config()
         self.preliminary()
