@@ -454,6 +454,8 @@ class Base():
     
     @torch.no_grad()
     def infer_nirps_gt(self, src_gt_path, tag_gt_path, data_loader):
+        """
+        """
         pass
 
 
