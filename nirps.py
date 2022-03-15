@@ -48,30 +48,26 @@ class NIRPS(object):
             save_script(__file__, self.file_path)
 
         # save model
-        self.best_psnr = 0
-        self.load_model_path = self.para_dict['load_model_dir']
-
         self.fid_stats_from_a_to_b = '{}/{}/{}_{}_fid_stats.npz'.format(
             self.para_dict['fid_dir'], self.para_dict['dataset'], self.para_dict['source_domain'], self.para_dict['target_domain'])
         self.fid_stats_from_b_to_a = '{}/{}/{}_{}_fid_stats.npz'.format(
             self.para_dict['fid_dir'], self.para_dict['dataset'], self.para_dict['target_domain'], self.para_dict['source_domain'])
 
-        if self.para_dict['fid']:
-            if not os.path.exists(self.fid_stats_from_a_to_b):
-                os.system(r'python3 fid_stats.py --dataset {} --source-domain {} --target-domain {} --gpu-id {} --valid-path {}'.format(
-                    self.para_dict['dataset'], self.para_dict['source_domain'], self.para_dict['target_domain'], self.para_dict['gpu_id'], self.para_dict['valid_path']))
-            if not os.path.exists(self.fid_stats_from_a_to_b):
-                raise NotImplementedError('FID Still Not be Implemented Yet')
-            else:
-                print('fid stats from a to b: {}'.format(self.fid_stats_from_a_to_b))
+        if not os.path.exists(self.fid_stats_from_a_to_b):
+            os.system(r'python3 fid_stats.py --dataset {} --source-domain {} --target-domain {} --gpu-id {} --valid-path {}'.format(
+                self.para_dict['dataset'], self.para_dict['source_domain'], self.para_dict['target_domain'], self.para_dict['gpu_id'], self.para_dict['valid_path']))
+        if not os.path.exists(self.fid_stats_from_a_to_b):
+            raise NotImplementedError('FID Still Not be Implemented Yet')
+        else:
+            print('fid stats from a to b: {}'.format(self.fid_stats_from_a_to_b))
 
-            if not os.path.exists(self.fid_stats_from_b_to_a):
-                os.system(r'python3 fid_stats.py --dataset {} --source-domain {} --target-domain {} --gpu-id {} --valid-path {}'.format(
-                    self.para_dict['dataset'], self.para_dict['target_domain'], self.para_dict['source_domain'], self.para_dict['gpu_id'], self.para_dict['valid_path']))
-            if not os.path.exists(self.fid_stats_from_b_to_a):
-                raise NotImplementedError('FID Still Not be Implemented Yet')
-            else:
-                print('fid stats from b to a: {}'.format(self.fid_stats_from_b_to_a))
+        if not os.path.exists(self.fid_stats_from_b_to_a):
+            os.system(r'python3 fid_stats.py --dataset {} --source-domain {} --target-domain {} --gpu-id {} --valid-path {}'.format(
+                self.para_dict['dataset'], self.para_dict['target_domain'], self.para_dict['source_domain'], self.para_dict['gpu_id'], self.para_dict['valid_path']))
+        if not os.path.exists(self.fid_stats_from_b_to_a):
+            raise NotImplementedError('FID Still Not be Implemented Yet')
+        else:
+            print('fid stats from b to a: {}'.format(self.fid_stats_from_b_to_a))
 
         print('work dir: {}'.format(self.file_path))
 
@@ -195,23 +191,6 @@ class NIRPS(object):
         if self.para_dict['load_model']:
             self.load_models()
             print('load model: {}'.format(self.para_dict['load_model_dir']))
-
-    def load_models(self):
-        if self.para_dict['model'] == 'cyclegan':
-            gener_from_a_to_b = load_model(self.trainer.generator_from_a_to_b, self.para_dict['load_model_dir'], 'g_from_a_to_b')
-            gener_from_b_to_a = load_model(self.trainer.generator_from_b_to_a, self.para_dict['load_model_dir'], 'g_from_b_to_a')
-            discr_from_a_to_b = load_model(self.trainer.discriminator_from_a_to_b, self.para_dict['load_model_dir'], 'd_from_a_to_b')
-            discr_from_b_to_a = load_model(self.trainer.discriminator_from_b_to_a, self.para_dict['load_model_dir'], 'd_from_b_to_a')
-            self.trainer.set_model(gener_from_a_to_b, gener_from_b_to_a, discr_from_a_to_b, discr_from_b_to_a)
-
-        elif self.para_dict['model'] == 'munit' or self.para_dict['model'] == 'unit':
-            gener_from_a_to_b_enc = load_model(self.trainer.generator_from_a_to_b_enc, self.para_dict['load_model_dir'], 'g_from_a_to_b_enc')
-            gener_from_a_to_b_dec = load_model(self.trainer.generator_from_a_to_b_dec, self.para_dict['load_model_dir'], 'g_from_a_to_b_dec')
-            gener_from_b_to_a_enc = load_model(self.trainer.generator_from_b_to_a_enc, self.para_dict['load_model_dir'], 'g_from_b_to_a_enc')
-            gener_from_b_to_a_dec = load_model(self.trainer.generator_from_b_to_a_dec, self.para_dict['load_model_dir'], 'g_from_b_to_a_dec')
-            discr_from_a_to_b = load_model(self.trainer.discriminator_from_a_to_b, self.para_dict['load_model_dir'], 'd_from_a_to_b')
-            discr_from_b_to_a = load_model(self.trainer.discriminator_from_b_to_a, self.para_dict['load_model_dir'], 'd_from_b_to_a')
-            self.trainer.set_model(gener_from_a_to_b_enc, gener_from_a_to_b_dec, gener_from_b_to_a_enc, gener_from_b_to_a_dec, discr_from_a_to_b, discr_from_b_to_a)
 
     def save_models(self, fp=None, epoch=None):
         if self.para_dict['model'] == 'cyclegan':
