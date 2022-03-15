@@ -43,11 +43,10 @@ class NIRPS(object):
         self.device = torch.device("cuda", device)
 
         self.file_path = record_path(self.para_dict)
-        if self.para_dict['save_log']:
-            save_arg(self.para_dict, self.file_path)
-            save_script(__file__, self.file_path)
+        #save log
+        save_arg(self.para_dict, self.file_path)
+        save_script(__file__, self.file_path)
 
-        # save model
         self.fid_stats_from_a_to_b = '{}/{}/{}_{}_fid_stats.npz'.format(
             self.para_dict['fid_dir'], self.para_dict['dataset'], self.para_dict['source_domain'], self.para_dict['target_domain'])
         self.fid_stats_from_b_to_a = '{}/{}/{}_{}_fid_stats.npz'.format(
