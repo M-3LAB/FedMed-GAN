@@ -343,8 +343,8 @@ class Base():
         
         elif direction == 'both':
             for i, batch in enumerate(self.valid_loader):
-                imgs, tmps = self.collect_generated_images(batch=batch)
-                real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
+                imgs, _ = self.collect_generated_images(batch=batch)
+                real_a, real_b, fake_a, fake_b, _, _ = imgs
 
                 if self.config['fid']:
                     fake_list = concate_tensor_lists(fake_list, fake_b, i)
@@ -425,7 +425,7 @@ class Base():
                 save_image(fake_fake_b, 'fake_fake_b.png', img_path)
 
     @torch.no_grad()
-    def infer_nirps(self, src_epoch_path, tag_epoch_path, data_loader):
+    def infer_nirps_generated(self, src_epoch_path, tag_epoch_path, data_loader):
         """
         src_epoch_path: source image path for each epoch
         tag_epoch_path: target image path for each epoch
