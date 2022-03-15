@@ -427,8 +427,8 @@ class Base():
     @torch.no_grad()
     def infer_nirps_generated(self, src_epoch_path, tag_epoch_path, data_loader):
         """
-        src_epoch_path: source image path for each epoch
-        tag_epoch_path: target image path for each epoch
+        src_epoch_path: source domain image path for each epoch
+        tag_epoch_path: target domain image path for each epoch
         """
         assert data_loader.batch_size == 1, 'infer nirps should be for single image'
         for i, batch in enumerate(data_loader):
@@ -455,8 +455,17 @@ class Base():
     @torch.no_grad()
     def infer_nirps_gt(self, src_gt_path, tag_gt_path, data_loader):
         """
+        src_gt_path: source domain groundtruth image path 
+        tar_gt_path: target domain groundtruth image path
         """
-        pass
+        assert data_loader.batch_size == 1, 'infer nirps should be for single image'
+        for i , batch in enumerate(data_loader):
+            real_a = batch['source_domain']
+            real_b = batch['target_domain']
+            if i <= self.config['num_img_save']:
+                save_image(real_a, self.config['source_domain'] + '.png', src_gt_path)
+                save_image(real_b, self.config['target_domain'] + '.png', tag_gt_path)
+            
 
 
     @torch.no_grad()
