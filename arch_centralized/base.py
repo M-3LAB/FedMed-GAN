@@ -425,6 +425,29 @@ class Base():
                 save_image(fake_fake_b, 'fake_fake_b.png', img_path)
 
     @torch.no_grad()
+    def infer_nirps(self, save_img_path, data_loader):
+        for i, batch in enumerate(data_loader):
+            imgs, tmps = self.collect_generated_images(batch=batch)
+            real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b = imgs
+            if i <= self.config['num_img_save']:
+                img_path = '{}/{}-slice-{}'.format(
+                    save_img_path, batch['name_a'][0], batch['slice_num'].numpy()[0])
+
+                mae_value = mae(real_b, fake_b).item() 
+                psnr_value = psnr(real_b, fake_b).item()
+                ssim_value = ssim(real_b, fake_b).item()
+                    
+                img_all = torch.cat((real_a, real_b, fake_a, fake_b, fake_fake_a, fake_fake_b), 0)
+                save_image(img_all, 'all_m_{:.4f}_p_{:.4f}_s_{:.4f}.png'.format(mae_value, psnr_value, ssim_value), img_path)
+
+                save_image(real_a, 'real_a.png', img_path)
+                save_image(real_b, 'real_b.png', img_path)
+                save_image(fake_a, 'fake_a.png', img_path)
+                save_image(fake_b, 'fake_b.png', img_path)
+                save_image(fake_fake_a, 'fake_fake_a.png', img_path)
+                save_image(fake_fake_b, 'fake_fake_b.png', img_path)
+
+    @torch.no_grad()
     def visualize_feature(self, epoch, save_img_path, data_loader):
         real_a, fake_a, real_b, fake_b = [], [], [], []
         for i, batch in enumerate(data_loader):
