@@ -26,7 +26,7 @@ __all__ = ['Base']
 
 class Base():
     def __init__(self, config, train_loader, valid_loader, assigned_loader,
-                 device, file_path, batch_limit_weight=1.0):
+                 device, file_path, batch_limit_weight=1.0, atl=False):
 
         self.config = config
         self.train_loader = train_loader
@@ -35,12 +35,14 @@ class Base():
         self.device = device
         self.file_path = file_path
         self.batch_limit_weight = batch_limit_weight
-        self.angle_list = config['angle_list']
-        self.translation_list = config['translation_list']
-        self.scaling_list = config['scaling_list']
-        self.batch_size = config['batch_size']
         self.valid = 1
         self.fake = 0
+        self.batch_size = config['batch_size']
+
+        if atl:
+            self.angle_list = config['angle_list']
+            self.translation_list = config['translation_list']
+            self.scaling_list = config['scaling_list']
 
         # fid stats
         self.fid_stats_from_a_to_b = '{}/{}/{}_{}_fid_stats.npz'.format(

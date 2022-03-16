@@ -9,9 +9,9 @@ __all__ = ['Munit']
 
 class Munit(Base):
     def __init__(self, config, train_loader, valid_loader, assigned_loader, 
-                 device, file_path, batch_limit_weight=1.0):
+                 device, file_path, batch_limit_weight=1.0, atl=False):
         super(Munit, self).__init__(config=config, train_loader=train_loader, valid_loader=valid_loader, assigned_loader=assigned_loader, 
-                 device=device, file_path=file_path, batch_limit_weight=batch_limit_weight)
+                 device=device, file_path=file_path, batch_limit_weight=batch_limit_weight, atl=atl)
 
         self.config = config
 
