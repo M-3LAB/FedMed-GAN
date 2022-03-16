@@ -51,6 +51,8 @@ a_mu: 0.0
 a_sigma: 1.0
 b_mu: 0.0
 b_sigma: 1.0
+# fedmed-atl
+atl: false
 # auxiliary rotation loss
 auxiliary_rotation: false
 auxiliary_translation: false

@@ -25,7 +25,11 @@ identity: true
 lambda_identity: 10.0
 diff_privacy: false
 reg_gan: false
+# fedmed-atl
+atl: false
 auxiliary_rotation: false
 auxiliary_translation: false
 auxiliary_scaling: false
+#contraD
+contraD: false
 

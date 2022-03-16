@@ -26,7 +26,7 @@ __all__ = ['Base']
 
 class Base():
     def __init__(self, config, train_loader, valid_loader, assigned_loader,
-                 device, file_path, batch_limit_weight=1.0, atl=False):
+                 device, file_path, batch_limit_weight=1.0):
 
         self.config = config
         self.train_loader = train_loader
@@ -39,7 +39,7 @@ class Base():
         self.fake = 0
         self.batch_size = config['batch_size']
 
-        if atl:
+        if self.config['atl']:
             self.angle_list = config['angle_list']
             self.translation_list = config['translation_list']
             self.scaling_list = config['scaling_list']

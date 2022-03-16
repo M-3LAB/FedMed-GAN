@@ -145,6 +145,8 @@ def parse_arguments_centralized():
     parser.add_argument('--reg-gan', action='store_true', default=False)
     parser.add_argument('--fid', action='store_true', default=True)
 
+    # FedMed-ATL 
+    parser.add_argument('--atl', action='store_true', default=None, help='indicate whether the atl flag is true or not')
     parser.add_argument('--auxiliary-rotation', '-ar', action='store_true', default=False)
     parser.add_argument('--auxiliary-translation', '-at', action='store_true', default=False)
     parser.add_argument('--auxiliary-scaling', '-as', action='store_true', default=False)
