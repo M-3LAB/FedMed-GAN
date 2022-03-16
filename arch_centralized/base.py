@@ -462,8 +462,8 @@ class Base():
         """
         assert data_loader.batch_size == 1, 'infer nirps should be for single image'
         for i , batch in enumerate(data_loader):
-            real_a = batch['source_domain']
-            real_b = batch['target_domain']
+            real_a = batch[self.config['source_domain']]
+            real_b = batch[self.config['target_domain']]
             if i <= self.config['num_img_save']:
                 save_image(real_a, self.config['source_domain'] + '.png', src_gt_path)
                 save_image(real_b, self.config['target_domain'] + '.png', tag_gt_path)
