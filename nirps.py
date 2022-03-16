@@ -204,21 +204,21 @@ class NIRPS(object):
         if self.para_dict['general_evaluation']:
             (source_mae, source_psnr, source_ssim, source_fid, target_mae, target_psnr, target_ssim, target_fid) = self.trainer.evaluation(direction='both')
 
-        src_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f} fid: {:.4f}'.format(
-            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['source_domain'], source_mae, source_psnr, source_ssim, source_fid)
+            src_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f} fid: {:.4f}'.format(
+                self.epoch+1, self.para_dict['num_epoch'], self.para_dict['source_domain'], source_mae, source_psnr, source_ssim, source_fid)
 
-        tag_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f} fid: {:.4f}'.format(
-            self.epoch+1, self.para_dict['num_epoch'], self.para_dict['target_domain'], target_mae, target_psnr, target_ssim, target_fid)
+            tag_infor = '[Epoch {}/{}] [{}] mae: {:.4f} psnr: {:.4f} ssim: {:.4f} fid: {:.4f}'.format(
+                self.epoch+1, self.para_dict['num_epoch'], self.para_dict['target_domain'], target_mae, target_psnr, target_ssim, target_fid)
         
-        print(src_infor)
-        print(tag_infor)
+            print(src_infor)
+            print(tag_infor)
         
-        save_log(src_infor, self.file_path, description='both')
-        save_log(tag_infor, self.file_path, description='both')
+            save_log(src_infor, self.file_path, description='both')
+            save_log(tag_infor, self.file_path, description='both')
         
-        for i in range(self.para_dict['num_epoch']):
-            epoch_model_source_fp = os.path.join(self.model_source_fp, i) 
-            epoch_model_target_fp = os.path.join(self.model_target_fp, i) 
+        for i in range(int(self.para_dict['num_epoch'])):
+            epoch_model_source_fp = os.path.join(self.model_source_fp, str(i)) 
+            epoch_model_target_fp = os.path.join(self.model_target_fp, str(i)) 
             self.save_models(fp=epoch_model_source_fp, epoch=i)
             self.save_models(fp=epoch_model_target_fp, epoch=i)
             self.trainer.infer_nirps_generated(src_epoch_path=epoch_model_source_fp,
