@@ -30,6 +30,7 @@ atl: false
 auxiliary_rotation: false
 auxiliary_translation: false
 auxiliary_scaling: false
+num_augmentation: 'one' 
 #contraD
 contraD: false
 

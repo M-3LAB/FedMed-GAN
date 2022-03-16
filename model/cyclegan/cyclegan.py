@@ -119,7 +119,7 @@ def discriminator_block(in_filters, out_filters):
 
 class CycleDis(nn.Module):
 
-    def __init__(self, auxiliary_rotation=False, 
+    def __init__(self, atl=False, auxiliary_rotation=False, 
                  auxiliary_translation=False, auxiliary_scaling=False,
                  num_augmentation='one'):
 
@@ -129,21 +129,23 @@ class CycleDis(nn.Module):
         self.auxiliary_translation = auxiliary_translation 
         self.auxiliary_scaling = auxiliary_scaling
         self.num_augmentation = num_augmentation
+        self.atl = atl
 
-        if self.num_augmentation == 'four':
-            self.num_rot_label = 4 
-            self.num_translate_label = 5 
-            self.num_scaling_label = 4 
+        if self.atl:
+            if self.num_augmentation == 'four':
+                self.num_rot_label = 4 
+                self.num_translate_label = 5 
+                self.num_scaling_label = 4 
 
-        elif self.num_augmentation == 'one':
-            self.num_rot_label = 2 
-            self.num_translate_label = 2 
-            self.num_scaling_label = 2 
+            elif self.num_augmentation == 'one':
+                self.num_rot_label = 2 
+                self.num_translate_label = 2 
+                self.num_scaling_label = 2 
         
-        elif self.num_augmentation == 'two':
-            self.num_rot_label = 3 
-            self.num_translate_label = 3 
-            self.num_scaling_label = 3 
+            elif self.num_augmentation == 'two':
+                self.num_rot_label = 3 
+                self.num_translate_label = 3 
+                self.num_scaling_label = 3 
 
         # A bunch of convolutions one after another
         model = [nn.Conv2d(1, 64, 4, stride=2, padding=1),
@@ -161,10 +163,10 @@ class CycleDis(nn.Module):
         # FCN classification layer
         self.model = nn.Sequential(*model)
         self.fcn = nn.Conv2d(512, 1, 4, padding=1)
-
-        self.fcn_rot = nn.Linear(512, self.num_rot_label)
-        self.fcn_translate = nn.Linear(512, self.num_translate_label)
-        self.fcn_scaling = nn.Linear(512, self.num_scaling_label)
+        if self.atl:
+            self.fcn_rot = nn.Linear(512, self.num_rot_label)
+            self.fcn_translate = nn.Linear(512, self.num_translate_label)
+            self.fcn_scaling = nn.Linear(512, self.num_scaling_label)
         #self.softmax = nn.Softmax()
 
     def forward(self, x=None, rot_x=None, translate_x=None, scale_x=None):

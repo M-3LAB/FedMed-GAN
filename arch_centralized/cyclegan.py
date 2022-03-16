@@ -38,12 +38,14 @@ class CycleGAN(Base):
                                                      auxiliary_scaling=self.config['auxiliary_scaling'],
                                                      num_augmentation=self.config['num_augmentation']).to(self.device)
         else:
-            self.discriminator_from_a_to_b = CycleDis(auxiliary_rotation=self.config['auxiliary_rotation'],
+            self.discriminator_from_a_to_b = CycleDis(atl=self.config['atl'],
+                                                      auxiliary_rotation=self.config['auxiliary_rotation'],
                                                       auxiliary_translation=self.config['auxiliary_translation'],
                                                       auxiliary_scaling=self.config['auxiliary_scaling'],
                                                       num_augmentation=self.config['num_augmentation']).to(self.device)
 
-            self.discriminator_from_b_to_a = CycleDis(auxiliary_rotation=self.config['auxiliary_rotation'],
+            self.discriminator_from_b_to_a = CycleDis(atl=self.config['atl'],
+                                                      auxiliary_rotation=self.config['auxiliary_rotation'],
                                                       auxiliary_translation=self.config['auxiliary_translation'],
                                                       auxiliary_scaling=self.config['auxiliary_scaling'],
                                                       num_augmentation=self.config['num_augmentation']).to(self.device)
