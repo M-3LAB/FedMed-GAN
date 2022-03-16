@@ -89,9 +89,9 @@ class NIRPS(object):
         self.model_source_gt_fp = os.path.join(self.model_source_fp, 'gt')
         self.model_target_gt_fp = os.path.join(self.model_target_fp, 'gt')
 
-        for i in range(self.num_epoch):
-            epoch_model_source_fp = os.path.join(self.model_source_fp, i) 
-            epoch_model_target_fp = os.path.join(self.model_target_fp, i) 
+        for i in range(self.para_dict['num_epoch']):
+            epoch_model_source_fp = os.path.join(self.model_source_fp, str(i)) 
+            epoch_model_target_fp = os.path.join(self.model_target_fp, str(i)) 
             create_folders(epoch_model_source_fp)
             create_folders(epoch_model_target_fp)
             
