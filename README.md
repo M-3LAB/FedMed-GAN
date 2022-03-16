@@ -82,7 +82,7 @@ python3 kaid.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd' -g 0 -
 
 ## NIRPS Dataset Build Up
 ```bash
-python3 nirps.py --dataset 'ixi' --source-domain 't2' --target-domain 'pd' -g 0 --msl-assigned --msl-assigned-value 10 --debug --num-epochs 2
+python3 nirps.py --dataset 'ixi' --model 'cyclegan' --source-domain 't2' --target-domain 'pd' -g 0 --num-epoch 2
 ```
 
 ## Implementations of Data Processing

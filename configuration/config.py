@@ -17,6 +17,7 @@ def parse_arguments_nirps():
     parser.add_argument('--valid-path', '-vp', type=str, default=None)
     parser.add_argument('--data-mode', '-dm', type=str, default='mixed', choices=['mixed', 'paired', 'unpaired'])
     parser.add_argument('--data-num', type=int, default=None, help='slices number for GAN training')
+    parser.add_argument('--gpu-id', '-g', type=str, default=None)
     #parser.add_argument('--nirps-structure', '-ns', action='store_true', help='flag for nirps structure')
     args = parser.parse_args()
     return args
