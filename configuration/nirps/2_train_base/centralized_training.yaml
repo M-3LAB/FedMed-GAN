@@ -34,4 +34,6 @@ auxiliary_scaling: false
 num_augmentation: 'one' 
 #contraD
 contraD: false
+#general evaluation
+general_evaluation: false
 
