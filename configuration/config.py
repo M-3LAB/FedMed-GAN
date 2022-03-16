@@ -19,6 +19,7 @@ def parse_arguments_nirps():
     parser.add_argument('--data-num', type=int, default=None, help='slices number for GAN training')
     parser.add_argument('--gpu-id', '-g', type=str, default=None)
     parser.add_argument('--atl', action='store_true', default=None, help='indicate whether the atl flag is true or not')
+    parser.add_argument('--debug', action='store_true', default=None)
     #parser.add_argument('--nirps-structure', '-ns', action='store_true', help='flag for nirps structure')
     args = parser.parse_args()
     return args
@@ -50,6 +51,7 @@ def parse_arguments_kaid():
     parser.add_argument('--gamma', type=float, default=None, help='Multiplicative factor of learning rate decay')
     parser.add_argument('--beta1', type=float, default=None, help='Adam Optimizer parameter')
     parser.add_argument('--beta2', type=float, default=None, help='Adam Optimizer parameter')
+    parser.add_argument('--fid', action='store_true', default=True)
     args = parser.parse_args()
     return args
 

@@ -156,9 +156,7 @@ class NIRPS(object):
                                      learn_mode='test',
                                      transform_data=self.normal_transform,
                                      data_mode='paired',
-                                     dataset_splited=False,
-                                     assigned_data=True,
-                                     assigned_images=None) 
+                                     dataset_splited=True) 
         else:
             raise NotImplementedError('This Dataset Has Not Been Implemented Yet')
 
