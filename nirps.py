@@ -72,7 +72,7 @@ class NIRPS(object):
 
     def setup_folder(self):
         # fp: file path
-        self.dataset_fp = self.para_dict['dataset']
+        self.dataset_fp = os.path.join('nirps', self.para_dict['dataset'])
         create_folders(self.dataset_fp)
 
         self.source_modality_fp = os.path.join(self.dataset_fp, self.para_dict['source_domain'])
