@@ -224,13 +224,13 @@ class CentralizedTrain():
     def init_model(self):
         if self.para_dict['model'] == 'cyclegan':
             self.trainer = CycleGAN(self.para_dict, self.train_loader, self.valid_loader,
-                                    self.assigned_loader, self.device, self.file_path)
+                                    self.assigned_loader, self.device, self.file_path, atl=self.para_dict['atl'])
         elif self.para_dict['model'] == 'munit':
             self.trainer = Munit(self.para_dict, self.train_loader, self.valid_loader,
-                                    self.assigned_loader, self.device, self.file_path)
+                                    self.assigned_loader, self.device, self.file_path, atl=self.para_dict['atl'])
         elif self.para_dict['model'] == 'unit':
             self.trainer = Unit(self.para_dict, self.train_loader, self.valid_loader,
-                                    self.assigned_loader, self.device, self.file_path)
+                                    self.assigned_loader, self.device, self.file_path, atl=self.para_dict['atl'])
         else:
             raise ValueError('Model is invalid!')
 

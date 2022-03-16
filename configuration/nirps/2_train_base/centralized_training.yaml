@@ -23,3 +23,9 @@ beta2: 0.999
 # identity loss
 identity: true
 lambda_identity: 10.0
+diff_privacy: false
+reg_gan: false
+auxiliary_rotation: false
+auxiliary_translation: false
+auxiliary_scaling: false
+
