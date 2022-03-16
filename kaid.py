@@ -363,5 +363,5 @@ if __name__ == '__main__':
         print(f"The mean diff of Modality {para_dict['target_domain']} : {torch.mean(diff_b)}")
 
 
-        
+    #TODO: Comparision on NIRPS 
     
