@@ -17,9 +17,9 @@ __all__ = ['CycleGAN']
 
 class CycleGAN(Base):
     def __init__(self, config, train_loader, valid_loader, assigned_loader, 
-                 device, file_path, batch_limit_weight=1.0, atl=False):
+                 device, file_path, batch_limit_weight=1.0):
         super(CycleGAN, self).__init__(config=config, train_loader=train_loader, valid_loader=valid_loader, assigned_loader=assigned_loader, 
-                 device=device, file_path=file_path, batch_limit_weight=batch_limit_weight, atl=atl)
+                 device=device, file_path=file_path, batch_limit_weight=batch_limit_weight)
 
         self.config = config
 
