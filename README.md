@@ -22,15 +22,23 @@ pip3 install -r requirements.txt
     │   │   ├── ...
     │ 
     ...
-
+    
+    ├── IXI
+    │   ├── PD
+    │   │   ├── IXI002-Guys-0828-PD.nii.gz
+    │   │   ├── IXI012-HH-1211-PD.nii.gz
+    │   │   └── ...
+    │   ├── T2
+    │   │   ├── IXI002-Guys-0828-T2.nii.gz
+    │   │   ├── IXI012-HH-1211-T2.nii.gz
+    │   │   ├── ...
+    │ 
+    ...
 > Generate dataset
 ```bash
 python3 data_preprecess/brats2021.py
 ```
-> Test data loader
-```bash
-python3 legacy_code/example_dataset_loader.py
-```
+
 > Prepare Statistics for FID Calculate statistics. See [./fid_stats.py](fid_stats.py) for details.
 ```bash
 python3 fid_stats.py --dataset 'ixi'  --source-domain 't2' --target-domain 'pd' --gpu-id 0
