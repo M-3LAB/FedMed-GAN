@@ -10,7 +10,6 @@ conda install pytorch=1.8.1 torchvision torchaudio cudatoolkit=10.1 -c pytorch
 pip3 install -r requirements.txt
 ```
 ##Data Structure
-> BraTS 2021
 ├── BraTS2021
     │   ├── training
     │   │   ├── BraTS2021_00000
